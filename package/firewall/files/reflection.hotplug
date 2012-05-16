@@ -1,9 +1,48 @@
 #!/bin/sh
 
 . /etc/functions.sh
+. /usr/share/libubox/jshn.sh
+
+find_iface_address()
+{
+	local iface="$1"
+	local ipaddr="$2"
+	local prefix="$3"
+
+	local idx=1
+	local tmp="$(ubus call network.interface."$iface" status 2>/dev/null)"
+
+	json_load "${tmp:-{}}"
+	json_get_type tmp address
+
+	if [ "$tmp" = array ]; then
+		json_select address
+
+		while true; do
+			json_get_type tmp $idx
+			[ "$tmp" = object ] || break
+
+			json_select $((idx++))
+			json_get_var tmp address
+
+			case "$tmp" in
+				*:*) json_select .. ;;
+				*)
+					[ -n "$ipaddr" ] && json_get_var $ipaddr address
+					[ -n "$prefix" ] && json_get_var $prefix mask
+					return 0 
+				;;
+			esac
+		done
+	fi
+
+	return 1
+}
 
 if [ "$ACTION" = "add" ] && [ "$INTERFACE" = "wan" ]; then
-	local wanip=$(uci -P/var/state get network.wan.ipaddr)
+	local wanip
+	find_iface_address wan wanip
+	[ -n "$wanip" ] || return
 
 	iptables -t nat -F nat_reflection_in 2>/dev/null || {
 		iptables -t nat -N nat_reflection_in
@@ -60,8 +99,9 @@ if [ "$ACTION" = "add" ] && [ "$INTERFACE" = "wan" ]; then
 
 			local net
 			for net in $(find_networks "$dest"); do
-				local lanip=$(uci -P/var/state get network.$net.ipaddr)
-				local lanmk=$(uci -P/var/state get network.$net.netmask)
+				local lanip lanmk
+				find_iface_address "$net" lanip lanmk
+				[ -n "$lanip" ] || return
 
 				local proto
 				config_get proto "$cfg" proto
