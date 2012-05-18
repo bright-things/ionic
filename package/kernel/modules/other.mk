@@ -44,14 +44,7 @@ define KernelPackage/bluetooth
 	$(LINUX_DIR)/net/bluetooth/hidp/hidp.ko \
 	$(LINUX_DIR)/drivers/bluetooth/hci_uart.ko \
 	$(LINUX_DIR)/drivers/bluetooth/btusb.ko
-  ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),ge,2.6.39)),1)
-    AUTOLOAD:=$(call AutoLoad,90,bluetooth rfcomm bnep hidp hci_uart btusb)
-  else
-    FILES+= \
-	$(LINUX_DIR)/net/bluetooth/l2cap.ko \
-	$(LINUX_DIR)/net/bluetooth/sco.ko
-    AUTOLOAD:=$(call AutoLoad,90,bluetooth l2cap sco rfcomm bnep hidp hci_uart btusb)
-  endif
+  AUTOLOAD:=$(call AutoLoad,90,bluetooth rfcomm bnep hidp hci_uart btusb)
 endef
 
 define KernelPackage/bluetooth/description
@@ -137,22 +130,6 @@ define KernelPackage/eeprom-at25/description
 endef
 
 $(eval $(call KernelPackage,eeprom-at25))
-
-
-define KernelPackage/gpio-cs5535
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=AMD CS5535/CS5536 GPIO driver
-  DEPENDS:=@TARGET_x86 @LINUX_2_6_37
-  KCONFIG:=CONFIG_CS5535_GPIO
-  FILES:=$(LINUX_DIR)/drivers/char/cs5535_gpio.ko
-  AUTOLOAD:=$(call AutoLoad,50,cs5535_gpio)
-endef
-
-define KernelPackage/gpio-cs5535/description
- This package contains the AMD CS5535/CS5536 GPIO driver
-endef
-
-$(eval $(call KernelPackage,gpio-cs5535))
 
 
 define KernelPackage/gpio-cs5535-new
@@ -759,34 +736,6 @@ endef
 
 $(eval $(call KernelPackage,pwm-gpio))
 
-define KernelPackage/rtc-core-2.6
-  SUBMENU:=$(OTHER_MENU)
-  DEPENDS:=@(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39)
-  TITLE:=Real Time Clock class support
-  KCONFIG:=CONFIG_RTC_CLASS
-  FILES:=$(LINUX_DIR)/drivers/rtc/rtc-core.ko
-  AUTOLOAD:=$(call AutoLoad,29,rtc-core)
-endef
-
-define KernelPackage/rtc-core-2.6/description
- Generic RTC class support.
-endef
-
-$(eval $(call KernelPackage,rtc-core-2.6))
-
-define KernelPackage/rtc-core-3.x
-  SUBMENU:=$(OTHER_MENU)
-  DEPENDS:=@!(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39)
-  TITLE:=Real Time Clock class support
-  KCONFIG:=CONFIG_RTC_CLASS=y
-endef
-
-define KernelPackage/rtc-core-3.x/description
- Generic RTC class support.
-endef
-
-$(eval $(call KernelPackage,rtc-core-3.x))
-
 define KernelPackage/rtc-pcf8563
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Philips PCF8563/Epson RTC8564 RTC support
@@ -876,7 +825,7 @@ $(eval $(call KernelPackage,mtdtests))
 define KernelPackage/nand
   SUBMENU:=$(OTHER_MENU)
   TITLE:=NAND flash support
-  DEPENDS:=@!(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39)
+  DEPENDS:=@!LINUX_2_6_39
   KCONFIG:=CONFIG_MTD_NAND \
 	CONFIG_MTD_NAND_IDS \
 	CONFIG_MTD_NAND_ECC
@@ -897,7 +846,7 @@ $(eval $(call KernelPackage,nand))
 define KernelPackage/nandsim
   SUBMENU:=$(OTHER_MENU)
   TITLE:=NAND simulator
-  DEPENDS:=@!(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39) +kmod-nand
+  DEPENDS:=+kmod-nand
   KCONFIG:=CONFIG_MTD_NAND_NANDSIM
   FILES:=$(LINUX_DIR)/drivers/mtd/nand/nandsim.ko
 endef
@@ -922,11 +871,7 @@ define KernelPackage/serial-8250
 ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),ge,3.3)),1)
   FILES:=$(LINUX_DIR)/drivers/tty/serial/8250/8250.ko
 else
- ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),ge,2.6.38)),1)
   FILES:=$(LINUX_DIR)/drivers/tty/serial/8250.ko
- else
-  FILES:=$(LINUX_DIR)/drivers/serial/8250.ko
- endif
 endif
 endef
 

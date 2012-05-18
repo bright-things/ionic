@@ -22,18 +22,10 @@ define KernelPackage/video-core
 	CONFIG_V4L_PCI_DRIVERS=y \
 	CONFIG_V4L_PLATFORM_DRIVERS=y \
 	CONFIG_V4L_ISA_PARPORT_DRIVERS=y
-ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),ge,2.6.38)),1)
   FILES:= \
 	$(LINUX_DIR)/drivers/media/video/v4l2-common.ko \
 	$(LINUX_DIR)/drivers/media/video/videodev.ko
   AUTOLOAD:=$(call AutoLoad,60, videodev v4l2-common)
-else
-  FILES:= \
-	$(LINUX_DIR)/drivers/media/video/v4l2-common.ko \
-	$(LINUX_DIR)/drivers/media/video/v4l1-compat.ko \
-	$(LINUX_DIR)/drivers/media/video/videodev.ko
-  AUTOLOAD:=$(call AutoLoad,60, v4l1-compat videodev v4l2-common)
-endif
 endef
 
 define KernelPackage/video-core/description
@@ -51,7 +43,6 @@ endef
 
 define KernelPackage/video-videobuf2
   TITLE:=videobuf2 lib
-  DEPENDS:= @!(LINUX_2_6_37||LINUX_2_6_38)
   KCONFIG:= \
 	CONFIG_VIDEOBUF2_CORE \
 	CONFIG_VIDEOBUF2_MEMOPS \
@@ -107,7 +98,7 @@ $(eval $(call KernelPackage,video-sn9c102))
 
 define KernelPackage/video-pwc
   TITLE:=Philips USB webcam support
-  DEPENDS:=@USB_SUPPORT +kmod-usb-core +!(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39||LINUX_3_0):kmod-video-videobuf2
+  DEPENDS:=@USB_SUPPORT +kmod-usb-core +!LINUX_2_6_39:kmod-video-videobuf2
   KCONFIG:= \
 	CONFIG_USB_PWC \
 	CONFIG_USB_PWC_DEBUG=n
@@ -125,7 +116,7 @@ $(eval $(call KernelPackage,video-pwc))
 
 define KernelPackage/video-uvc
   TITLE:=USB Video Class (UVC) support
-  DEPENDS:=@USB_SUPPORT +kmod-usb-core +!(LINUX_2_6_37||LINUX_2_6_38||LINUX_2_6_39||LINUX_3_0||LINUX_3_1||LINUX_3_2):kmod-video-videobuf2
+  DEPENDS:=@USB_SUPPORT +kmod-usb-core +!(LINUX_2_6_39||LINUX_3_1||LINUX_3_2):kmod-video-videobuf2
   KCONFIG:= CONFIG_USB_VIDEO_CLASS
   FILES:=$(LINUX_DIR)/drivers/media/video/uvc/uvcvideo.ko
   AUTOLOAD:=$(call AutoLoad,90,uvcvideo)
