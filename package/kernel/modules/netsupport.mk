@@ -626,7 +626,7 @@ $(eval $(call KernelPackage,mppe))
 SCHED_MODULES = $(patsubst $(LINUX_DIR)/net/sched/%.ko,%,$(wildcard $(LINUX_DIR)/net/sched/*.ko))
 SCHED_MODULES_CORE = sch_ingress sch_codel sch_fq_codel sch_hfsc cls_fw cls_route cls_flow cls_tcindex cls_u32 em_u32 act_mirred act_skbedit
 SCHED_MODULES_EXTRA = $(filter-out $(SCHED_MODULES_CORE) act_connmark,$(SCHED_MODULES))
-SCHED_FILES = $(patsubst %,$(LINUX_DIR)/net/sched/%.ko,$(SCHED_MODULES_CORE))
+SCHED_FILES = $(patsubst %,$(LINUX_DIR)/net/sched/%.ko,$(filter $(SCHED_MODULES_CORE),$(SCHED_MODULES)))
 SCHED_FILES_EXTRA = $(patsubst %,$(LINUX_DIR)/net/sched/%.ko,$(SCHED_MODULES_EXTRA))
 
 define KernelPackage/sched-core
@@ -664,6 +664,7 @@ define KernelPackage/sched-connmark
   TITLE:=Traffic shaper conntrack mark support
   DEPENDS:=+kmod-sched-core +kmod-ipt-core +kmod-ipt-conntrack-extra
   KCONFIG:=CONFIG_NET_ACT_CONNMARK
+  FILES:=$(LINUX_DIR)/net/sched/act_connmark.ko
 endef
 $(eval $(call KernelPackage,sched-connmark))
 
