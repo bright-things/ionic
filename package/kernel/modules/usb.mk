@@ -110,25 +110,6 @@ endef
 $(eval $(call KernelPackage,usb-ohci,1))
 
 
-define KernelPackage/usb-isp116x-hcd
-  TITLE:=Support for the ISP116x USB Host Controller
-  DEPENDS:=@TARGET_ppc40x
-  KCONFIG:= \
-	CONFIG_USB_ISP116X_HCD \
-	CONFIG_USB_ISP116X_HCD_OF=y \
-	CONFIG_USB_ISP116X_HCD_PLATFORM=n
-  FILES:=$(LINUX_DIR)/drivers/usb/host/isp116x-hcd.ko
-  AUTOLOAD:=$(call AutoLoad,50,isp116x-hcd)
-  $(call AddDepends/usb)
-endef
-
-define KernelPackage/usb-isp116x-hcd/description
-  Kernel support for the ISP116X USB Host Controller
-endef
-
-$(eval $(call KernelPackage,usb-isp116x-hcd))
-
-
 define KernelPackage/usb2
   TITLE:=Support for USB2 controllers
   DEPENDS:=+TARGET_brcm47xx:kmod-usb-brcm47xx
@@ -884,42 +865,6 @@ endef
 
 $(eval $(call KernelPackage,usb-test))
 
-
-define KernelPackage/usb-rt305x-dwc_otg
-  TITLE:=RT305X USB controller driver
-  DEPENDS:=@TARGET_ramips_rt305x
-  KCONFIG:= \
-	CONFIG_DWC_OTG \
-	CONFIG_DWC_OTG_HOST_ONLY=y \
-	CONFIG_DWC_OTG_DEVICE_ONLY=n \
-	CONFIG_DWC_OTG_DEBUG=n
-  FILES:=$(LINUX_DIR)/drivers/usb/dwc_otg/dwc_otg.ko
-  AUTOLOAD:=$(call AutoLoad,54,dwc_otg,1)
-  $(call AddDepends/usb)
-endef
-
-define KernelPackage/usb-rt305x-dwc_otg/description
-  This driver provides USB Device Controller support for the
-  Synopsys DesignWare USB OTG Core used in the Ralink RT305X SoCs.
-endef
-
-$(eval $(call KernelPackage,usb-rt305x-dwc_otg))
-
-define KernelPackage/usb-brcm47xx
-  SUBMENU:=$(USB_MENU)
-  TITLE:=Support for USB on bcm47xx
-  DEPENDS:=@USB_SUPPORT @TARGET_brcm47xx
-  KCONFIG:= \
-  	CONFIG_USB_HCD_BCMA \
-  	CONFIG_USB_HCD_SSB
-  FILES:= \
-  	$(LINUX_DIR)/drivers/usb/host/bcma-hcd.ko \
-  	$(LINUX_DIR)/drivers/usb/host/ssb-hcd.ko
-  AUTOLOAD:=$(call AutoLoad,19,bcma-hcd ssb-hcd,1)
-  $(call AddDepends/usb)
-endef
-
-$(eval $(call KernelPackage,usb-brcm47xx))
 
 define KernelPackage/usbip
   TITLE := USB-over-IP kernel support
