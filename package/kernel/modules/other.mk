@@ -624,7 +624,7 @@ $(eval $(call KernelPackage,wdt-omap))
 define KernelPackage/wdt-orion
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Marvell Orion Watchdog timer
-  DEPENDS:=@TARGET_orion
+  DEPENDS:=@TARGET_orion||@TARGET_kirkwood
   KCONFIG:=CONFIG_ORION_WATCHDOG
   FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/orion_wdt.ko
   AUTOLOAD:=$(call AutoLoad,50,orion_wdt)
@@ -795,22 +795,6 @@ endef
 
 $(eval $(call KernelPackage,rtc-pt7c4338))
 
-define KernelPackage/n810bm
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=Nokia N810 battery management driver
-  DEPENDS:=@TARGET_omap24xx
-  KCONFIG:=CONFIG_N810BM
-  FILES:=$(LINUX_DIR)/drivers/cbus/n810bm.ko
-  AUTOLOAD:=$(call AutoLoad,01,n810bm)
-endef
-
-define KernelPackage/n810bm/description
-  Nokia N810 battery management driver.
-  Controls battery power management and battery charging.
-endef
-
-$(eval $(call KernelPackage,n810bm))
-
 
 define KernelPackage/mtdtests
   SUBMENU:=$(OTHER_MENU)
@@ -904,3 +888,20 @@ define KernelPackage/acpi-button/description
 endef
 
 $(eval $(call KernelPackage,acpi-button))
+
+define KernelPackage/regmap
+  SUBMENU:=$(OTHER_MENU)
+  TITLE:=Generic register map support
+  KCONFIG:=CONFIG_REGMAP=y \
+	   CONFIG_REGMAP_SPI \
+	   CONFIG_REGMAP_I2C
+  FILES:=$(LINUX_DIR)/drivers/base/regmap/regmap-i2c.ko \
+	 $(LINUX_DIR)/drivers/base/regmap/regmap-spi.ko
+  AUTOLOAD:=$(call AutoLoad,10,regmap-i2c regmap-spi)
+endef
+
+define KernelPackage/regmap/description
+  Generic register map support
+endef
+
+$(eval $(call KernelPackage,regmap))
