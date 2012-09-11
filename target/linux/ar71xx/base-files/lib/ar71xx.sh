@@ -201,6 +201,12 @@ ar71xx_board_detect() {
 	*"DIR-825 rev. B1")
 		name="dir-825-b1"
 		;;
+	*"DIR-825 rev. B1 OpenWrt")
+		name="dir-825-b1-openwrt"
+		;;
+	*"DIR-825 rev. B1 TOSTOCK")
+		name="dir-825-b1-tostock"
+		;;
 	*EAP7660D)
 		name="eap7660d"
 		;;
@@ -284,6 +290,12 @@ ar71xx_board_detect() {
 		;;
 	*"RouterBOARD 751G")
 		name="rb-751g"
+		;;
+	*"RouterBOARD 2011L")
+		name="rb-2011l"
+		;;
+	*"RouterBOARD 2011UAS-2HnD")
+		name="rb-2011uas-2hnd"
 		;;
 	*"Rocket M")
 		name="rocket-m"
