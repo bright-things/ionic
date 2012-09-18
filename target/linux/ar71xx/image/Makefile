@@ -170,8 +170,9 @@ cameo7240_mtdlayout=mtdparts=spi0.0:192k(u-boot)ro,64k(nvram)ro,960k(kernel),275
 cameo913x_mtdlayout=mtdparts=spi0.0:128k(u-boot)ro,64k(config)ro,960k(kernel),2880k(rootfs),64k(art)ro,3840k@0x30000(firmware)
 cameo933x_mtdlayout=mtdparts=spi0.0:64k(u-boot)ro,64k(art)ro,64k(mac)ro,64k(nvram)ro,192k(language)ro,896k(kernel),2752k(rootfs),3648k@0x70000(firmware)
 db120_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,6336k(rootfs),1408k(kernel),64k(nvram),64k(art)ro,7744k@0x50000(firmware)
-dir825b1_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),5184k(rootfs),64k(caldata)ro,1536k(unknown)ro,64k(owrt_caldata),6208k@0x50000(firmware)
-dir825b1_openwrt_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),6784k(rootfs),64k(caldata)ro,7808k@0x50000(firmware)
+dir825b1_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),5184k(rootfs),64k(caldata)ro,1600k(unknown)ro,6208k@0x50000(firmware)
+dir825b1_towholeflash_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),5184k(rootfs),64k(caldata)ro,1536k(unknown)ro,64k(owrt_caldata),7808k@0x50000(firmware)
+dir825b1_wholeflash_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),6784k(rootfs),64k(caldata)ro,7808k@0x50000(firmware)
 ew-dorin_mtdlayout_4M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),1024k(kernel),2688k(rootfs),64k(art),3712k@0x50000(firmware)
 dir825b1_tostock_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),5184k(rootfs),64k(caldata),1536k(unknown)ro,64k(owrt_caldata)ro,6208k@0x50000(firmware)
 pb92_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,2752k(rootfs),896k(kernel),64k(nvram),64k(art)ro,3648k@0x50000(firmware)
@@ -220,8 +221,27 @@ define Image/Build/DIR825B1
 	fi
 endef
 
-define Image/Build/DIR825B1_OPENWRT
-	$(call MkuImageLzma,$(2),$(3) $(dir825b1_openwrt_mtdlayout))
+define Image/Build/DIR825B1_TOWHOLEFLASH
+	$(call MkuImageLzma,$(2),$(3) $(dir825b1_towholeflash_mtdlayout))
+	$(call Sysupgrade/KRuImage,$(1),$(2),1048576,5308416)
+	if [ -e "$(call sysupname,$(1),$(2))" ]; then \
+		( \
+			dd if=$(call sysupname,$(1),$(2)); \
+			echo -n "$(4)"; \
+		) > $(call imgname,$(1),$(2))-backup-loader.bin; \
+		if [ `stat -c%s $(call sysupname,$(1),$(2))` -gt 4194304 ]; then \
+			echo "Warning: $(call sysupname,$(1),$(2)) is too big"; \
+		else \
+			( \
+				dd if=$(call sysupname,$(1),$(2)) bs=4096k conv=sync; \
+				echo -n "$(5)"; \
+			) > $(call factoryname,$(1),$(2)); \
+		fi; \
+	fi
+endef
+
+define Image/Build/DIR825B1_WHOLEFLASH
+	$(call MkuImageLzma,$(2),$(3) $(dir825b1_wholeflash_mtdlayout))
 	$(call Sysupgrade/KRuImage,$(1),$(2),1048576,6946816)
 endef
 
@@ -769,7 +789,8 @@ $(eval $(call SingleProfile,Cameo933x,$(fs_squash),TEW712BR,tew-712br,TEW-712BR,
 $(eval $(call SingleProfile,CyberTAN,$(fs_64k),WRT160NL,wrt160nl,WRT160NL,ttyS0,115200,1.00.01))
 
 $(eval $(call SingleProfile,DIR825B1,$(fs_64k),DIR825B1,dir-825-b1,DIR-825-B1,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
-$(eval $(call SingleProfile,DIR825B1_OPENWRT,$(fs_64k),DIR825B1_OPENWRT,dir-825-b1-openwrt,DIR-825-B1_OPENWRT,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
+$(eval $(call SingleProfile,DIR825B1_TOWHOLEFLASH,$(fs_64k),DIR825B1_TOWHOLEFLASH,dir-825-b1-towholeflash,DIR-825-B1_TOWHOLEFLASH,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
+$(eval $(call SingleProfile,DIR825B1_WHOLEFLASH,$(fs_64k),DIR825B1_WHOLEFLASH,dir-825-b1-wholeflash,DIR-825-B1_WHOLEFLASH,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
 $(eval $(call SingleProfile,DIR825B1_TOSTOCK,$(fs_64k),DIR825B1_TOSTOCK,dir-825-b1-tostock,DIR-825-B1_TOSTOCK,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
 $(eval $(call SingleProfile,DIR825B1,$(fs_64k),TEW673GRU,tew-637gru,TEW-673GRU,ttyS0,115200,01AP94-AR7161-RT-080619-01,00AP94-AR7161-RT-080619-01))
 
@@ -861,7 +882,7 @@ $(eval $(call SingleProfile,ZyXEL,$(fs_64k),NBG_460N_550N_550NH,nbg460n_550n_550
 
 
 $(eval $(call MultiProfile,AP121,AP121_2M AP121_4M))
-$(eval $(call MultiProfile,DIR825B1_ALL,DIR825B1 DIR825B1_OPENWRT DIR825B1_TOSTOCK))
+$(eval $(call MultiProfile,DIR825B1_ALL,DIR825B1 DIR825B1_TOWHOLEFLASH DIR825B1_WHOLEFLASH DIR825B1_TOSTOCK))
 $(eval $(call MultiProfile,EWDORIN, EWDORINAP EWDORINRT))
 $(eval $(call MultiProfile,TEW652BRP,TEW652BRP_FW TEW652BRP_RECOVERY))
 $(eval $(call MultiProfile,TLWA901,TLWA901NV1 TLWA901NV2))
@@ -872,7 +893,7 @@ $(eval $(call MultiProfile,TLWR941,TLWR941NV2 TLWR941NV3 TLWR941NV4))
 $(eval $(call MultiProfile,TLWDR4300,TLWDR3600V1 TLWDR4300V1 TLWDR4310V1))
 $(eval $(call MultiProfile,UBNT,UBNTAIRROUTER UBNTRS UBNTRSPRO UBNTLSSR71 UBNTBULLETM UBNTROCKETM UBNTNANOM UBNTUNIFI))
 $(eval $(call MultiProfile,WNDR3700,WNDR3700V1 WNDR3700V2 WNDR3800 WNDRMAC WNDRMACV2))
-$(eval $(call MultiProfile,WPE543,WPE543_2M WPE543_4M WPE543_8M WPE543_16M))
+$(eval $(call MultiProfile,WP543,WP543_2M WP543_4M WP543_8M WP543_16M))
 
 $(eval $(call MultiProfile,Default,$(SINGLE_PROFILES)))
 $(eval $(call MultiProfile,Minimal,$(SINGLE_PROFILES)))
