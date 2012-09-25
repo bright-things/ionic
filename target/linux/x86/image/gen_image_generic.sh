@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Copyright (C) 2006-2010 OpenWrt.org
-set -x 
-[ $# == 5 ] || {
-    echo "SYNTAX: $0 <file> <kernel size> <kernel directory> <rootfs size> <rootfs image>"
+# Copyright (C) 2006-2012 OpenWrt.org
+set -x
+[ $# == 5 -o $# == 6 ] || {
+    echo "SYNTAX: $0 <file> <kernel size> <kernel directory> <rootfs size> <rootfs image> [<align>]"
     exit 1
 }
 
@@ -11,6 +11,7 @@ KERNELSIZE="$2"
 KERNELDIR="$3"
 ROOTFSSIZE="$4"
 ROOTFSIMAGE="$5"
+ALIGN="$6"
 
 rm -f "$OUTPUT"
 
@@ -19,7 +20,7 @@ sect=63
 cyl=$(( ($KERNELSIZE + $ROOTFSSIZE) * 1024 * 1024 / ($head * $sect * 512)))
 
 # create partition table
-set `ptgen -o "$OUTPUT" -h $head -s $sect -p ${KERNELSIZE}m -p ${ROOTFSSIZE}m`
+set `ptgen -o "$OUTPUT" -h $head -s $sect -p ${KERNELSIZE}m -p ${ROOTFSSIZE}m ${ALIGN:+-l $ALIGN}`
 
 KERNELOFFSET="$(($1 / 512))"
 KERNELSIZE="$(($2 / 512))"
@@ -36,13 +37,3 @@ dd if="$ROOTFSIMAGE" of="$OUTPUT" bs=512 seek="$ROOTFSOFFSET" conv=notrunc
 genext2fs -d "$KERNELDIR" -b "$BLOCKS" "$OUTPUT.kernel"
 dd if="$OUTPUT.kernel" of="$OUTPUT" bs=512 seek="$KERNELOFFSET" conv=notrunc
 rm -f "$OUTPUT.kernel"
-
-which chpax >/dev/null && chpax -zp $(which grub)
-grub --batch --no-curses --no-floppy --device-map=/dev/null <<EOF
-device (hd0) $OUTPUT
-geometry (hd0) $cyl $head $sect
-root (hd0,0)
-setup (hd0)
-quit
-EOF
-

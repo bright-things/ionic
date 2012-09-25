@@ -977,6 +977,8 @@ define KernelPackage/b43/config
 		    G  => G-PHY
 		    LP => LP-PHY
 		    N  => N-PHY
+		    HT  => HT-PHY
+		    LCN  => LCN-PHY
 
 		  Example (keep files for G-PHY only):
 		    G
@@ -1341,7 +1343,7 @@ endef
 ifneq ($(CONFIG_PACKAGE_kmod-cfg80211)$(CONFIG_PACKAGE_kmod-lib80211),)
  define Build/Compile/kmod
 	rm -rf $(PKG_BUILD_DIR)/modules
-	$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" $(MAKE_OPTS) modules
+	+$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" $(MAKE_OPTS) modules
  endef
 endif
 
