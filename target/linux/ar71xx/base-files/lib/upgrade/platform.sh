@@ -15,7 +15,7 @@ platform_find_partitions() {
 	while read dev size erasesize name; do
 		name=${name#'"'}; name=${name%'"'}
 		case "$name" in
-			vmlinux.bin.l7|vmlinux|kernel|linux|rootfs|filesystem)
+			vmlinux.bin.l7|vmlinux|kernel|linux|linux.bin|rootfs|filesystem)
 				if [ -z "$first" ]; then
 					first="$name"
 				else
@@ -31,7 +31,7 @@ platform_find_kernelpart() {
 	local part
 	for part in "${1%:*}" "${1#*:}"; do
 		case "$part" in
-			vmlinux.bin.l7|vmlinux|kernel|linux)
+			vmlinux.bin.l7|vmlinux|kernel|linux|linux.bin)
 				echo "$part"
 				break
 			;;
@@ -135,6 +135,7 @@ platform_check_image() {
 		;;
 
 	om2p | \
+	om2p-hs | \
 	om2p-lc)
 		platform_check_image_om2p "$magic_long" "$1" && return 0
 		return 1
@@ -200,7 +201,8 @@ platform_check_image() {
 	all0305 | \
 	eap7660d | \
 	ja76pf | \
-	ja76pf2)
+	ja76pf2 | \
+	jwap003)
 		[ "$magic" != "4349" ] && {
 			echo "Invalid image. Use *-sysupgrade.bin files on this board"
 			return 1
@@ -235,7 +237,8 @@ platform_do_upgrade() {
 	pb42 | \
 	pb44 | \
 	ja76pf | \
-	ja76pf2)
+	ja76pf2 | \
+	jwap003)
 		platform_do_upgrade_combined "$ARGV"
 		;;
 	all0258n )
@@ -249,6 +252,7 @@ platform_do_upgrade() {
 		platform_do_upgrade_dir825b "$ARGV"
 		;;
 	om2p | \
+	om2p-hs | \
 	om2p-lc)
 		platform_do_upgrade_om2p "$ARGV"
 		;;
