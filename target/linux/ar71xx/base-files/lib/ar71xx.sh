@@ -345,6 +345,9 @@ ar71xx_board_detect() {
 	*TL-MR3220)
 		name="tl-mr3220"
 		;;
+	*"TL-MR3220 v2")
+		name="tl-mr3220-v2"
+		;;
 	*TL-MR3420)
 		name="tl-mr3420"
 		;;
@@ -387,6 +390,9 @@ ar71xx_board_detect() {
 	*UniFi)
 		name="unifi"
 		;;
+	*"UniFi AP Pro")
+		name="uap-pro"
+		;;
 	*WHR-G301N)
 		name="whr-g301n"
 		;;
@@ -407,6 +413,9 @@ ar71xx_board_detect() {
 		;;
 	*"WNDR3700/WNDR3800/WNDRMAC")
 		wndr3700_board_detect "$machine"
+		;;
+	*"WNDR4300")
+		name="wndr4300"
 		;;
 	*WNR2000)
 		name="wnr2000"
