@@ -53,6 +53,9 @@ ramips_board_name() {
 	*"Edimax 3g-6200n")
 		name="3g-6200n"
 		;;
+	*"AirLive Air3GII")
+		name="air3gii"
+		;;
 	*"Allnet ALL0239-3G")
 		name="all0239-3g"
 		;;
@@ -67,6 +70,9 @@ ramips_board_name() {
 		;;
 	*"Argus ATP-52B")
 		name="argus-atp52b"
+		;;
+	*"BR6524N")
+		name="br6524n"
 		;;
 	*"Asus WL-330N")
 		name="wl-330n"
@@ -136,6 +142,9 @@ ramips_board_name() {
 		;;
 	*"Petatel PSR-680W"*)
 		name="psr-680w"
+		;;
+	*"Planex MZK-W300NH2"*)
+		name="mzk-w300nh2"
 		;;
 	*"PWH2004")
 		name="pwh2004"

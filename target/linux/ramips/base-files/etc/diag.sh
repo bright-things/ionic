@@ -36,6 +36,9 @@ get_status_led() {
 	argus-atp52b)
 		status_led="argus-atp52b:green:run"
 		;;
+	br6524n)
+		status_led="edimax:blue:power"
+		;;
 	dir-300-b1 | dir-600-b1 | dir-600-b2 | dir-615-h1 | dir-615-d | dir-620-a1)
 		status_led="d-link:green:status"
 		;;
@@ -121,6 +124,9 @@ get_status_led() {
 		;;
 	wr512-3gn)
 		status_led="wr512:green:wps"
+		;;
+	mzk-w300nh2)
+		status_led="mzkw300nh2:green:power"
 		;;
 	ur-336un)
 		status_led="ur336:green:wps"

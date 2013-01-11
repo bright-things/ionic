@@ -15,6 +15,7 @@ enum ramips_mach_type {
 	RAMIPS_MACH_GENERIC,
 	/* RT2880 based machines */
 	RAMIPS_MACH_F5D8235_V1,		/* Belkin F5D8235 v1 */
+	RAMIPS_MACH_BR6524N,		/* Edimax BR6524N */
 	RAMIPS_MACH_RT_N15,		/* Asus RT-N15 */
 	RAMIPS_MACH_V11ST_FE,		/* Ralink V11ST-FE */
 	RAMIPS_MACH_WLI_TX4_AG300N,	/* Buffalo WLI-TX4-AG300N */
@@ -62,6 +63,7 @@ enum ramips_mach_type {
 	RAMIPS_MACH_WL351,		/* Sitecom WL-351 v1 002 */
 	RAMIPS_MACH_WR512_3GN,		/* SH-WR512NU/WS-WR512N1-like 3GN*/
 	RAMIPS_MACH_WR6202,		/* Accton WR6202 */
+	RAMIPS_MACH_MZKW300NH2,		/* Planex MZK-W300NH2 Router */
 	RAMIPS_MACH_XDXRN502J,          /* unknown XDX-RN502J */
 	RAMIPS_MACH_UR_336UN,		/* UPVEL ROUTER */
 
@@ -75,5 +77,8 @@ enum ramips_mach_type {
 
 	/* RT3883 based machines */
 	RAMIPS_MACH_TEW_691GR,		/* TRENDnet TEW-691GR */
-	RAMIPS_MACH_TEW_692GR		/* TRENDnet TEW-692GR */
+	RAMIPS_MACH_TEW_692GR,		/* TRENDnet TEW-692GR */
+
+	/* RT5350 based machines */
+	RAMIPS_MACH_AIR3GII,		/* AirLive Air3GII */
 };

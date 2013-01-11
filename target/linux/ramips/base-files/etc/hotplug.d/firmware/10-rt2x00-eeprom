@@ -52,12 +52,14 @@ case "$FIRMWARE" in
 		;;
 
 	3g-6200n | \
+	air3gii | \
 	all0239-3g | \
 	all0256n | \
 	all5002 | \
 	argus-atp52b | \
 	bc2 | \
 	broadway | \
+	br6524n | \
 	carambola | \
 	dir-615-h1 | \
 	dir-620-a1 | \
@@ -87,6 +89,7 @@ case "$FIRMWARE" in
 	wli-tx4-ag300n | \
 	wr512-3gn | \
 	wr6202 | \
+	mzk-w300nh2 | \
 	ur-336un | \
 	xdxrn502j)
 		rt2x00_eeprom_extract "factory" 0 272
