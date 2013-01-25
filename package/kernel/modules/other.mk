@@ -393,7 +393,7 @@ define KernelPackage/rtc-marvell
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Marvell SoC built-in RTC support
   $(call AddDepends/rtc)
-  DEPENDS+=@TARGET_kirkwood||TARGET_orion
+  DEPENDS+=@TARGET_kirkwood||TARGET_orion||TARGET_mvebu
   KCONFIG:=CONFIG_RTC_DRV_MV
   FILES:=$(LINUX_DIR)/drivers/rtc/rtc-mv.ko
   AUTOLOAD:=$(call AutoLoad,60,rtc-mv)
@@ -520,7 +520,7 @@ define KernelPackage/serial-8250
 	CONFIG_SERIAL_8250_SHARE_IRQ=y \
 	CONFIG_SERIAL_8250_DETECT_IRQ=n \
 	CONFIG_SERIAL_8250_RSA=n
-  FILES:=$(LINUX_DIR)/drivers/tty/serial/8250/8250.ko
+  FILES:=$(LINUX_DIR)/drivers/tty/serial/8250/8250$(if $(call kernel_patchver_ge,3.7),_core).ko
 endef
 
 define KernelPackage/serial-8250/description
