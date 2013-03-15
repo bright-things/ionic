@@ -90,6 +90,9 @@ tplink_board_detect() {
 	"080100"*)
 		model="TP-Link TL-WA801N/ND"
 		;;
+	"083000"*)
+		model="TP-Link TL-WA830RE"
+		;;
 	"084100"*)
 		model="TP-Link TL-WR841N/ND"
 		;;
@@ -221,6 +224,9 @@ ar71xx_board_detect() {
 		;;
 	*"DIR-825 rev. C1")
 		name="dir-825-c1"
+		;;
+	*"DIR-835 rev. A1")
+		name="dir-835-a1"
 		;;
 	*EAP7660D)
 		name="eap7660d"
@@ -375,6 +381,9 @@ ar71xx_board_detect() {
 	*TL-MR3420)
 		name="tl-mr3420"
 		;;
+	*"TL-MR3420 v2")
+		name="tl-mr3420-v2"
+		;;
 	*TL-WA7510N)
 		name="tl-wa7510n"
 		;;
@@ -453,7 +462,7 @@ ar71xx_board_detect() {
 	*WRT400N)
 		name="wrt400n"
 		;;
-	*WZR-HP-AG300H)
+	*"WZR-HP-AG300H/WZR-600DHP")
 		name="wzr-hp-ag300h"
 		;;
 	*WZR-HP-G300NH)

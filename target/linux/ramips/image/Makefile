@@ -50,7 +50,7 @@ endef
 
 define MkImage
 	$(eval imagename=$(if $(4),$(4),MIPS OpenWrt Linux-$(LINUX_VERSION)))
-	mkimage -A mips -O linux -T kernel -C $(1) $(call kernel_entry)\
+	-mkimage -A mips -O linux -T kernel -C $(1) $(call kernel_entry)\
 		-n "$(imagename)" \
 		-d $(2) $(3)
 endef
@@ -63,9 +63,9 @@ endef
 define MkCombineduImage
 	$(call PatchKernelLzma,$(2),$(3))
 	if [ `stat -c%s "$(KDIR)/vmlinux-$(2).bin.lzma"` -gt `expr $(4) - 64` ]; then \
-		echo "Warning: $(KDIR)/vmlinux-$(2).bin.lzma is too big"; \
+		echo "Warning: $(KDIR)/vmlinux-$(2).bin.lzma is too big" >&2; \
 	else if [ `stat -c%s "$(KDIR)/root.$(1)"` -gt $(5) ]; then \
-		echo "Warning: $(KDIR)/root.$(1) is too big"; \
+		echo "Warning: $(KDIR)/root.$(1) is too big" >&2; \
 	else \
 		( dd if=$(KDIR)/vmlinux-$(2).bin.lzma bs=`expr $(4) - 64` conv=sync ; dd if=$(KDIR)/root.$(1) ) > $(KDIR)/vmlinux-$(2).bin.lzma.combined ; \
 	fi ; fi
@@ -74,9 +74,9 @@ endef
 
 define CatFiles
 	if [ `stat -c%s "$(1)"` -gt $(2) ]; then \
-		echo "Warning: $(1) is too big"; \
+		echo "Warning: $(1) is too big" >&2; \
 	else if [ `stat -c%s $(3)` -gt $(4) ]; then \
-		echo "Warning: $(3) is too big"; \
+		echo "Warning: $(3) is too big" >&2; \
 	else \
 		( dd if=$(1) bs=$(2) conv=sync; dd if=$(3) ) > $(5); \
 	fi; fi
@@ -319,9 +319,9 @@ endef
 define BuildFirmware/Seama
 	$(call PatchKernelLzma,$(2),$(3))
 	if [ `stat -c%s "$(KDIR)/vmlinux-$(2).bin.lzma"` -gt $(4) ]; then \
-		echo "Warning: $(KDIR)/vmlinux-$(2).bin.lzma is too big"; \
+		echo "Warning: $(KDIR)/vmlinux-$(2).bin.lzma is too big" >&2; \
 	else if [ `stat -c%s $(KDIR)/root.$(1)` -gt $(5) ]; then \
-		echo "Warning: $(KDIR)/root.$(1) is too big"; \
+		echo "Warning: $(KDIR)/root.$(1) is too big" >&2; \
 	else \
 		( \
 			dd if=$(KDIR)/vmlinux-$(2).bin.lzma bs=$(4) count=1 conv=sync; \
@@ -633,6 +633,9 @@ define Image/Build/Profile/WR5123GN
 	$(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,wr512-3gn-8M,WR512-3GN,ttyS1,57600,phys)
 endef
 
+define Image/Build/Profile/UPVEL_326
+	$(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_4M,ur-326n4g,UR-326N4G,ttyS1,57600,phys)
+endef
 
 define Image/Build/Profile/UPVEL
 	$(call Image/Build/Template/$(fs_squash)/$(1),GENERIC_8M,ur-336un,UR-336UN,ttyS1,57600,phys)
@@ -673,6 +676,7 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/NBG419N,$(1))
 	$(call Image/Build/Profile/NW718,$(1))
 	$(call Image/Build/Profile/OMNIEMB,$(1))
+	$(call Image/Build/Profile/UPVEL_326,$(1))
 	$(call Image/Build/Profile/PSR680W,$(1))
 	$(call Image/Build/Profile/PWH2004,$(1))
 	$(call Image/Build/Profile/RTG32B1,$(1))

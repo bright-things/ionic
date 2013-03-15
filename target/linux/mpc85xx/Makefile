@@ -13,13 +13,14 @@ CFLAGS:=-Os -pipe -fno-caller-saves -mcpu=8540
 FEATURES:=spe_fpu squashfs
 MAINTAINER:=Imre Kaloz <kaloz@openwrt.org>
 
-LINUX_VERSION:=3.7.9
+LINUX_VERSION:=3.8.2
 
 include $(INCLUDE_DIR)/target.mk
 
 DEFAULT_PACKAGES += \
 	kmod-input-core kmod-input-gpio-keys kmod-button-hotplug \
-	kmod-booke-wdt swconfig
+	kmod-leds-gpio kmod-booke-wdt \
+	swconfig
 
 define Target/Description
 	Build images for the Freescale MPC85xx based boards.
