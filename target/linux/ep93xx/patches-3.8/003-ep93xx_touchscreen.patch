@@ -9,7 +9,7 @@
 
 --- a/drivers/input/touchscreen/Kconfig
 +++ b/drivers/input/touchscreen/Kconfig
-@@ -200,6 +200,15 @@ config TOUCHSCREEN_EGALAX
+@@ -235,6 +235,15 @@ config TOUCHSCREEN_EGALAX
  	  To compile this driver as a module, choose M here: the
  	  module will be called egalax_ts.
  
@@ -27,17 +27,17 @@
  	select SERIO
 --- a/drivers/input/touchscreen/Makefile
 +++ b/drivers/input/touchscreen/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_TOUCHSCREEN_GUNZE)		+= gunz
+@@ -29,6 +29,7 @@ obj-$(CONFIG_TOUCHSCREEN_GUNZE)		+= gunz
  obj-$(CONFIG_TOUCHSCREEN_EETI)		+= eeti_ts.o
  obj-$(CONFIG_TOUCHSCREEN_ELO)		+= elo.o
  obj-$(CONFIG_TOUCHSCREEN_EGALAX)	+= egalax_ts.o
 +obj-$(CONFIG_TOUCHSCREEN_EP93XX)	+= ep93xx_ts.o
  obj-$(CONFIG_TOUCHSCREEN_FUJITSU)	+= fujitsu_ts.o
+ obj-$(CONFIG_TOUCHSCREEN_ILI210X)	+= ili210x.o
  obj-$(CONFIG_TOUCHSCREEN_INEXIO)	+= inexio.o
- obj-$(CONFIG_TOUCHSCREEN_INTEL_MID)	+= intel-mid-touch.o
 --- /dev/null
 +++ b/drivers/input/touchscreen/ep93xx_ts.c
-@@ -0,0 +1,1021 @@
+@@ -0,0 +1,1022 @@
 +/*
 + * linux/drivers/input/touchscreen/ep93xx_ts.c
 + *
@@ -66,6 +66,7 @@
 +#include <asm/irq.h>
 +#include <mach/hardware.h>
 +#include <asm/io.h>
++#include "../../../arch/arm/mach-ep93xx/soc.h"
 +
 +/* This stuff should be in ep93xx-regs.h */
 +#define EP93XX_TOUCHSCREEN_REG(x)	(EP93XX_TOUCHSCREEN_BASE + (x))
@@ -1059,3 +1060,13 @@
 +MODULE_DESCRIPTION("Cirrus EP93xx touchscreen driver");
 +MODULE_SUPPORTED_DEVICE("touchscreen/ep93xx");
 +MODULE_LICENSE("GPL");
+--- a/arch/arm/mach-ep93xx/core.c
++++ b/arch/arm/mach-ep93xx/core.c
+@@ -205,6 +205,7 @@ void ep93xx_syscon_swlocked_write(unsign
+ 
+ 	spin_unlock_irqrestore(&syscon_swlock, flags);
+ }
++EXPORT_SYMBOL(ep93xx_syscon_swlocked_write);
+ 
+ void ep93xx_devcfg_set_clear(unsigned int set_bits, unsigned int clear_bits)
+ {

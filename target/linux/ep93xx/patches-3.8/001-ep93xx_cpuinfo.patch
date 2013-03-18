@@ -16,21 +16,21 @@ of the EP93xx SoC. In a future kernel (>2.6.34) there may be a new file
 
 --- a/arch/arm/kernel/setup.c
 +++ b/arch/arm/kernel/setup.c
-@@ -54,6 +54,12 @@
- #include <asm/unwind.h>
+@@ -55,6 +55,12 @@
  #include <asm/memblock.h>
+ #include <asm/virt.h>
  
 +#if defined(CONFIG_ARCH_EP93XX)
-+#include <mach/io.h>
-+#include <mach/ep93xx-regs.h>
++#include <asm/io.h>
 +#include <mach/platform.h>
++#include <mach/ep93xx-regs.h>
 +#endif
 +
- #if defined(CONFIG_DEPRECATED_PARAM_STRUCT)
- #include "compat.h"
- #endif
-@@ -1087,9 +1093,16 @@ static int c_show(struct seq_file *m, vo
- 	seq_puts(m, "\n");
+ #include "atags.h"
+ #include "tcm.h"
+ 
+@@ -903,9 +909,16 @@ static int c_show(struct seq_file *m, vo
+ 	}
  
  	seq_printf(m, "Hardware\t: %s\n", machine_name);
 +#if defined(CONFIG_ARCH_EP93XX)
@@ -46,14 +46,25 @@ of the EP93xx SoC. In a future kernel (>2.6.34) there may be a new file
  
  	return 0;
  }
---- a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-+++ b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-@@ -97,6 +97,8 @@
+--- a/arch/arm/mach-ep93xx/soc.h
++++ b/arch/arm/mach-ep93xx/soc.h
+@@ -82,8 +82,6 @@
+ #define EP93XX_I2S_PHYS_BASE		EP93XX_APB_PHYS(0x00020000)
  #define EP93XX_I2S_BASE			EP93XX_APB_IOMEM(0x00020000)
  
- #define EP93XX_SECURITY_BASE		EP93XX_APB_IOMEM(0x00030000)
+-#define EP93XX_SECURITY_BASE		EP93XX_APB_IOMEM(0x00030000)
+-
+ #define EP93XX_AAC_PHYS_BASE		EP93XX_APB_PHYS(0x00080000)
+ #define EP93XX_AAC_BASE			EP93XX_APB_IOMEM(0x00080000)
+ 
+--- a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
++++ b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+@@ -38,4 +38,8 @@
+ #define EP93XX_UART3_PHYS_BASE		EP93XX_APB_PHYS(0x000e0000)
+ #define EP93XX_UART3_BASE		EP93XX_APB_IOMEM(0x000e0000)
+ 
++#define EP93XX_SECURITY_BASE		EP93XX_APB_IOMEM(0x00030000)
 +#define EP93XX_SECURITY_REG(x)		(EP93XX_SECURITY_BASE + (x))
 +#define EP93XX_SECURITY_UNIQID		EP93XX_SECURITY_REG(0x2440)
- 
- #define EP93XX_GPIO_PHYS_BASE		EP93XX_APB_PHYS(0x00040000)
- #define EP93XX_GPIO_BASE		EP93XX_APB_IOMEM(0x00040000)
++
+ #endif
