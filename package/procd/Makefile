@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=procd
-PKG_VERSION:=2013-03-14
+PKG_VERSION:=2013-04-25
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://nbd.name/luci2/procd.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=9fcc900e301e0c304488b6b83f10c8db5b8f4ce0
+PKG_SOURCE_VERSION:=c28ba8c1947e1b31874bf5888742d1607ed7ae61
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
 
@@ -21,10 +21,12 @@ PKG_MAINTAINER:=Felix Fietkau <nbd@openwrt.org>
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
+TARGET_LDFLAGS += $(if $(CONFIG_USE_EGLIBC),-lrt)
+
 define Package/procd
   SECTION:=base
   CATEGORY:=Base system
-  DEPENDS:=+ubusd +ubus +libjson-script
+  DEPENDS:=+ubusd +ubus +libjson-script +USE_EGLIBC:librt +PROCD_INIT:ubox
   TITLE:=OpenWrt system process manager
 endef
 

@@ -21,6 +21,10 @@ set network.wan.ifname='nas0'
 set network.wan.proto='pppoe'
 set network.wan.username='foo'
 set network.wan.password='bar'
+set network.wan.ipv6='1'
+set network.wan6='interface'
+set network.wan6.ifname='@wan'
+set network.wan6.proto='dhcpv6'
 EOF
 }
 
@@ -65,6 +69,9 @@ WBMR)
 	ucidef_add_switch_vlan "eth0" "1" "0 1 2 3 4 5"
 	;;
 
+VG3503J)
+	ucidef_set_interface_lan 'eth0 eth1'
+	;;
 esac
 
 [ -z "$(ls /lib/modules/`uname -r`/ltq_atm*)" ] || set_atm_wan "$vpi" "$vci" "$encaps" "$payload"
