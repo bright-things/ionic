@@ -30,13 +30,13 @@
 
 				partition@0 {
 					label = "uboot";
-					reg = <0x00000 0x10000>; 
+					reg = <0x00000 0x10000>;
 					read-only;
 				};
 
 				partition@10000 {
 					label = "uboot_env";
-					reg = <0x10000 0x10000>; 
+					reg = <0x10000 0x10000>;
 				};
 
 				partition@20000 {
@@ -69,12 +69,11 @@
 
 			ath9k_eep {
 				compatible = "ath9k,eeprom";
-				reg = <0 0x7f0400 0x800
+				reg = <0 0x7f0400 0x1000
 					0 0x7f0016 0x6>;
 				ath,mac-increment = <1>;
 				ath,pci-slot = <14>;
-				ath,eep-swap;
-				ath,eep-csum;
+				ath,eep-endian;
 			};
 		};
 
@@ -134,7 +133,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 		poll-interval = <100>;
-		
+
 		rfkill {
 			label = "rfkill";
 			gpios = <&gpio 25 1>;
