@@ -128,7 +128,7 @@ define Kernel/CopyImage
 	$(KERNEL_CROSS)objcopy $(OBJCOPY_STRIP) -S $(LINUX_DIR)/vmlinux $(KERNEL_BUILD_DIR)/vmlinux$(1).elf
 ifneq ($(subst ",,$(KERNELNAME)),)
 	#")
-	$(foreach k,$(subst ",,$(KERNELNAME)),$(CP) $(LINUX_DIR)/arch/$(LINUX_KARCH)/boot/$(IMAGES_DIR)/$(k) $(KERNEL_BUILD_DIR)/$(k)$(1);)
+	$(foreach k,$(filter-out dtbs,$(subst ",,$(KERNELNAME))),$(CP) $(LINUX_DIR)/arch/$(LINUX_KARCH)/boot/$(IMAGES_DIR)/$(k) $(KERNEL_BUILD_DIR)/$(k)$(1);)
 	#")
 endif
 endef
@@ -144,6 +144,7 @@ ifneq ($(CONFIG_TARGET_ROOTFS_INITRAMFS),)
 define Kernel/CompileImage/Initramfs
 	$(call Kernel/Configure/Initramfs)
 	$(if $(CONFIG_TARGET_ROOTFS_INITRAMFS),,rm -f $(TARGET_DIR)/init)
+	rm -rf $(KERNEL_BUILD_DIR)/usr/initramfs_data.cpio*
 	+$(MAKE) $(KERNEL_MAKEOPTS) $(subst ",,$(KERNELNAME))
 	#")
 	#")
