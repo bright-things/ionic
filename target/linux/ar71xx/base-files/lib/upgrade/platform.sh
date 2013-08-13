@@ -105,6 +105,7 @@ platform_check_image() {
 	ap81 | \
 	ap83 | \
 	ap132 | \
+	dir-505-a1 | \
 	dir-600-a1 | \
 	dir-615-c1 | \
 	dir-615-e4 | \
@@ -157,6 +158,7 @@ platform_check_image() {
 		;;
 
 	archer-c7 | \
+	tl-mr10u | \
 	tl-mr11u | \
 	tl-mr3020 | \
 	tl-mr3040 | \
@@ -170,6 +172,7 @@ platform_check_image() {
 	tl-wdr3500 | \
 	tl-wdr4300 | \
 	tl-wr703n | \
+	tl-wr710n | \
 	tl-wr720n-v3 | \
 	tl-wr741nd | \
 	tl-wr741nd-v4 | \
@@ -213,7 +216,8 @@ platform_check_image() {
 		}
 		return 0
 		;;
-	wndr3700)
+	wndr3700 | \
+	wnr612-v2)
 		local hw_magic
 
 		hw_magic="$(ar71xx_get_mtd_part_magic firmware)"

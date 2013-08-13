@@ -46,7 +46,7 @@ define KernelPackage/usb-gadget
 endef
 
 define KernelPackage/usb-gadget/description
-  Kernel support for USB Gadget mode.
+ Kernel support for USB Gadget mode
 endef
 
 $(eval $(call KernelPackage,usb-gadget))
@@ -65,7 +65,7 @@ define KernelPackage/usb-eth-gadget
 endef
 
 define KernelPackage/usb-eth-gadget/description
-  Kernel support for USB Ethernet Gadget.
+ Kernel support for USB Ethernet Gadget
 endef
 
 $(eval $(call KernelPackage,usb-eth-gadget))
@@ -130,10 +130,15 @@ $(eval $(call KernelPackage,usb2-fsl))
 
 define KernelPackage/usb2
   TITLE:=Support for USB2 controllers
-  DEPENDS:=+TARGET_brcm47xx:kmod-usb-brcm47xx +TARGET_mpc85xx:kmod-usb2-fsl
-  KCONFIG:=CONFIG_USB_EHCI_HCD \
+  DEPENDS:=\
+	+TARGET_brcm47xx:kmod-usb-brcm47xx \
+	+TARGET_mpc85xx:kmod-usb2-fsl
+  KCONFIG:=\
+	CONFIG_USB_EHCI_HCD \
 	CONFIG_USB_EHCI_ATH79=y \
 	CONFIG_USB_EHCI_BCM63XX=y \
+	CONFIG_USB_IMX21_HCD=y \
+	CONFIG_USB_EHCI_MXC=y \
 	CONFIG_USB_OCTEON_EHCI=y \
 	CONFIG_USB_EHCI_HCD_ORION=y \
 	CONFIG_USB_EHCI_HCD_PLATFORM=y
@@ -188,8 +193,8 @@ define KernelPackage/usb-dwc2
 endef
 
 define KernelPackage/usb-dwc2/description
-  This driver provides USB Device Controller support for the
-  Synopsys DesignWare USB OTG Core.
+ This driver provides USB Device Controller support for the
+ Synopsys DesignWare USB OTG Core
 endef
 
 $(eval $(call KernelPackage,usb-dwc2))
@@ -508,7 +513,7 @@ define KernelPackage/usb-serial-cypress-m8/description
  Kernel support for devices with Cypress M8 USB to Serial chip
  (for example, the Delorme Earthmate LT-20 GPS)
  Supported microcontrollers in the CY4601 family are:
-       CY7C63741 CY7C63742 CY7C63743 CY7C64013
+ CY7C63741 CY7C63742 CY7C63743 CY7C64013
 endef
 
 $(eval $(call KernelPackage,usb-serial-cypress-m8))
@@ -638,8 +643,8 @@ define KernelPackage/usb-storage-extras
 endef
 
 define KernelPackage/usb-storage-extras/description
-  Say Y here if you want to have some more drivers,
-  such as for SmartMedia card readers.
+ Say Y here if you want to have some more drivers,
+ such as for SmartMedia card readers
 endef
 
 $(eval $(call KernelPackage,usb-storage-extras))
@@ -820,7 +825,7 @@ define KernelPackage/usb-net-dm9601-ether
 endef
 
 define KernelPackage/usb-net-dm9601-ether/description
-  Kernel support for USB DM9601 devices
+ Kernel support for USB DM9601 devices
 endef
 
 $(eval $(call KernelPackage,usb-net-dm9601-ether))
@@ -869,6 +874,7 @@ endef
 
 $(eval $(call KernelPackage,usb-net-rndis))
 
+
 define KernelPackage/usb-net-cdc-mbim
   SUBMENU:=$(USB_MENU)
   TITLE:=Kernel module for MBIM Devices
@@ -884,6 +890,7 @@ define KernelPackage/usb-net-cdc-mbim/description
 endef
 
 $(eval $(call KernelPackage,usb-net-cdc-mbim))
+
 
 define KernelPackage/usb-net-cdc-ncm
   TITLE:=Support for CDC NCM connections
@@ -940,7 +947,6 @@ define KernelPackage/usb-hid
   $(call AddDepends/input,+kmod-input-evdev)
 endef
 
-
 define KernelPackage/usb-hid/description
  Kernel support for USB HID devices such as keyboards and mice
 endef
@@ -989,7 +995,7 @@ define KernelPackage/usb-test
 endef
 
 define KernelPackage/usb-test/description
- Kernel support for testing USB Host Controller software.
+ Kernel support for testing USB Host Controller software
 endef
 
 $(eval $(call KernelPackage,usb-test))
@@ -1004,7 +1010,9 @@ define KernelPackage/usbip
   AUTOLOAD:=$(call AutoLoad,90,usbip-core)
   $(call AddDepends/usb)
 endef
+
 $(eval $(call KernelPackage,usbip))
+
 
 define KernelPackage/usbip-client
   TITLE := USB-over-IP client driver
@@ -1014,7 +1022,9 @@ define KernelPackage/usbip-client
   AUTOLOAD := $(call AutoLoad,95,vhci-hcd)
   $(call AddDepends/usb)
 endef
+
 $(eval $(call KernelPackage,usbip-client))
+
 
 define KernelPackage/usbip-server
 $(call KernelPackage/usbip/Default)
@@ -1025,27 +1035,49 @@ $(call KernelPackage/usbip/Default)
   AUTOLOAD := $(call AutoLoad,95,usbip-host)
   $(call AddDepends/usb)
 endef
+
 $(eval $(call KernelPackage,usbip-server))
 
+
 define KernelPackage/usb-chipidea
-    TITLE:=Support for ChipIdea controllers
-    DEPENDS:= +kmod-usb2
-    KCONFIG:= \
+  TITLE:=Support for ChipIdea controllers
+  DEPENDS:=+kmod-usb2
+  KCONFIG:=\
 	CONFIG_USB_CHIPIDEA \
 	CONFIG_USB_CHIPIDEA_HOST=y \
 	CONFIG_USB_CHIPIDEA_UDC=n \
 	CONFIG_USB_CHIPIDEA_DEBUG=y
-    FILES:=\
-	$(LINUX_DIR)/drivers/usb/chipidea/ci_hdrc.ko
-    AUTOLOAD:=$(call AutoLoad,51,ci_hdrc,1)
-    $(call AddDepends/usb)
+  FILES:=\
+	$(LINUX_DIR)/drivers/usb/chipidea/ci_hdrc.ko \
+	$(if $(CONFIG_OF_DEVICE),$(LINUX_DIR)/drivers/usb/chipidea/ci13xxx_imx.ko) \
+	$(if $(CONFIG_OF_DEVICE),$(LINUX_DIR)/drivers/usb/chipidea/usbmisc_imx$(if $(call kernel_patchver_le,3.9),6q).ko)
+  AUTOLOAD:=$(call AutoLoad,51,ci_hdrc $(if $(CONFIG_OF_DEVICE),ci13xxx_imx usbmisc_imx$(if $(call kernel_patchver_le,3.9),6q)),1)
+  $(call AddDepends/usb)
 endef
-
+  
 define KernelPackage/usb-chipidea/description
-    Kernel support for USB ChipIdea controllers
+ Kernel support for USB ChipIdea controllers
 endef
 
 $(eval $(call KernelPackage,usb-chipidea,1))
+
+
+define KernelPackage/usb-mxs-phy
+  TITLE:=Support for Freescale MXS USB PHY
+  DEPENDS:=@TARGET_imx6
+  KCONFIG:=CONFIG_USB_MXS_PHY
+  FILES:=\
+	$(LINUX_DIR)/drivers/usb/phy/phy-mxs-usb.ko
+  AUTOLOAD:=$(call AutoLoad,52,phy-mxs-usb,1)
+  $(call AddDepends/usb)
+endef
+
+define KernelPackage/usb-mxs-phy/description
+ Kernel support for Freescale MXS USB PHY
+endef
+
+$(eval $(call KernelPackage,usb-mxs-phy,1))
+
 
 define KernelPackage/usbmon
   TITLE:=USB traffic monitor
@@ -1056,7 +1088,7 @@ define KernelPackage/usbmon
 endef
 
 define KernelPackage/usbmon/description
- Kernel support for USB traffic monitoring.
+ Kernel support for USB traffic monitoring
 endef
 
 $(eval $(call KernelPackage,usbmon))

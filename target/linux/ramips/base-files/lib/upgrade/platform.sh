@@ -24,6 +24,7 @@ platform_check_image() {
 	all5002 | \
 	all5003 | \
 	asl26555 | \
+	awm002-evb | \
 	bc2 | \
 	broadway | \
 	carambola | \
@@ -42,7 +43,12 @@ platform_check_image() {
 	rt-n13u | \
 	freestation5 | \
 	hw550-3g | \
+	hg255d | \
+	ip2202 | \
+	m3 | \
+	m4 | \
 	mofi3500-3gn | \
+	mpr-a1 | \
 	mpr-a2 | \
 	mzk-w300nh2 | \
 	nbg-419n | \
@@ -70,7 +76,9 @@ platform_check_image() {
 	whr-g300n |\
 	ur-326n4g |\
 	ur-336un |\
-	wr512-3gn)
+	wr512-3gn |\
+	x5 |\
+	x8)
 		[ "$magic" != "27051956" ] && {
 			echo "Invalid image type."
 			return 1

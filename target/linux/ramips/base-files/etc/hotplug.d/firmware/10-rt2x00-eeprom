@@ -61,6 +61,7 @@ case "$FIRMWARE" in
 	all5002 | \
 	all5003 | \
 	argus-atp52b | \
+	awm002-evb | \
 	bc2 | \
 	br6425 | \
 	broadway | \
@@ -77,6 +78,7 @@ case "$FIRMWARE" in
 	freestation5 | \
 	hw550-3g | \
 	mofi3500-3gn | \
+	mpr-a1 | \
 	mpr-a2 | \
 	pwh2004 | \
 	nbg-419n | \
@@ -104,7 +106,8 @@ case "$FIRMWARE" in
 	mzk-w300nh2 | \
 	ur-326n4g | \
 	ur-336un | \
-	xdxrn502j)
+	xdxrn502j | \
+	hg255d)
 		rt2x00_eeprom_extract "factory" 0 512
 		;;
 
