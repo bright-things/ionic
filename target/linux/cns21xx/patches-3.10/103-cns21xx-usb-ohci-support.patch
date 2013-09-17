@@ -1,6 +1,6 @@
 --- a/drivers/usb/host/ohci-hcd.c
 +++ b/drivers/usb/host/ohci-hcd.c
-@@ -691,6 +691,9 @@ retry:
+@@ -695,6 +695,9 @@ retry:
  
  	periodic_reinit (ohci);
  
@@ -10,18 +10,58 @@
  	/* some OHCI implementations are finicky about how they init.
  	 * bogus values here mean not even enumeration could work.
  	 */
-@@ -1186,6 +1189,11 @@ MODULE_LICENSE ("GPL");
+@@ -1189,6 +1192,11 @@ MODULE_LICENSE ("GPL");
  #define PLATFORM_DRIVER		ohci_hcd_tilegx_driver
  #endif
  
 +#ifdef CONFIG_ARCH_CNS21XX
 +#include "ohci-cns21xx.c"
-+#define PLATFORM_DRIVER		ohci_cns21xx_driver
++#define CNS21XX_PLATFORM_DRIVER		ohci_cns21xx_driver
 +#endif
 +
  #ifdef CONFIG_USB_OHCI_HCD_PLATFORM
  #include "ohci-platform.c"
- #define OHCI_PLATFORM_DRIVER		ohci_platform_driver
+ #define PLATFORM_DRIVER		ohci_platform_driver
+@@ -1209,7 +1217,8 @@ MODULE_LICENSE ("GPL");
+ 	!defined(AT91_PLATFORM_DRIVER) && \
+ 	!defined(NXP_PLATFORM_DRIVER) && \
+ 	!defined(DAVINCI_PLATFORM_DRIVER) && \
+-	!defined(SPEAR_PLATFORM_DRIVER)
++	!defined(SPEAR_PLATFORM_DRIVER) && \
++	!defined(CNS21XX_PLATFORM_DRIVER)
+ #error "missing bus glue for ohci-hcd"
+ #endif
+ 
+@@ -1329,9 +1338,19 @@ static int __init ohci_hcd_mod_init(void
+ 		goto error_spear;
+ #endif
+ 
++#ifdef CNS21XX_PLATFORM_DRIVER
++	retval = platform_driver_register(&CNS21XX_PLATFORM_DRIVER);
++	if (retval < 0)
++		goto error_cns21xx;
++#endif
++
+ 	return retval;
+ 
+ 	/* Error path */
++#ifdef CNS21XX_PLATFORM_DRIVER
++	platform_driver_unregister(&CNS21XX_PLATFORM_DRIVER);
++ error_cns21xx:
++#endif
+ #ifdef SPEAR_PLATFORM_DRIVER
+ 	platform_driver_unregister(&SPEAR_PLATFORM_DRIVER);
+  error_spear:
+@@ -1409,6 +1428,9 @@ module_init(ohci_hcd_mod_init);
+ 
+ static void __exit ohci_hcd_mod_exit(void)
+ {
++#ifdef CNS21XX_PLATFORM_DRIVER
++	platform_driver_unregister(&CNS21XX_PLATFORM_DRIVER);
++#endif
+ #ifdef SPEAR_PLATFORM_DRIVER
+ 	platform_driver_unregister(&SPEAR_PLATFORM_DRIVER);
+ #endif
 --- /dev/null
 +++ b/drivers/usb/host/ohci-cns21xx.c
 @@ -0,0 +1,178 @@
@@ -215,7 +255,7 @@
  	struct work_struct	nec_work;	/* Worker for NEC quirk */
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -381,6 +381,7 @@ config ARCH_CNS21XX
+@@ -374,6 +374,7 @@ config ARCH_CNS21XX
  	select PLAT_FA_GPIO
  	select ARCH_REQUIRE_GPIOLIB
  	select ARM_L1_CACHE_SHIFT_4

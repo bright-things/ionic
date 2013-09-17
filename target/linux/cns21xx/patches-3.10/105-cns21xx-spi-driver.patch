@@ -1,6 +1,6 @@
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -510,6 +510,8 @@ struct spi_transfer {
+@@ -523,6 +523,8 @@ struct spi_transfer {
  	u16		delay_usecs;
  	u32		speed_hz;
  
@@ -11,13 +11,13 @@
  
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -186,6 +186,14 @@ config SPI_GPIO_OLD
+@@ -198,6 +198,14 @@ config SPI_GPIO_OLD
  
  	  If unsure, say N.
  
 +config SPI_CNS21XX
-+	tristate "Cavium Netowrks CNS21xx SPI master"
-+	depends on ARCH_CNS21XX && EXPERIMENTAL
++	tristate "Cavium Netowrks CNS21xx SPI master (EXPERIMENTAL)"
++	depends on ARCH_CNS21XX
 +	select SPI_BITBANG
 +	help
 +	  This driver supports the buil-in SPI controller of the Cavium Networks
@@ -28,7 +28,7 @@
  	depends on ARCH_MXC
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfi
+@@ -21,6 +21,7 @@ obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfi
  obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
  obj-$(CONFIG_SPI_BUTTERFLY)		+= spi-butterfly.o
  obj-$(CONFIG_SPI_CLPS711X)		+= spi-clps711x.o

@@ -188,7 +188,7 @@
 +	.fixup		= nsb3ast_fixup,
 +	.map_io		= cns21xx_map_io,
 +	.init_irq	= cns21xx_init_irq,
-+	.timer		= &cns21xx_timer,
++	.init_time	= cns21xx_timer_init,
 +	.init_machine	= nsb3ast_init,
 +	.restart	= cns21xx_restart,
 +MACHINE_END

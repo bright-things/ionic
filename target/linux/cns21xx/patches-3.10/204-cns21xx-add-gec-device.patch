@@ -13,7 +13,7 @@
 --- a/arch/arm/mach-cns21xx/Makefile
 +++ b/arch/arm/mach-cns21xx/Makefile
 @@ -7,6 +7,7 @@
- obj-y		:= core.o devices.o gpio.o irq.o mm.o time.o
+ obj-y		:= core.o irq.o gpio.o mm.o time.o idle.o devices.o
  
  # devices
 +obj-$(CONFIG_CNS21XX_DEV_GEC)		+= dev-gec.o

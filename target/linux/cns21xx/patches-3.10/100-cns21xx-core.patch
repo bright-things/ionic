@@ -1,6 +1,6 @@
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -184,6 +184,11 @@ config NEED_RET_TO_USER
+@@ -206,6 +206,11 @@ config NEED_RET_TO_USER
  config ARCH_MTD_XIP
  	bool
  
@@ -12,9 +12,9 @@
  config VECTORS_BASE
  	hex
  	default 0xffff0000 if MMU || CPU_HIGH_VECTOR
-@@ -368,6 +373,15 @@ config ARCH_CNS3XXX
- 	help
- 	  Support for Cavium Networks CNS3XXX platform.
+@@ -361,6 +366,15 @@ config ARCH_AT91
+ 	  This enables support for systems based on Atmel
+ 	  AT91RM9200 and AT91SAM9* processors.
  
 +config ARCH_CNS21XX
 +	bool "Cavium Networks CNS21xx family"
@@ -28,7 +28,7 @@
  config ARCH_CLPS711X
  	bool "Cirrus Logic CLPS711x/EP721x/EP731x-based"
  	select ARCH_REQUIRE_GPIOLIB
-@@ -1030,6 +1044,8 @@ source "arch/arm/mach-davinci/Kconfig"
+@@ -930,6 +944,8 @@ source "arch/arm/mach-davinci/Kconfig"
  
  source "arch/arm/mach-dove/Kconfig"
  
@@ -55,7 +55,7 @@
 +
 +# Object file lists.
 +
-+obj-y		:= core.o irq.o mm.o time.o
++obj-y		:= core.o irq.o mm.o time.o idle.o
 +
 +# machine specific files
 +
@@ -77,7 +77,7 @@
  machine-$(CONFIG_ARCH_DOVE)		+= dove
 --- /dev/null
 +++ b/arch/arm/mach-cns21xx/common.h
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +/*
 + *  Copyright (c) 2008 Cavium Networks
 + *  Copyright (c) 2010-2012 Gabor Juhos <juhosg@openwrt.org>
@@ -93,6 +93,7 @@
 +void cns21xx_restart(char mode, const char *cmd);
 +void cns21xx_map_io(void);
 +void cns21xx_init_irq(void);
++void cns21xx_timer_init(void);
 +
 +extern struct sys_timer cns21xx_timer;
 +
@@ -502,41 +503,8 @@
 +
 +#endif /* _CNS21XX_UNCOMPRESS_H */
 --- /dev/null
-+++ b/arch/arm/mach-cns21xx/include/mach/system.h
-@@ -0,0 +1,30 @@
-+/*
-+ *  Copyright (c) 2008 Cavium Networks
-+ *  Copyright (c) 2010-2012 Gabor Juhos <juhosg@openwrt.org>
-+ *
-+ *  This file is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License, Version 2, as
-+ *  published by the Free Software Foundation.
-+ */
-+
-+#ifndef _CNS21XX_SYSTEM_H
-+#define _CNS21XX_SYSTEM_H
-+
-+#include <mach/cns21xx.h>
-+#include <mach/cns21xx_powermgmt.h>
-+
-+static inline void arch_idle(void)
-+{
-+	/*
-+	 * Because of broken hardware we have to enable interrupts or the CPU
-+	 * will never wakeup... Acctualy it is not very good to enable
-+	 * interrupts here since scheduler can miss a tick, but there is
-+	 * no other way around this. Platforms that needs it for power saving
-+	 * should call enable_hlt() in init code, since by default it is
-+	 * disabled.
-+	 */
-+	local_irq_enable();
-+	cpu_do_idle();
-+}
-+
-+#endif /*  _CNS21XX_SYSTEM_H */
---- /dev/null
 +++ b/arch/arm/mach-cns21xx/irq.c
-@@ -0,0 +1,176 @@
+@@ -0,0 +1,177 @@
 +/*
 + *  Copyright (c) 2008 Cavium Networks
 + *  Copyright (c) 2010-2012 Gabor Juhos <juhosg@openwrt.org>
@@ -551,6 +519,7 @@
 +#include <linux/irq.h>
 +#include <linux/io.h>
 +#include <linux/ioport.h>
++#include <linux/cpu.h>
 +
 +#include <asm/system_misc.h>
 +
@@ -660,10 +629,10 @@
 +	int i;
 +
 +	/*
-+	 * Disable arch_idle() by default since it is buggy
-+	 * For more info see arch/arm/mach-cns21xx/include/mach/system.h
++	 * Disable the idle handler by default since it is buggy
++	 * For more info see arch/arm/mach-gemini/idle.c
 +	 */
-+	disable_hlt();
++	cpu_idle_poll_ctrl(true);
 +
 +	request_resource(&iomem_resource, &cns21xx_intc_resource);
 +	cns21xx_intc_base = ioremap(cns21xx_intc_resource.start, INTC_SIZE);
@@ -715,7 +684,7 @@
 +}
 --- /dev/null
 +++ b/arch/arm/mach-cns21xx/time.c
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,25 @@
 +/*
 + *  Copyright (c) 2010-2012 Gabor Juhos <juhosg@openwrt.org>
 + *
@@ -735,15 +704,12 @@
 +
 +#include "common.h"
 +
-+static void __init cns21xx_timer_init(void)
++void __init cns21xx_timer_init(void)
 +{
 +	fa_timer_init(CNS21XX_TIMER_BASE, CNS21XX_IRQ_TIMER1, FA_TIMER1,
 +		      cns21xx_get_apb_freq());
 +}
 +
-+struct sys_timer cns21xx_timer = {
-+	.init		= cns21xx_timer_init,
-+};
 --- /dev/null
 +++ b/arch/arm/mach-cns21xx/include/mach/cns21xx_powermgmt.h
 @@ -0,0 +1,591 @@
@@ -1519,7 +1485,7 @@
 +}
 --- a/arch/arm/mm/Kconfig
 +++ b/arch/arm/mm/Kconfig
-@@ -867,6 +867,7 @@ config ARM_L1_CACHE_SHIFT_6
+@@ -904,6 +904,7 @@ config ARM_L1_CACHE_SHIFT_6
  config ARM_L1_CACHE_SHIFT
  	int
  	default 6 if ARM_L1_CACHE_SHIFT_6
@@ -2048,3 +2014,37 @@
 +
 +
 +#endif	// end of #ifndef _STAR_MISC_H_
+--- /dev/null
++++ b/arch/arm/mach-cns21xx/idle.c
+@@ -0,0 +1,31 @@
++/*
++ * arch/arm/mach-cns21xx/idle.c
++ */
++
++#include <linux/init.h>
++#include <asm/system.h>
++#include <asm/proc-fns.h>
++
++static void cns21xx_idle(void)
++{
++	/*
++	 * Because of broken hardware we have to enable interrupts or the CPU
++	 * will never wakeup... Acctualy it is not very good to enable
++	 * interrupts first since scheduler can miss a tick, but there is
++	 * no other way around this. Platforms that needs it for power saving
++	 * should enable it in init code, since by default it is
++	 * disabled.
++	 */
++
++	/* FIXME: Enabling interrupts here is racy! */
++	local_irq_enable();
++	cpu_do_idle();
++}
++
++static int __init cns21xx_idle_init(void)
++{
++	arm_pm_idle = cns21xx_idle;
++	return 0;
++}
++
++arch_initcall(cns21xx_idle_init);

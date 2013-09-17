@@ -1,6 +1,6 @@
 --- a/arch/arm/mach-cns21xx/common.h
 +++ b/arch/arm/mach-cns21xx/common.h
-@@ -16,4 +16,7 @@ void cns21xx_init_irq(void);
+@@ -17,4 +17,7 @@ void cns21xx_timer_init(void);
  
  extern struct sys_timer cns21xx_timer;
  
@@ -96,8 +96,8 @@
  
  # Object file lists.
  
--obj-y		:= core.o irq.o mm.o time.o
-+obj-y		:= core.o devices.o irq.o mm.o time.o
+-obj-y		:= core.o irq.o mm.o time.o idle.o
++obj-y		:= core.o irq.o mm.o time.o idle.o devices.o
  
  # machine specific files
  

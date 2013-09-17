@@ -96,7 +96,7 @@
  endif
 --- a/arch/arm/mach-cns21xx/Makefile
 +++ b/arch/arm/mach-cns21xx/Makefile
-@@ -8,6 +8,7 @@ obj-y		:= core.o devices.o gpio.o irq.o
+@@ -8,6 +8,7 @@ obj-y		:= core.o irq.o gpio.o mm.o time.
  
  # devices
  obj-$(CONFIG_CNS21XX_DEV_USB)		+= dev-usb.o
@@ -106,7 +106,7 @@
  
 --- a/arch/arm/mach-cns21xx/common.h
 +++ b/arch/arm/mach-cns21xx/common.h
-@@ -22,4 +22,8 @@ int cns21xx_register_uart1(void);
+@@ -23,4 +23,8 @@ int cns21xx_register_uart1(void);
  int cns21xx_register_usb(void);
  int cns21xx_register_wdt(void);
  

@@ -86,7 +86,7 @@
 +++ b/arch/arm/mach-cns21xx/Makefile
 @@ -6,5 +6,8 @@
  
- obj-y		:= core.o devices.o gpio.o irq.o mm.o time.o
+ obj-y		:= core.o irq.o gpio.o mm.o time.o idle.o devices.o
  
 +# devices
 +obj-$(CONFIG_CNS21XX_DEV_USB)		+= dev-usb.o
@@ -95,7 +95,7 @@
  
 --- a/arch/arm/mach-cns21xx/common.h
 +++ b/arch/arm/mach-cns21xx/common.h
-@@ -19,5 +19,6 @@ extern struct sys_timer cns21xx_timer;
+@@ -20,5 +20,6 @@ extern struct sys_timer cns21xx_timer;
  
  int cns21xx_register_uart0(void);
  int cns21xx_register_uart1(void);
