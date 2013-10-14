@@ -205,7 +205,7 @@ define KernelPackage/iio-core
 	CONFIG_IIO_TRIGGERED_BUFFER
   FILES:= \
 	$(LINUX_DIR)/drivers/iio/industrialio.ko \
-	$(LINUX_DIR)/drivers/iio/industrialio-triggered-buffer.ko \
+	$(if $(CONFIG_IIO_TRIGGERED_BUFFER),$(LINUX_DIR)/drivers/iio/industrialio-triggered-buffer.ko) \
 	$(LINUX_DIR)/drivers/iio/kfifo_buf.ko
   AUTOLOAD:=$(call AutoLoad,55,industrialio kfifo_buf industrialio-triggered-buffer)
 endef
@@ -824,3 +824,20 @@ define KernelPackage/thermal-imx/description
 endef
 
 $(eval $(call KernelPackage,thermal-imx))
+
+
+define KernelPackage/thermal-kirkwood
+  SUBMENU:=$(OTHER_MENU)
+  TITLE:=Temperature sensor on Marvell Kirkwood SoCs
+  DEPENDS:=@TARGET_kirkwood +kmod-thermal
+  KCONFIG:=CONFIG_KIRKWOOD_THERMAL
+  FILES:=$(LINUX_DIR)/drivers/thermal/kirkwood_thermal.ko
+  AUTOLOAD:=$(call AutoProbe,kirkwood_thermal)
+endef
+
+define KernelPackage/thermal-kirkwood/description
+ Support for the Kirkwood thermal sensor driver into the Linux thermal
+ framework. Only kirkwood 88F6282 and 88F6283 have this sensor.
+endef
+
+$(eval $(call KernelPackage,thermal-kirkwood))

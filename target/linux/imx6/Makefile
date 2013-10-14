@@ -14,13 +14,12 @@ CPU_TYPE:=cortex-a9
 CPU_SUBTYPE:=vfpv3
 MAINTAINER:=Luka Perkov <luka@openwrt.org>
 
-LINUX_VERSION:=3.10.13
+LINUX_VERSION:=3.10.15
 
 include $(INCLUDE_DIR)/target.mk
 
 KERNELNAME:="zImage dtbs"
 
-DEFAULT_PACKAGES += \
-	kmod-thermal-imx kmod-usb-chipidea kmod-usb-mxs-phy uboot-envtools
+DEFAULT_PACKAGES +=
 
 $(eval $(call BuildTarget))
