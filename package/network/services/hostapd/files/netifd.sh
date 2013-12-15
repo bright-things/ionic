@@ -83,7 +83,7 @@ EOF
 
 hostapd_common_add_bss_config() {
 	config_add_string bssid ssid
-	config_add_boolean wds
+	config_add_boolean wds wmm hidden
 
 	config_add_int maxassoc max_inactivity
 	config_add_boolean disassoc_low_ack ap_isolate short_preamble
@@ -140,7 +140,7 @@ hostapd_set_bss_options() {
 		maxassoc max_inactivity disassoc_low_ack ap_isolate auth_cache \
 		wps_pushbutton wps_label ext_registrar \
 		wps_device_type wps_device_name wps_manufacturer wps_pin \
-		macfilter ssid wmm hidden
+		macfilter ssid wmm hidden short_preamble
 
 	set_default ap_isolate 0
 	set_default maxassoc 0

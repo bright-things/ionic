@@ -10,6 +10,7 @@ define Profile/VENTANA
   PACKAGES:= \
 	kmod-thermal-imx kmod-sky2 kmod-usb-chipidea kmod-usb-mxs-phy \
 	kmod-sound-soc-imx kmod-sound-soc-imx-sgtl5000 \
+	kmod-can kmod-can-flexcan \
 	kobs-ng
 endef
 
@@ -36,6 +37,7 @@ endef
 VENTANA_DTS:= \
 	imx6dl-gw51xx \
 	imx6dl-gw52xx \
+	imx6dl-gw53xx \
 	imx6q-gw5400-a \
 	imx6q-gw54xx
 
