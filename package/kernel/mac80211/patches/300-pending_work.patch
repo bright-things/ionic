@@ -4589,7 +4589,53 @@
  
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1728,8 +1728,7 @@ netdev_tx_t ieee80211_monitor_start_xmit
+@@ -463,7 +463,6 @@ ieee80211_tx_h_unicast_ps_buf(struct iee
+ {
+ 	struct sta_info *sta = tx->sta;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
+ 	struct ieee80211_local *local = tx->local;
+ 
+ 	if (unlikely(!sta))
+@@ -474,15 +473,6 @@ ieee80211_tx_h_unicast_ps_buf(struct iee
+ 		     !(info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER))) {
+ 		int ac = skb_get_queue_mapping(tx->skb);
+ 
+-		/* only deauth, disassoc and action are bufferable MMPDUs */
+-		if (ieee80211_is_mgmt(hdr->frame_control) &&
+-		    !ieee80211_is_deauth(hdr->frame_control) &&
+-		    !ieee80211_is_disassoc(hdr->frame_control) &&
+-		    !ieee80211_is_action(hdr->frame_control)) {
+-			info->flags |= IEEE80211_TX_CTL_NO_PS_BUFFER;
+-			return TX_CONTINUE;
+-		}
+-
+ 		ps_dbg(sta->sdata, "STA %pM aid %d: PS buffer for AC %d\n",
+ 		       sta->sta.addr, sta->sta.aid, ac);
+ 		if (tx->local->total_ps_buffered >= TOTAL_MAX_TX_BUFFER)
+@@ -525,9 +515,21 @@ ieee80211_tx_h_unicast_ps_buf(struct iee
+ static ieee80211_tx_result debug_noinline
+ ieee80211_tx_h_ps_buf(struct ieee80211_tx_data *tx)
+ {
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
++
+ 	if (unlikely(tx->flags & IEEE80211_TX_PS_BUFFERED))
+ 		return TX_CONTINUE;
+ 
++	/* only deauth, disassoc and action are bufferable MMPDUs */
++	if (ieee80211_is_mgmt(hdr->frame_control) &&
++	    !ieee80211_is_deauth(hdr->frame_control) &&
++	    !ieee80211_is_disassoc(hdr->frame_control) &&
++	    !ieee80211_is_action(hdr->frame_control)) {
++		info->flags |= IEEE80211_TX_CTL_NO_PS_BUFFER;
++		return TX_CONTINUE;
++	}
++
+ 	if (tx->flags & IEEE80211_TX_UNICAST)
+ 		return ieee80211_tx_h_unicast_ps_buf(tx);
+ 	else
+@@ -1728,8 +1730,7 @@ netdev_tx_t ieee80211_monitor_start_xmit
  	 * radar detection by itself. We can do that later by adding a
  	 * monitor flag interfaces used for AP support.
  	 */
@@ -11856,7 +11902,18 @@
  			ah->intr_txqs |= MS(s1_s, AR_ISR_S1_QCU_TXERR);
  			ah->intr_txqs |= MS(s1_s, AR_ISR_S1_QCU_TXEOL);
  		}
-@@ -120,7 +139,12 @@ static bool ar9002_hw_get_isr(struct ath
+@@ -114,13 +133,23 @@ static bool ar9002_hw_get_isr(struct ath
+ 		*masked |= mask2;
+ 	}
+ 
++	if (!(pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED)) {
++		REG_WRITE(ah, AR_ISR, isr);
++		REG_READ(ah, AR_ISR);
++	}
++
+ 	if (AR_SREV_9100(ah))
+ 		return true;
+ 
  	if (isr & AR_ISR_GENTMR) {
  		u32 s5_s;
  
@@ -11870,7 +11927,7 @@
  		ah->intr_gen_timer_trigger =
  				MS(s5_s, AR_ISR_S5_GENTIMER_TRIG);
  
-@@ -133,6 +157,16 @@ static bool ar9002_hw_get_isr(struct ath
+@@ -133,6 +162,11 @@ static bool ar9002_hw_get_isr(struct ath
  		if ((s5_s & AR_ISR_S5_TIM_TIMER) &&
  		    !(pCap->hw_caps & ATH9K_HW_CAP_AUTOSLEEP))
  			*masked |= ATH9K_INT_TIM_TIMER;
@@ -11879,11 +11936,6 @@
 +			REG_WRITE(ah, AR_ISR_S5, s5_s);
 +			isr &= ~AR_ISR_GENTMR;
 +		}
-+	}
-+
-+	if (!(pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED)) {
-+		REG_WRITE(ah, AR_ISR, isr);
-+		REG_READ(ah, AR_ISR);
  	}
  
  	if (sync_cause) {
