@@ -205,7 +205,7 @@ $(eval $(call KernelPackage,usb2-pci))
 
 define KernelPackage/usb-dwc2
   TITLE:=DWC2 USB controller driver
-  DEPENDS:=@LINUX_3_10
+  DEPENDS:=@(!LINUX_3_3&&!LINUX_3_6&&!LINUX_3_8&&!LINUX_3_9)
   KCONFIG:= \
 	CONFIG_USB_DWC2 \
 	CONFIG_USB_DWC2_DEBUG=n \
@@ -967,6 +967,21 @@ define KernelPackage/usb-net-ipheth/description
 endef
 
 $(eval $(call KernelPackage,usb-net-ipheth))
+
+
+define KernelPackage/usb-net-kalmia
+  TITLE:=Samsung Kalmia based LTE USB modem
+  KCONFIG:=CONFIG_USB_NET_KALMIA
+  FILES:=$(LINUX_DIR)/drivers/net/usb/kalmia.ko
+  AUTOLOAD:=$(call AutoProbe,kalmia)
+  $(call AddDepends/usb-net)
+endef
+
+define KernelPackage/usb-net-kalmia/description
+ Kernel support for Samsung Kalmia based LTE USB modem
+endef
+
+$(eval $(call KernelPackage,usb-net-kalmia))
 
 
 define KernelPackage/usb-hid
