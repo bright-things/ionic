@@ -146,12 +146,14 @@ platform_check_image() {
 	dir-505-a1 | \
 	dir-600-a1 | \
 	dir-615-c1 | \
+	dir-615-e1 | \
 	dir-615-e4 | \
 	dir-825-c1 | \
 	dir-835-a1 | \
 	dragino2 | \
 	ew-dorin | \
 	ew-dorin-router | \
+	hiwifi-hc6361 | \
 	hornet-ub-x2 | \
 	mzk-w04nu | \
 	mzk-w300nh | \
@@ -292,6 +294,7 @@ platform_check_image() {
 		return 0
 		;;
 	wndr3700 | \
+	wnr2000-v3 | \
 	wnr612-v2)
 		local hw_magic
 

@@ -106,6 +106,9 @@ tplink_board_detect() {
 	"070100"*)
 		model="TP-Link TL-WA701N/ND"
 		;;
+	"073000"*)
+		model="TP-Link TL-WA730RE"
+		;;
 	"074000"*)
 		model="TP-Link TL-WR740N/ND"
 		;;
@@ -117,6 +120,9 @@ tplink_board_detect() {
 		;;
 	"075000"*)
 		model="TP-Link TL-WA750RE"
+		;;
+	"751000"*)
+		model="TP-Link TL-WA7510N"
 		;;
 	"080100"*)
 		model="TP-Link TL-WA801N/ND"
@@ -279,6 +285,9 @@ ar71xx_board_detect() {
 		;;
 	*"DIR-600 rev. A1")
 		name="dir-600-a1"
+		;;
+	*"DIR-615 rev. E1")
+		name="dir-615-e1"
 		;;
 	*"DIR-615 rev. E4")
 		name="dir-615-e4"
@@ -505,7 +514,7 @@ ar71xx_board_detect() {
 	*TL-WA750RE)
 		name="tl-wa750re"
 		;;
-	*TL-WA7510N)
+	*"TL-WA7510N v1")
 		name="tl-wa7510n"
 		;;
 	*TL-WA850RE)
@@ -660,6 +669,9 @@ ar71xx_board_detect() {
 		;;
 	*"BHU BXU2000n-2 rev. A1")
 		name="bxu2000n-2-a1"
+		;;
+	*"HiWiFi HC6361")
+		name="hiwifi-hc6361"
 		;;
 	esac
 
