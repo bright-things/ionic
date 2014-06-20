@@ -1,14 +1,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=procd
-PKG_VERSION:=2014-06-11
+PKG_VERSION:=2014-06-19
 
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://nbd.name/luci2/procd.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=efc491fd9345c38054ce96503c3bf846a19e9260
+PKG_SOURCE_VERSION:=8e12022c3d00f8acca4471016d71794988113c34
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
 
@@ -33,7 +33,7 @@ define Package/procd-nand
   SECTION:=utils
   CATEGORY:=Utilities
   DEPENDS:=@NAND_SUPPORT +ubi-utils
-  TITLE:=OpenWrt system process manager
+  TITLE:=OpenWrt sysupgrade nand helper
 endef
 
 define Package/procd/install
