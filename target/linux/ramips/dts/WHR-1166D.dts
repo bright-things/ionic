@@ -4,7 +4,7 @@
 
 / {
 	compatible = "ralink,mt7620a-soc";
-	model = "Buffalo WHR-600D";
+	model = "Buffalo WHR-1166D";
 
 	palmbus@10000000 {
 		gpio2: gpio@660 {
@@ -42,12 +42,12 @@
 
 				partition@50000 {
 					label = "firmware";
-					reg = <0x50000 0x5b0000>;
+					reg = <0x50000 0xeb0000>;
 				};
 
-				partition@600000 {
+				partition@e00000 {
 					label = "usercfg";
-					reg = <0x600000 0x100000>;
+					reg = <0xe00000 0x100000>;
 				};
 			};
 		};
