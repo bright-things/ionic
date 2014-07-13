@@ -69,6 +69,12 @@ get_status_led() {
 	el-m150)
 		status_led="EasyLink:green:system"
 		;;
+	gl-inet)
+		status_led="gl-connect:green:lan"
+		;;
+	esr1750)
+		status_led="esr1750:amber:power"
+		;;
 	hiwifi-hc6361)
 		status_led="hiwifi:blue:system"
 		;;
@@ -167,6 +173,9 @@ get_status_led() {
 	tl-wa850re)
 		status_led="tp-link:blue:re"
 		;;
+	tl-wa860re)
+		status_led="tp-link:green:power"
+		;;
 	tl-mr3220 | \
 	tl-mr3220-v2 | \
 	tl-mr3420 | \
@@ -184,6 +193,7 @@ get_status_led() {
 	tl-wr841n-v1 | \
 	tl-wr841n-v7 | \
 	tl-wr841n-v8 | \
+	tl-wa830re-v2 | \
 	tl-wr842n-v2 | \
 	tl-wr941nd)
 		status_led="tp-link:green:system"

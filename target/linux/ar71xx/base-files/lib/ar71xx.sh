@@ -145,6 +145,9 @@ tplink_board_detect() {
 	"085000"*)
 		model="TP-Link TL-WA850RE"
 		;;
+	"086000"*)
+		model="TP-Link TL-WA860RE"
+		;;
 	"090100"*)
 		model="TP-Link TL-WA901N/ND"
 		;;
@@ -319,6 +322,12 @@ ar71xx_board_detect() {
 	*EL-MINI)
 		name="el-mini"
 		;;
+	*"GL-CONNECT INET v1")
+		name="gl-inet"
+		;;
+	*"EnGenius ESR1750")
+		name="esr1750"
+		;;
 	*JA76PF)
 		name="ja76pf"
 		;;
@@ -463,6 +472,9 @@ ar71xx_board_detect() {
 	*"RouterBOARD 2011UAS")
 		name="rb-2011uas"
 		;;
+	*"RouterBOARD 2011UiAS")
+		name="rb-2011uias"
+		;;
 	*"RouterBOARD 2011UAS-2HnD")
 		name="rb-2011uas-2hnd"
 		;;
@@ -540,6 +552,9 @@ ar71xx_board_detect() {
 		;;
 	*TL-WA850RE)
 		name="tl-wa850re"
+		;;
+	*"TL-WA830RE v2")
+		name="tl-wa830re-v2"
 		;;
 	*"TL-WA801ND v2")
 		name="tl-wa801nd-v2"

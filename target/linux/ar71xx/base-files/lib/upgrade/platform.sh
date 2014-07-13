@@ -151,6 +151,7 @@ platform_check_image() {
 	dir-825-c1 | \
 	dir-835-a1 | \
 	dragino2 | \
+	esr1750 | \
 	ew-dorin | \
 	ew-dorin-router | \
 	hiwifi-hc6361 | \
@@ -226,6 +227,7 @@ platform_check_image() {
 	archer-c7 | \
 	el-m150 | \
 	el-mini | \
+	gl-inet | \
 	oolite | \
 	tl-mr10u | \
 	tl-mr11u | \
@@ -240,6 +242,7 @@ platform_check_image() {
 	tl-wa7510n | \
 	tl-wa750re | \
 	tl-wa850re | \
+	tl-wa860re | \
 	tl-wa801nd-v2 | \
 	tl-wa901nd | \
 	tl-wa901nd-v2 | \
@@ -253,6 +256,7 @@ platform_check_image() {
 	tl-wr741nd | \
 	tl-wr741nd-v4 | \
 	tl-wr841n-v1 | \
+	tl-wa830re-v2 | \
 	tl-wr841n-v7 | \
 	tl-wr841n-v8 | \
 	tl-wr841n-v9 | \

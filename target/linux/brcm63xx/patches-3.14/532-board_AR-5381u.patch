@@ -1,11 +1,11 @@
 --- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
 +++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -167,6 +167,79 @@ static struct board_info __initdata boar
+@@ -167,6 +167,73 @@ static struct board_info __initdata boar
  	},
  };
  
-+static struct board_info __initdata board_96328A_1441N1 = {
-+	.name					= "96328A-1441N1",
++static struct board_info __initdata board_AR5381u = {
++	.name					= "96328A-1241N",
 +	.expected_cpu_id			= 0x6328,
 +
 +	.has_uart0				= 1,
@@ -42,25 +42,19 @@
 +
 +	.leds = {
 +		{
-+			.name			= "96328A-1441N1:green:power",
-+			.gpio			= 8,
++			.name			= "AR-5381u:green:power",
++			.gpio			= 4,
++			.active_low		= 1,
 +			.default_trigger	= "default-on",
 +		},
 +		{
-+			.name			= "96328A-1441N1:red:power",
-+			.gpio			= 4,
++			.name			= "AR-5381u:red:alarm",
++			.gpio			= 2,
++			.active_low		= 1,
 +		},
 +		{
-+			.name			= "96328A-1441N1:green:inet",
-+			.gpio			= 7,
-+		},
-+		{
-+			.name			= "96328A-1441N1:red:inet",
-+			.gpio			= 1,
-+		},
-+		{
-+			.name			= "96328A-1441N1:green:dsl",
-+			.gpio			= 11,
++			.name			= "AR-5381u:green:inet",
++			.gpio			= 3,
 +			.active_low		= 1,
 +		},
 +	},
@@ -77,14 +71,14 @@
 +	},
 +};
 +
- static struct board_info __initdata board_963281TAN = {
- 	.name				= "963281TAN",
- 	.expected_cpu_id		= 0x6328,
-@@ -3089,6 +3162,7 @@ static const struct board_info __initcon
+ static struct board_info __initdata board_AR5387un = {
+ 	.name					= "96328A-1441N1",
+ 	.expected_cpu_id			= 0x6328,
+@@ -3155,6 +3222,7 @@ static const struct board_info __initcon
  #endif
  #ifdef CONFIG_BCM63XX_CPU_6328
  	&board_96328avng,
-+	&board_96328A_1441N1,
++	&board_AR5381u,
+ 	&board_AR5387un,
  	&board_963281TAN,
- 	&board_963281T_TEF,
- 	&board_dsl_274xb_f1,
+ 	&board_A4001N1,
