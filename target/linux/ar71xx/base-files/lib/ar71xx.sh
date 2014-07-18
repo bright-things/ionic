@@ -313,6 +313,9 @@ ar71xx_board_detect() {
 	*"Dragino v2")
 		name="dragino2"
 		;;
+	*"EAP300 v2")
+		name="eap300v2"
+		;;
 	*EAP7660D)
 		name="eap7660d"
 		;;
@@ -328,6 +331,9 @@ ar71xx_board_detect() {
 	*"EnGenius ESR1750")
 		name="esr1750"
 		;;
+	*"EnGenius ESR900")
+		name="esr900"
+		;;
 	*JA76PF)
 		name="ja76pf"
 		;;
@@ -339,6 +345,9 @@ ar71xx_board_detect() {
 		;;
 	*"Nanostation M")
 		name="nanostation-m"
+		;;
+	*"Nanostation M XW")
+		name="nanostation-m-xw"
 		;;
 	*JWAP003)
 		name="jwap003"
@@ -618,6 +627,9 @@ ar71xx_board_detect() {
 		;;
 	*"TL-MR13U")
 		name="tl-mr13u"
+		;;
+	*"Tube2H")
+		name="tube2h"
 		;;
 	*UniFi)
 		name="unifi"

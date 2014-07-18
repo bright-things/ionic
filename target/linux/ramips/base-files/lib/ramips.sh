@@ -58,9 +58,6 @@ ramips_board_detect() {
 	*"AsiaRF AWAPN2403")
 		name="awapn2403"
 		;;
-	*"BR6524N")
-		name="br6524n"
-		;;
 	*"Asus WL-330N")
 		name="wl-330n"
 		;;
@@ -160,6 +157,9 @@ ramips_board_detect() {
 	*"HAME MPR-A2")
  		name="mpr-a2"
  		;;
+	*"Planex MZK-750DHP")
+		name="mzk-750dhp"
+		;;
 	*"NBG-419N")
 		name="nbg-419n"
 		;;
