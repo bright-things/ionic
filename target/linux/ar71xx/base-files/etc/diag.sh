@@ -207,6 +207,7 @@ get_status_led() {
 	tl-wr941nd)
 		status_led="tp-link:green:system"
 		;;
+	archer-c5 | \
 	archer-c7 | \
 	tl-wdr4900-v2 | \
 	tl-mr10u | \
@@ -250,6 +251,7 @@ get_status_led() {
 		;;
 	wndap360 | \
 	wndr3700 | \
+	wndr3700v4 | \
 	wndr4300 | \
 	wnr2000 | \
 	wnr2200 |\

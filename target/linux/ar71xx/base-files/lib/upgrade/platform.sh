@@ -251,6 +251,7 @@ platform_check_image() {
 		return 1
 		;;
 
+	archer-c5 | \
 	archer-c7 | \
 	el-m150 | \
 	el-mini | \
@@ -345,6 +346,7 @@ platform_check_image() {
 		return 0
 		;;
 	nbg6716 | \
+	wndr3700v4 | \
 	wndr4300 )
 		nand_do_platform_check $board $1
 		return $?;
