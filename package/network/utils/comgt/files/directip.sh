@@ -6,6 +6,7 @@ init_proto "$@"
 
 proto_directip_init_config() {
 	available=1
+	no_device=1
 	proto_config_add_string "device:device"
 	proto_config_add_string "ifname"
 	proto_config_add_string "apn"
@@ -65,7 +66,7 @@ proto_directip_setup() {
 	}
 
 	logger -p daemon.info -t "directip[$$]" "Connected, starting DHCP"
-	proto_init_update "*" 1
+	proto_init_update "$ifname" 1
 	proto_send_update "$interface"
 
 	json_init
