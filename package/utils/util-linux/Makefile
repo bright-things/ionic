@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=util-linux
 PKG_VERSION:=2.25.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=@KERNEL/linux/utils/$(PKG_NAME)/v2.25
@@ -49,6 +49,7 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/libblkid/blkid.pc $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/libmount/mount.pc $(1)/usr/lib/pkgconfig
+	$(CP) $(PKG_BUILD_DIR)/libsmartcols/smartcols.pc $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/libuuid/uuid.pc $(1)/usr/lib/pkgconfig
 
 	$(INSTALL_DIR) $(1)/usr/include/blkid
@@ -57,11 +58,14 @@ define Build/InstallDev
 	$(CP) $(PKG_BUILD_DIR)/libmount/src/libmount.h $(1)/usr/include/libmount
 	$(INSTALL_DIR) $(1)/usr/include/uuid
 	$(CP) $(PKG_BUILD_DIR)/libuuid/src/uuid.h $(1)/usr/include/uuid
+	$(INSTALL_DIR) $(1)/usr/include/smartcols
+	$(CP) $(PKG_BUILD_DIR)/libsmartcols/src/libsmartcols.h $(1)/usr/include/smartcols
 
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/.libs/libblkid.{a,so*} $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/.libs/libmount.{a,so*} $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/.libs/libuuid.{a,so*} $(1)/usr/lib
+	$(CP) $(PKG_BUILD_DIR)/.libs/libsmartcols.{a,so*} $(1)/usr/lib
 endef
 
 define Package/libblkid
@@ -106,6 +110,17 @@ define Package/libuuid/description
  Foundation (OSF) Distributed Computing Environment (DCE) utility.
 endef
 
+define Package/libsmartcols
+$(call Package/util-linux/Default)
+  TITLE:=table or tree library
+  SECTION:=libs
+  CATEGORY:=Libraries
+endef
+
+define Package/libsmartcols/description
+ The smartcols library is used to print tables and trees in a pretty way.
+endef
+
 define Package/agetty
 $(call Package/util-linux/Default)
   TITLE:=alternative Linux getty
@@ -120,7 +135,7 @@ endef
 define Package/blkid
 $(call Package/util-linux/Default)
   TITLE:=locate/print block device attributes
-  DEPENDS:= +libblkid
+  DEPENDS:= +libblkid +libuuid
   SUBMENU=disc
 endef
 
@@ -142,7 +157,7 @@ endef
 define Package/cfdisk
 $(call Package/util-linux/Default)
   TITLE:=display or manipulate disk partition table
-  DEPENDS:= +libblkid +libncurses
+  DEPENDS:= +libblkid +libncurses +libsmartcols
   SUBMENU:=disc
 endef
 
@@ -163,7 +178,7 @@ endef
 define Package/fdisk
 $(call Package/util-linux/Default)
   TITLE:=manipulate disk partition table
-  DEPENDS:= +libblkid
+  DEPENDS:= +libblkid +libsmartcols
   SUBMENU=disc
 endef
 
@@ -243,7 +258,7 @@ endef
 define Package/lsblk
 $(call Package/util-linux/Default)
   TITLE:=list block devices
-  DEPENDS:= +libblkid +libmount
+  DEPENDS:= +libblkid +libmount +libsmartcols
   SUBMENU=disc
 endef
 
@@ -264,7 +279,7 @@ endef
 define Package/mount-utils
 $(call Package/util-linux/Default)
   TITLE:=related (u)mount utilities
-  DEPENDS+= +libmount
+  DEPENDS+= +libmount +libsmartcols
 endef
 
 define Package/mount-utils/description
@@ -294,7 +309,7 @@ endef
 define Package/partx-utils
 $(call Package/util-linux/Default)
   TITLE:=inform kernel about the presence and numbering of on-disk partitions
-  DEPENDS:= +libblkid
+  DEPENDS:= +libblkid +libsmartcols
   SUBMENU=disc
 endef
 
@@ -413,6 +428,11 @@ endef
 define Package/libmount/install
         $(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/.libs/libmount.so.* $(1)/usr/lib/
+endef
+
+define Package/libsmartcols/install
+        $(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_BUILD_DIR)/.libs/libsmartcols.so.* $(1)/usr/lib/
 endef
 
 define Package/libuuid/install
@@ -568,6 +588,7 @@ endef
 
 $(eval $(call BuildPackage,libblkid))
 $(eval $(call BuildPackage,libmount))
+$(eval $(call BuildPackage,libsmartcols))
 $(eval $(call BuildPackage,libuuid))
 $(eval $(call BuildPackage,agetty))
 $(eval $(call BuildPackage,blkid))
