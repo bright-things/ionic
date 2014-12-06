@@ -25,18 +25,21 @@ platform_get_rootfs() {
 
 platform_copy_config() {
 	local board="$(octeon_board_name)"
-	local rootfs="$(platform_get_rootfs)"
 
-	mount -t ext4 -o rw,noatime "${rootfs}" /mnt
-	cp -af "$CONF_TAR" /mnt/
-	umount /mnt
+	case "$board" in
+	erlite)
+		mount -t vfat /dev/sda1 /mnt
+		cp -af "$CONF_TAR" /mnt/
+		umount /mnt
+		;;
+	esac
 }
 
 platform_do_upgrade() {
 	local board=$(octeon_board_name)
 	local rootfs="$(platform_get_rootfs)"
 
-	[ -d "${rootfs}" ] || return 1
+	[ -b "${rootfs}" ] || return 1
 
 	case "$board" in
 	erlite)
@@ -44,18 +47,19 @@ platform_do_upgrade() {
 		local kernel_length=`(tar xf $tar_file sysupgrade-erlite/kernel -O | wc -c) 2> /dev/null`
 		local rootfs_length=`(tar xf $tar_file sysupgrade-erlite/root -O | wc -c) 2> /dev/null`
 
+		mkdir -p /boot
+		mount -t vfat /dev/sda1 /boot
+
 		[ -f /boot/vmlinux.64 -a ! -L /boot/vmlinux.64 ] && {
 			mv /boot/vmlinux.64 /boot/vmlinux.64.previous
 			mv /boot/vmlinux.64.md5 /boot/vmlinux.64.md5.previous
 		}
 
-		mkdir -p /boot
-		mount -t vfat /dev/sda1 /boot
 		tar xf $tar_file sysupgrade-erlite/kernel -O > /boot/vmlinux.64
 		md5sum /boot/vmlinux.64 | cut -f1 -d " " > /boot/vmlinux.64.md5
 		tar xf $tar_file sysupgrade-erlite/root -O | dd of="${rootfs}" bs=4096
 		sync
-		umount /mnt
+		umount /boot
 		return 0
 		;;
 	esac
