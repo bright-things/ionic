@@ -8,6 +8,7 @@
 mainmenu "Ionic Configuration"
 
 config MODULES
+	option modules
 	bool
 	default y
 
