@@ -1,21 +1,12 @@
-<<<<<<< HEAD
 src-git packages git@git.bright-things.com:ionic-packages.git
 src-git luci git@git.bright-things.com:ionic-luci.git
 src-git routing git@git.bright-things.com:ionic-routing.git
 src-git telephony git@git.bright-things.com:ionic-telephony.git
 src-git management git@git.bright-things.com:ionic-management.git
 src-git arduino git@git.bright-things.com:ionic-arduino.git
+src-git targets git@git.bright-things.com:ionic-targets.git
 src-git bt git@git.bright-things.com:ionic-bt.git
 #src-git oldpackages git@git.bright-things.com:ionic-old.git
-=======
-src-git packages https://github.com/openwrt/packages.git
-src-git luci https://github.com/openwrt/luci.git
-src-git routing https://github.com/openwrt-routing/packages.git
-src-git telephony https://github.com/openwrt/telephony.git
-src-git management https://github.com/openwrt-management/packages.git
-src-git targets https://github.com/openwrt/targets.git
-#src-git oldpackages http://git.openwrt.org/packages.git
->>>>>>> dda9d34b95ac8a49cd822c1f4353494dee0a0e48
 #src-svn xwrt http://x-wrt.googlecode.com/svn/trunk/package
 #src-svn phone svn://svn.openwrt.org/openwrt/feeds/phone
 #src-svn efl svn://svn.openwrt.org/openwrt/feeds/efl
