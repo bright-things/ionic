@@ -229,11 +229,11 @@ IPSET_MODULES:= \
 	ipset/ip_set_bitmap_ipmac \
 	ipset/ip_set_bitmap_port \
 	ipset/ip_set_hash_ip \
-	ipset/ip_set_hash_ipmark \
+	ipset/ip_set_hash_ipmark@ge3.18 \
 	ipset/ip_set_hash_ipport \
 	ipset/ip_set_hash_ipportip \
 	ipset/ip_set_hash_ipportnet \
-	ipset/ip_set_hash_mac \
+	ipset/ip_set_hash_mac@ge3.18 \
 	ipset/ip_set_hash_netportnet \
 	ipset/ip_set_hash_net \
 	ipset/ip_set_hash_netnet \
@@ -368,23 +368,6 @@ define KernelPackage/nf-nathelper-extra/description
 endef
 
 $(eval $(call KernelPackage,nf-nathelper-extra))
-
-
-define KernelPackage/ipt-queue
-  TITLE:=Module for user-space packet queueing
-  KCONFIG:=$(KCONFIG_IPT_QUEUE)
-  FILES:=$(foreach mod,$(IPT_QUEUE-m),$(LINUX_DIR)/net/$(mod).ko)
-  AUTOLOAD:=$(call AutoProbe,$(notdir $(IPT_QUEUE-m)))
-  $(call AddDepends/ipt)
-endef
-
-define KernelPackage/ipt-queue/description
- Netfilter (IPv4) module for user-space packet queueing
- Includes:
- - QUEUE
-endef
-
-$(eval $(call KernelPackage,ipt-queue))
 
 
 define KernelPackage/ipt-ulog
