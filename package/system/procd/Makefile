@@ -8,14 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=procd
-PKG_VERSION:=2015-03-26
+PKG_VERSION:=2015-03-27
 
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://nbd.name/luci2/procd.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=e5331be64992e865cc7da0ccca8814d494930762
+PKG_SOURCE_VERSION:=74d835463e05e5761f6f5271e487f299f29d3f07
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
 
@@ -77,12 +77,12 @@ config PROCD_ZRAM_TMPFS
 config PROCD_JAIL_SUPPORT
 	bool
 	default y
-	depends on mips || mipsel || i386 || x86_64
+	depends on (mips || mipsel || i386 || x86_64) && PROCD_SECCOMP_SUPPORT
 
 config PROCD_SECCOMP_SUPPORT
 	bool
 	default y
-	depends on (mips || mipsel || i386 || x86_64) && @KERNEL_SECCOMP
+	depends on (mips || mipsel || i386 || x86_64) && !TARGET_uml && @KERNEL_SECCOMP
 endmenu
 endef
 
