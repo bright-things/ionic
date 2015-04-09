@@ -4,6 +4,7 @@ src-git routing git@git.bright-things.com:ionic-routing.git
 src-git telephony git@git.bright-things.com:ionic-telephony.git
 src-git management git@git.bright-things.com:ionic-management.git
 src-git arduino git@git.bright-things.com:ionic-arduino.git
+src-git targets git@git.bright-things.com:ionic-cloak.git
 src-git targets git@git.bright-things.com:ionic-targets.git
 src-git bt git@git.bright-things.com:ionic-bt.git
 #src-git oldpackages git@git.bright-things.com:ionic-old.git
