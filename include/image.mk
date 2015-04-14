@@ -1,5 +1,6 @@
 #
 # Copyright (C) 2006-2010 OpenWrt.org
+# Copyright (C) 2014-2015 Bright Things UN Ltd.
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -17,7 +18,8 @@ override NO_TRACE_MAKE:=$(_SINGLE)$(NO_TRACE_MAKE)
 KDIR=$(KERNEL_BUILD_DIR)
 DTS_DIR:=$(LINUX_DIR)/arch/$(ARCH)/boot/dts/
 
-IMG_PREFIX:=openwrt-$(if $(CONFIG_VERSION_FILENAMES),$(VERSION_NUMBER)-)$(BOARD)$(if $(SUBTARGET),-$(SUBTARGET))
+IMG_PREFIX:=ionic-$(CONFIG_VERSION_NICK)$(if $(CONFIG_VERSION_NUMBER),-$(CONFIG_VERSION_NUMBER))
+#IMG_PREFIX:=openwrt-$(if $(CONFIG_VERSION_FILENAMES),$(VERSION_NUMBER)-)$(BOARD)$(if $(SUBTARGET),-$(SUBTARGET))
 
 MKFS_DEVTABLE_OPT := -D $(INCLUDE_DIR)/device_table.txt
 
