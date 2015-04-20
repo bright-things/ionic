@@ -25,7 +25,7 @@
 #define GS_MINIBOXV1_GPIO_BTN7		7
 #define GS_MINIBOXV1_GPIO_BTN_RESET	11
 
-#define GS_MINIBOXV1_GPIO_LED_SYSTEM	2
+#define GS_MINIBOXV1_GPIO_LED_SYSTEM	1
 
 #define GS_MINIBOXV1_KEYS_POLL_INTERVAL	20	/* msecs */
 #define GS_MINIBOXV1_KEYS_DEBOUNCE_INTERVAL (3 * GS_MINIBOXV1_KEYS_POLL_INTERVAL)
@@ -41,7 +41,7 @@ static struct flash_platform_data gs_miniboxv1_flash_data = {
 
 static struct gpio_led gs_miniboxv1_leds_gpio[] __initdata = {
 	{
-		.name		= "miniboxv1:red:system",
+		.name		= "miniboxv1:green:system",
 		.gpio		= GS_MINIBOXV1_GPIO_LED_SYSTEM,
 		.active_low	= 1,
 	},
