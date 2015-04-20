@@ -184,6 +184,9 @@ get_status_led() {
 	smart-300)
 		status_led="nc-link:green:system"
 		;;
+	miniboxv1)
+		status_led="miniboxv1:green:system"
+		;;
 	oolite)
 		status_led="oolite:red:system"
 		;;

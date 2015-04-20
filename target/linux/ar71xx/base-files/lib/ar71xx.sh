@@ -113,6 +113,9 @@ tplink_board_detect() {
 	"3C0001"*)
 		model="OOLITE"
 		;;
+	"3C0002"*)
+		model="Minibox v1.0"
+		;;
 	"070300"*)
 		model="TP-Link TL-WR703N"
 		;;
@@ -306,6 +309,9 @@ ar71xx_board_detect() {
 	case "$machine" in
 	*"Oolite V1.0")
 		name="oolite"
+		;;
+	*"Minibox v1.0")
+		name="miniboxv1"
 		;;
 	*"AC1750DB")
 		name="f9k1115v2"
