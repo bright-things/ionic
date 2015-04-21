@@ -21,8 +21,6 @@
 #include "machtypes.h"
 #include "dev-usb.h"
 
-#define GS_MINIBOXV1_GPIO_BTN6		6
-#define GS_MINIBOXV1_GPIO_BTN7		7
 #define GS_MINIBOXV1_GPIO_BTN_RESET	11
 
 #define GS_MINIBOXV1_GPIO_LED_SYSTEM	1
@@ -54,22 +52,6 @@ static struct gpio_keys_button gs_miniboxv1_gpio_keys[] __initdata = {
 		.code		= KEY_RESTART,
 		.debounce_interval = GS_MINIBOXV1_KEYS_DEBOUNCE_INTERVAL,
 		.gpio		= GS_MINIBOXV1_GPIO_BTN_RESET,
-		.active_low	= 0,
-	},
-	{
-		.desc		= "BTN_6",
-		.type		= EV_KEY,
-		.code		= BTN_6,
-		.debounce_interval = GS_MINIBOXV1_KEYS_DEBOUNCE_INTERVAL,
-		.gpio		= GS_MINIBOXV1_GPIO_BTN6,
-		.active_low	= 0,
-	},
-	{
-		.desc		= "BTN_7",
-		.type		= EV_KEY,
-		.code		= BTN_7,
-		.debounce_interval = GS_MINIBOXV1_KEYS_DEBOUNCE_INTERVAL,
-		.gpio		= GS_MINIBOXV1_GPIO_BTN7,
 		.active_low	= 0,
 	},
 };
