@@ -6,7 +6,7 @@
 #
 
 define Profile/miniboxv1
-	NAME:=Minibox v1.0
+	NAME:=miniboxv1
 	PACKAGES:=kmod-ath9k kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev
 endef
 
