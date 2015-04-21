@@ -82,6 +82,6 @@ static void __init gs_minibox1_setup(void)
 	ath79_register_wmac(ee, mac);
 }
 
-MIPS_MACHINE(ATH79_MACH_GS_MINIBOX1, "MINIBOX1",
+MIPS_MACHINE(ATH79_MACH_GS_MINIBOX1, "minibox1",
 	     "Minibox v1.0", gs_minibox1_setup);
 
