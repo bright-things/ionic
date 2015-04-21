@@ -311,7 +311,7 @@ ar71xx_board_detect() {
 		name="oolite"
 		;;
 	*"Minibox v1.0")
-		name="miniboxv1"
+		name="minibox1"
 		;;
 	*"AC1750DB")
 		name="f9k1115v2"
