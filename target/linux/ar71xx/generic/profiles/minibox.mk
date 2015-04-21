@@ -5,13 +5,13 @@
 # See /LICENSE for more information.
 #
 
-define Profile/Minibox1
-	NAME:=Minibox1
+define Profile/minibox1
+	NAME:=minibox1
 	PACKAGES:=kmod-ath9k kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev
 endef
 
-define Profile/Minibox1/Description
+define Profile/minibox1/Description
 	Package set optimized for the Minibox v1.0
 endef
 
-$(eval $(call Profile,Minibox1))
+$(eval $(call Profile,minibox1))
