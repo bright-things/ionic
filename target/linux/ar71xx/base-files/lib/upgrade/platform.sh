@@ -301,7 +301,7 @@ platform_check_image() {
 	gl-inet | \
 	mc-mac1200r | \
 	oolite | \
-	miniboxv1 | \
+	minibox1 | \
 	smart-300 | \
 	tl-mr10u | \
 	tl-mr11u | \
