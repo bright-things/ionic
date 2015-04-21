@@ -1520,7 +1520,7 @@ $(eval $(call SingleProfile,TPLINK-SAFELOADER,64kraw,CPE510,cpe210-220-510-520,C
 $(eval $(call SingleProfile,TPLINK-LZMA,64kraw,SMART-300,smart-300,SMART-300,ttyS0,115200,0x93410001,1,8Mlzma))
 
 $(eval $(call SingleProfile,TPLINK-LZMA,64kraw,OOLITE,oolite,GS-OOLITE,ttyATH0,115200,0x3C000101,1,16Mlzma))
-$(eval $(call SingleProfile,TPLINK-LZMA,64kraw,Minibox1,minibox1,GS-MINIBOX,ttyATH0,115200,0x3C000201,1,16Mlzma))
+$(eval $(call SingleProfile,TPLINK-LZMA,64kraw,Minibox1,minibox1,minibox1,ttyATH0,115200,0x3C000201,1,16Mlzma))
 
 $(eval $(call SingleProfile,UAPPRO,64k,UAPPRO,ubnt-uap-pro,UAP-PRO,ttyS0,115200,BZ,BZ,ar934x))
 $(eval $(call SingleProfile,UAPPRO,64k,UBNTUNIFIOUTDOORPLUS,ubnt-unifi-outdoor-plus,UBNT-UOP,ttyS0,115200,BZ,BZ,ar7240))
