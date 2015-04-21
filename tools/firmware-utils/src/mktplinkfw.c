@@ -412,7 +412,7 @@ static struct board_info boards[] = {
 		.hw_rev		= 1,
 		.layout_id	= "16Mlzma",
 	}, {
-		.id		= "GS-MINIBOXV1",
+		.id		= "MINIBOXV1",
 		.hw_id		= HWID_GS_MINIBOX_V1,
 		.hw_rev		= 1,
 		.layout_id	= "16Mlzma",
