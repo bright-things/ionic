@@ -53,7 +53,7 @@ static struct gpio_keys_button gs_minibox1_gpio_keys[] __initdata = {
 		.code		= KEY_RESTART,
 		.debounce_interval = GS_MINIBOX1_KEYS_DEBOUNCE_INTERVAL,
 		.gpio		= GS_MINIBOX1_GPIO_BTN_RESET,
-		.active_low	= 0,
+		.active_low	= 1,
 	},
 };
 
