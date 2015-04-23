@@ -6,7 +6,7 @@ src-git management https://github.com/bright-things/ionic-management.git
 src-git targets https://github.com/bright-things/ionic-targets.git
 src-git arduino https://github.com/bright-things/ionic-arduino.git
 src-git cloak https://github.com/bright-things/ionic-cloak.git
-src-git bt-public https://github.com/bright-things/ionic-bt-public.git
+src-git public https://github.com/bright-things/ionic-bt-public.git
 #src-git oldpackages http://github.com/bright-things/ionic-old.git
 #src-svn xwrt http://x-wrt.googlecode.com/svn/trunk/package
 #src-svn phone svn://svn.openwrt.org/openwrt/feeds/phone
