@@ -1,0 +1,13 @@
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5c47726..726f3b8 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -68,6 +68,8 @@ else
+                 $(call cc-option,-march=core2,$(call cc-option,-mtune=generic))
+ 	cflags-$(CONFIG_MATOM) += $(call cc-option,-march=atom) \
+ 		$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++        cflags-$(CONFIG_MSLM) += $(call cc-option,-march=slm) \
++                $(call cc-option,-mtune=slm,$(call cc-option,-mtune=generic))
+         cflags-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=generic)
+         KBUILD_CFLAGS += $(cflags-y)
+ 

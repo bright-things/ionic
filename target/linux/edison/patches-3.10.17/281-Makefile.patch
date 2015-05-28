@@ -1,0 +1,7 @@
+diff --git a/drivers/rpmsg/Makefile b/drivers/rpmsg/Makefile
+index 7617fcb..d8f5030 100644
+--- a/drivers/rpmsg/Makefile
++++ b/drivers/rpmsg/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_RPMSG)	+= virtio_rpmsg_bus.o
++obj-$(CONFIG_RPMSG_IPC)	+= intel_mid_rpmsg.o

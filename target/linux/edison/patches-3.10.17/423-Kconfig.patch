@@ -1,0 +1,13 @@
+diff --git a/sound/soc/Kconfig b/sound/soc/Kconfig
+index 9e675c7..23f39d2 100644
+--- a/sound/soc/Kconfig
++++ b/sound/soc/Kconfig
+@@ -45,7 +45,7 @@ source "sound/soc/jz4740/Kconfig"
+ source "sound/soc/nuc900/Kconfig"
+ source "sound/soc/omap/Kconfig"
+ source "sound/soc/kirkwood/Kconfig"
+-source "sound/soc/mid-x86/Kconfig"
++source "sound/soc/intel/Kconfig"
+ source "sound/soc/mxs/Kconfig"
+ source "sound/soc/pxa/Kconfig"
+ source "sound/soc/samsung/Kconfig"

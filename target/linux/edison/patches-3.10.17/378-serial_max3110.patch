@@ -1,0 +1,22 @@
+diff --git a/include/linux/serial_max3110.h b/include/linux/serial_max3110.h
+new file mode 100644
+index 0000000..5470556
+--- /dev/null
++++ b/include/linux/serial_max3110.h
+@@ -0,0 +1,16 @@
++#ifndef _LINUX_SERIAL_MAX3110_H
++#define _LINUX_SERIAL_MAX3110_H
++
++/**
++ * struct plat_max3110 - MAX3110 SPI UART platform data
++ * @irq_edge_trigger: if IRQ is edge triggered
++ *
++ * You should use this structure in your machine description to specify
++ * how the MAX3110 is connected.
++ *
++ */
++struct plat_max3110 {
++	int irq_edge_triggered;
++};
++
++#endif

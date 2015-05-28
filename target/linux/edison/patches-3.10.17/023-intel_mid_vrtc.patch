@@ -1,0 +1,15 @@
+diff --git a/arch/x86/include/asm/intel_mid_vrtc.h b/arch/x86/include/asm/intel_mid_vrtc.h
+new file mode 100644
+index 0000000..11ababf
+--- /dev/null
++++ b/arch/x86/include/asm/intel_mid_vrtc.h
+@@ -0,0 +1,9 @@
++#ifndef _INTEL_MID_VRTC_H
++#define _INTEL_MID_VRTC_H
++
++extern unsigned char vrtc_cmos_read(unsigned char reg);
++extern void vrtc_cmos_write(unsigned char val, unsigned char reg);
++extern unsigned long vrtc_get_time(void);
++extern int vrtc_set_mmss(unsigned long nowtime);
++
++#endif

@@ -1,0 +1,9 @@
+diff --git a/arch/x86/platform/mrst/Makefile b/arch/x86/platform/mrst/Makefile
+deleted file mode 100644
+index af1da7e..0000000
+--- a/arch/x86/platform/mrst/Makefile
++++ /dev/null
+@@ -1,3 +0,0 @@
+-obj-$(CONFIG_X86_INTEL_MID)	+= mrst.o
+-obj-$(CONFIG_X86_INTEL_MID)	+= vrtc.o
+-obj-$(CONFIG_EARLY_PRINTK_INTEL_MID)	+= early_printk_mrst.o

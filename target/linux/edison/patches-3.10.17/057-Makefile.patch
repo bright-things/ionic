@@ -1,0 +1,13 @@
+diff --git a/arch/x86/platform/Makefile b/arch/x86/platform/Makefile
+index 01e0231..20342d4 100644
+--- a/arch/x86/platform/Makefile
++++ b/arch/x86/platform/Makefile
+@@ -4,7 +4,7 @@ obj-y	+= efi/
+ obj-y	+= geode/
+ obj-y	+= goldfish/
+ obj-y	+= iris/
+-obj-y	+= mrst/
++obj-y	+= intel-mid/
+ obj-y	+= olpc/
+ obj-y	+= scx200/
+ obj-y	+= sfi/

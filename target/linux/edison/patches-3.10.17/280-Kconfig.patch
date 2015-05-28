@@ -1,0 +1,18 @@
+diff --git a/drivers/rpmsg/Kconfig b/drivers/rpmsg/Kconfig
+index 69a2193..620fef5 100644
+--- a/drivers/rpmsg/Kconfig
++++ b/drivers/rpmsg/Kconfig
+@@ -6,4 +6,13 @@ config RPMSG
+ 	select VIRTIO
+ 	select VIRTUALIZATION
+ 
++config RPMSG_IPC
++	tristate "Build rpmsg ipc driver"
++	depends on RPMSG
++	help
++	  Build an rpmsg ipc driver, which demonstrates how IA
++	  communicates with remote processor through IPC rpmsg
++	  over the rpmsg bus. It register a rpmsg driver matched
++	  with the rpmsg device created in remoteproc framework.
++
+ endmenu

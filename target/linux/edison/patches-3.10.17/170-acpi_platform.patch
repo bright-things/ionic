@@ -1,0 +1,14 @@
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index fafec5d..e355255 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -29,7 +29,8 @@ ACPI_MODULE_NAME("platform");
+ static const struct acpi_device_id acpi_platform_device_ids[] = {
+ 
+ 	{ "PNP0D40" },
+-
++	{ "BCM43241" },
++	{ "BCM2E1A" },
+ 	{ }
+ };
+ 

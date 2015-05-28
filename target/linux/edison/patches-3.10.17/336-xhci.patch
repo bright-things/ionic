@@ -1,0 +1,14 @@
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 4a5251f..04de933 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -317,6 +317,9 @@ static void xhci_cleanup_msix(struct xhci_hcd *xhci)
+ 
+ 	xhci_free_irq(xhci);
+ 
++	if (xhci->quirks & XHCI_PLAT)
++		return;
++
+ 	if (xhci->msix_entries) {
+ 		pci_disable_msix(pdev);
+ 		kfree(xhci->msix_entries);

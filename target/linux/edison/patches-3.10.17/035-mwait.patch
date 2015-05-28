@@ -1,0 +1,15 @@
+diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
+index 2f366d0..2d34917 100644
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -13,4 +13,10 @@
+ 
+ #define MWAIT_ECX_INTERRUPT_BREAK	0x1
+ 
++#ifdef CONFIG_ATOM_SOC_POWER
++#define MWAIT_MAX_NUM_CSTATES		10
++#else
++#define MWAIT_MAX_NUM_CSTATES		8
++#endif
++
+ #endif /* _ASM_X86_MWAIT_H */

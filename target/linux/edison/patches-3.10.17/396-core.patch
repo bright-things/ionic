@@ -1,0 +1,16 @@
+diff --git a/include/sound/core.h b/include/sound/core.h
+index 5bfe513..971a2ec 100644
+--- a/include/sound/core.h
++++ b/include/sound/core.h
+@@ -146,6 +146,11 @@ struct snd_card {
+ 	struct snd_mixer_oss *mixer_oss;
+ 	int mixer_oss_change_count;
+ #endif
++
++#if IS_ENABLED(CONFIG_SND_EFFECTS_OFFLOAD)
++	struct snd_effect_ops *effect_ops;
++	struct mutex effect_lock;	/* effect lock */
++#endif
+ };
+ 
+ #ifdef CONFIG_PM

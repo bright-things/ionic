@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ -z "$1" -o -z "$2" ]; then
+	echo "Usage: generate <original patch file> <target directory>"
+	exit 1
+fi
+
+if [ ! -f "$1" ]; then
+	echo "Input file $1 does not exist"
+	exit 2
+fi
+
+if [ ! -d "$2" ]; then
+	echo "Output directory $2 does not exist or it is not a directory"
+	exit 3
+fi
+
+cat "$1" | awk --assign "OUTDIR=$2" '
+
+BEGIN {
+	printf("Starting....\n");
+
+	printf("  Output directory: %s\n", OUTDIR);
+
+	STATE = 0;
+	PATCH_NO = 0;
+}
+/^diff / {
+	PATCH_NO = PATCH_NO + 1;
+
+	PATCH_FILE = gensub(/^.*\//, "", "g", $4);
+	PATCH_FILE = gensub(/\..*$/, "", "g", PATCH_FILE);
+
+	PATCH_FILE = sprintf("%s/%03i-%s.patch", OUTDIR, PATCH_NO, PATCH_FILE);
+
+	printf("  Found new patch: %s\n", PATCH_FILE);
+	STATE = 1;
+}
+{
+	if ( STATE == 1) {
+		printf("%s\n", $0) >>PATCH_FILE
+	}
+}
+END {
+	printf("....Finished\n");
+}
+
+
+'

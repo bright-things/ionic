@@ -1,0 +1,14 @@
+diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
+index bde6469..6f708bd 100644
+--- a/include/asm-generic/gpio.h
++++ b/include/asm-generic/gpio.h
+@@ -118,6 +118,9 @@ struct gpio_chip {
+ 	int			(*set_debounce)(struct gpio_chip *chip,
+ 						unsigned offset, unsigned debounce);
+ 
++	void			(*set_pinmux)(int gpio, int alt);
++	int			(*get_pinmux)(int gpio);
++
+ 	void			(*set)(struct gpio_chip *chip,
+ 						unsigned offset, int value);
+ 

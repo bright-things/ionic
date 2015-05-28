@@ -1,0 +1,17 @@
+diff --git a/sound/core/Makefile b/sound/core/Makefile
+index 43d4117..9e37a2b 100644
+--- a/sound/core/Makefile
++++ b/sound/core/Makefile
+@@ -23,6 +23,7 @@ snd-rtctimer-objs := rtctimer.o
+ snd-hwdep-objs    := hwdep.o
+ 
+ snd-compress-objs := compress_offload.o
++snd-effects-objs := effects_offload.o
+ 
+ obj-$(CONFIG_SND) 		+= snd.o
+ obj-$(CONFIG_SND_HWDEP)		+= snd-hwdep.o
+@@ -36,3 +37,4 @@ obj-$(CONFIG_SND_OSSEMUL)	+= oss/
+ obj-$(CONFIG_SND_SEQUENCER)	+= seq/
+ 
+ obj-$(CONFIG_SND_COMPRESS_OFFLOAD)	+= snd-compress.o
++obj-$(CONFIG_SND_EFFECTS_OFFLOAD)	+= snd-effects.o

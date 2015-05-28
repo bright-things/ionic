@@ -1,0 +1,20 @@
+diff --git a/include/linux/lnw_gpio.h b/include/linux/lnw_gpio.h
+new file mode 100644
+index 0000000..2e9f6b2
+--- /dev/null
++++ b/include/linux/lnw_gpio.h
+@@ -0,0 +1,14 @@
++#ifndef _H_LANGWELL_GPIO_H
++#define _H_LANGWELL_GPIO_H
++
++enum {
++	LNW_GPIO = 0,
++	LNW_ALT_1 = 1,
++	LNW_ALT_2 = 2,
++	LNW_ALT_3 = 3,
++};
++
++void lnw_gpio_set_alt(int gpio, int alt);
++int gpio_get_alt(int gpio);
++
++#endif

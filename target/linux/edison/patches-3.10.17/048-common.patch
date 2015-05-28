@@ -1,0 +1,24 @@
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 22018f7..d70d8a7 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1181,15 +1181,17 @@ DEFINE_PER_CPU_ALIGNED(struct stack_canary, stack_canary);
+  */
+ static void clear_all_debug_regs(void)
+ {
+-	int i;
++/*	int i;
+ 
+ 	for (i = 0; i < 8; i++) {
++*/
+ 		/* Ignore db4, db5 */
+-		if ((i == 4) || (i == 5))
++/*		if ((i == 4) || (i == 5))
+ 			continue;
+ 
+ 		set_debugreg(0, i);
+ 	}
++*/
+ }
+ 
+ #ifdef CONFIG_KGDB

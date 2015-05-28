@@ -1,0 +1,7 @@
+diff --git a/drivers/misc/bcm-lpm/Makefile b/drivers/misc/bcm-lpm/Makefile
+new file mode 100644
+index 0000000..6dd43fd
+--- /dev/null
++++ b/drivers/misc/bcm-lpm/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_BCM_BT_LPM) += bcm_bt_lpm.o

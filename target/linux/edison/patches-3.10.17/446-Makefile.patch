@@ -1,0 +1,11 @@
+diff --git a/sound/soc/intel/ssp/Makefile b/sound/soc/intel/ssp/Makefile
+new file mode 100644
+index 0000000..b3935f5
+--- /dev/null
++++ b/sound/soc/intel/ssp/Makefile
+@@ -0,0 +1,5 @@
++#EXTRA CFLAGS
++ccflags-y += -Werror
++
++# Audio Comms
++obj-$(CONFIG_SND_SOC_COMMS_SSP) += mid_ssp.o

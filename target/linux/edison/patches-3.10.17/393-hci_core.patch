@@ -1,0 +1,13 @@
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 7cb6d36..b9e7142 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -308,6 +308,8 @@ struct hci_conn {
+ 
+ 	bdaddr_t	dst;
+ 	__u8		dst_type;
++	bdaddr_t	src;
++	__u8		src_type;
+ 	__u16		handle;
+ 	__u16		state;
+ 	__u8		mode;
