@@ -148,6 +148,6 @@ index 0000000..8d34ef3
 +
 +/* This part must be outside protection */
 +#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
++#define TRACE_INCLUDE_PATH ../../sound/soc/intel/sst
 +#define TRACE_INCLUDE_FILE sst_trace
 +#include <trace/define_trace.h>

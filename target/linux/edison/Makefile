@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 ARCH:=i386
 BOARD:=edison
 BOARDNAME:=edison
-FEATURES:=squashfs ext4 vdi vmdk pcmcia targz
+FEATURES:=squashfs ext4
 SUBTARGETS=generic xen_domu ep80579 geode kvm_guest rdc 64
 MAINTAINER:=Lars Boegild Thomsen <lth@bright-things.com>
 
