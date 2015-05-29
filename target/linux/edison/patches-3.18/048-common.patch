@@ -1,0 +1,22 @@
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1245,15 +1245,17 @@ DEFINE_PER_CPU_ALIGNED(struct stack_cana
+  */
+ static void clear_all_debug_regs(void)
+ {
+-	int i;
++/*	int i;
+ 
+ 	for (i = 0; i < 8; i++) {
++*/
+ 		/* Ignore db4, db5 */
+-		if ((i == 4) || (i == 5))
++/*		if ((i == 4) || (i == 5))
+ 			continue;
+ 
+ 		set_debugreg(0, i);
+ 	}
++*/
+ }
+ 
+ #ifdef CONFIG_KGDB

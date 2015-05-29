@@ -1,0 +1,12 @@
+--- a/drivers/mmc/core/debugfs.c
++++ b/drivers/mmc/core/debugfs.c
+@@ -144,6 +144,9 @@ static int mmc_ios_show(struct seq_file
+ 	case MMC_TIMING_MMC_HS400:
+ 		str = "mmc HS400";
+ 		break;
++	case MMC_TIMING_MMC_HS400:
++		str = "mmc high-speed DDR200";
++		break;
+ 	default:
+ 		str = "invalid";
+ 		break;

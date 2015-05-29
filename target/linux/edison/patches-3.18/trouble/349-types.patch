@@ -1,0 +1,12 @@
+diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+index 88bf0f0..2a50d36 100644
+--- a/include/linux/iio/types.h
++++ b/include/linux/iio/types.h
+@@ -29,6 +29,7 @@ enum iio_chan_type {
+ 	IIO_ALTVOLTAGE,
+ 	IIO_CCT,
+ 	IIO_PRESSURE,
++	IIO_RESISTANCE,
+ };
+ 
+ enum iio_modifier {

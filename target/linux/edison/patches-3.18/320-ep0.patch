@@ -1,0 +1,74 @@
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -417,6 +417,9 @@ static int dwc3_ep0_handle_feature(struc
+ 			if (dwc->speed != DWC3_DSTS_SUPERSPEED)
+ 				return -EINVAL;
+ 
++			if (dwc->is_ebc)
++				break;
++
+ 			reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 			if (set)
+ 				reg |= DWC3_DCTL_INITU1ENA;
+@@ -431,6 +434,9 @@ static int dwc3_ep0_handle_feature(struc
+ 			if (dwc->speed != DWC3_DSTS_SUPERSPEED)
+ 				return -EINVAL;
+ 
++			if (dwc->is_ebc)
++				break;
++
+ 			reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 			if (set)
+ 				reg |= DWC3_DCTL_INITU2ENA;
+@@ -571,9 +577,12 @@ static int dwc3_ep0_set_config(struct dw
+ 			 * Enable transition to U1/U2 state when
+ 			 * nothing is pending from application.
+ 			 */
+-			reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+-			reg |= (DWC3_DCTL_ACCEPTU1ENA | DWC3_DCTL_ACCEPTU2ENA);
+-			dwc3_writel(dwc->regs, DWC3_DCTL, reg);
++			if (!dwc->is_ebc) {
++				reg = dwc3_readl(dwc->regs, DWC3_DCTL);
++				reg |= (DWC3_DCTL_ACCEPTU1ENA
++					| DWC3_DCTL_ACCEPTU2ENA);
++				dwc3_writel(dwc->regs, DWC3_DCTL, reg);
++			}
+ 
+ 			dwc->resize_fifos = true;
+ 			dwc3_trace(trace_dwc3_ep0, "resize FIFOs flag SET");
+@@ -791,6 +800,9 @@ static void dwc3_ep0_complete_data(struc
+ 
+ 	trb = dwc->ep0_trb;
+ 
++	if (list_empty(&ep0->request_list))
++		return;
++
+ 	r = next_request(&ep0->request_list);
+ 	if (!r)
+ 		return;
+@@ -1040,6 +1052,25 @@ static void dwc3_ep0_xfernotready(struct
+ 			return;
+ 		}
+ 
++		/*
++		 * Per databook, if an XferNotready(Data) is received after
++		 * XferComplete(Data), one possible reason is host is trying
++		 * to complete data stage by moving a 0-length packet.
++		 *
++		 * REVISIT in case of other cases
++		 */
++		if (dwc->ep0_next_event == DWC3_EP0_NRDY_STATUS) {
++			u32		size = 0;
++			struct dwc3_ep *dep = dwc->eps[event->endpoint_number];
++
++			if (dep->number == 0)
++				size = dep->endpoint.maxpacket;
++
++			dwc3_ep0_start_trans(dwc, dep->number,
++				dwc->ctrl_req_addr, size,
++				DWC3_TRBCTL_CONTROL_DATA);
++		}
++
+ 		break;
+ 
+ 	case DEPEVT_STATUS_CONTROL_STATUS:

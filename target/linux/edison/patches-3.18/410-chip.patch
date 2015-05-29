@@ -1,0 +1,10 @@
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -746,6 +746,7 @@ __irq_set_handler(unsigned int irq, irq_
+ 		irq_settings_set_noprobe(desc);
+ 		irq_settings_set_norequest(desc);
+ 		irq_settings_set_nothread(desc);
++		irq_settings_set_chained(desc);
+ 		irq_startup(desc, true);
+ 	}
+ out:

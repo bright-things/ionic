@@ -1,0 +1,12 @@
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e145931..424dea1 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -66,6 +66,7 @@ static const char * const iio_chan_type_name_spec[] = {
+ 	[IIO_ALTVOLTAGE] = "altvoltage",
+ 	[IIO_CCT] = "cct",
+ 	[IIO_PRESSURE] = "pressure",
++	[IIO_RESISTANCE] = "resistance",
+ };
+ 
+ static const char * const iio_modifier_names[] = {

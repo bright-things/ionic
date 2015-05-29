@@ -1,0 +1,27 @@
+diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
+index fb94cf1..bfca6cf 100644
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -442,7 +442,13 @@ struct l2cap_chan {
+ 
+ 	__u8		state;
+ 
++	bdaddr_t	dst;
++	__u8		dst_type;
++	bdaddr_t	src;
++	__u8		src_type;
++
+ 	__le16		psm;
++	__le16		sport;
+ 	__u16		dcid;
+ 	__u16		scid;
+ 
+@@ -453,8 +459,6 @@ struct l2cap_chan {
+ 	__u8		chan_type;
+ 	__u8		chan_policy;
+ 
+-	__le16		sport;
+-
+ 	__u8		sec_level;
+ 
+ 	__u8		ident;

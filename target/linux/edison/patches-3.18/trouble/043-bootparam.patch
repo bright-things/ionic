@@ -1,0 +1,13 @@
+diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+index c15ddaf..9c3733c 100644
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -158,7 +158,7 @@ enum {
+ 	X86_SUBARCH_PC = 0,
+ 	X86_SUBARCH_LGUEST,
+ 	X86_SUBARCH_XEN,
+-	X86_SUBARCH_MRST,
++	X86_SUBARCH_INTEL_MID,
+ 	X86_SUBARCH_CE4100,
+ 	X86_NR_SUBARCHS,
+ };

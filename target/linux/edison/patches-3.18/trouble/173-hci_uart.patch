@@ -1,0 +1,12 @@
+diff --git a/drivers/bluetooth/hci_uart.h b/drivers/bluetooth/hci_uart.h
+index fffa61f..12df101 100644
+--- a/drivers/bluetooth/hci_uart.h
++++ b/drivers/bluetooth/hci_uart.h
+@@ -68,6 +68,7 @@ struct hci_uart {
+ 	unsigned long		hdev_flags;
+ 
+ 	struct work_struct	init_ready;
++	struct work_struct	write_work;
+ 
+ 	struct hci_uart_proto	*proto;
+ 	void			*priv;

@@ -1,0 +1,12 @@
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -332,6 +332,9 @@ static void xhci_cleanup_msix(struct xhc
+ 
+ 	xhci_free_irq(xhci);
+ 
++	if (xhci->quirks & XHCI_PLAT)
++		return;
++
+ 	if (xhci->msix_entries) {
+ 		pci_disable_msix(pdev);
+ 		kfree(xhci->msix_entries);

@@ -1,0 +1,4 @@
+--- /dev/null
++++ b/drivers/misc/bcm-lpm/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_BCM_BT_LPM) += bcm_bt_lpm.o
