@@ -782,3 +782,14 @@
 +MODULE_LICENSE("GPL v2");
 +MODULE_DESCRIPTION("High Speed UART DMA PCI driver");
 +MODULE_AUTHOR("Andy Shevchenko <andriy.shevchenko@linux.intel.com>");
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -110,6 +110,8 @@ source "drivers/rtc/Kconfig"
+ 
+ source "drivers/dma/Kconfig"
+ 
++source "drivers/dma/hsu/Kconfig"
++
+ source "drivers/dca/Kconfig"
+ 
+ source "drivers/auxdisplay/Kconfig"
