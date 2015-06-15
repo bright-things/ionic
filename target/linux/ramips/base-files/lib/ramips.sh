@@ -85,11 +85,17 @@ ramips_board_detect() {
 	*"Aztech HW550-3G")
 		name="hw550-3g"
 		;;
+	*"AXIMCom MR-102N")
+		name="mr-102n"
+		;;
 	*"Buffalo WSR-600DHP")
 		name="wsr-600"
 		;;
 	*"Buffalo WSR-1166DHP")
 		name="wsr-1166"
+		;;
+	*"Comfast CF-WR800N")
+		name="cf-wr800n"
 		;;
 	*"Firefly FireWRT")
 		name="firewrt"
@@ -234,6 +240,12 @@ ramips_board_detect() {
 		;;
 	*"Omnima MiniPlug")
 		name="omni-plug"
+		;;
+	*"OLinuXino-RT5350F")
+		name="olinuxino-rt5350f"
+		;;
+	*"OLinuXino-RT5350F-EVB")
+		name="olinuxino-rt5350f-evb"
 		;;
 	*"Petatel PSR-680W"*)
 		name="psr-680w"

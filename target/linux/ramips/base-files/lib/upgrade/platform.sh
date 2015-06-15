@@ -33,6 +33,7 @@ platform_check_image() {
 	bc2 | \
 	broadway | \
 	carambola | \
+	cf-wr800n | \
 	d105 | \
 	dap-1350 | \
 	dcs-930 | \
@@ -66,12 +67,15 @@ platform_check_image() {
 	mofi3500-3gn | \
 	mpr-a1 | \
 	mpr-a2 | \
+	mr-102n | \
 	mzk-w300nh2 | \
 	nbg-419n | \
 	nw718 | \
 	omni-emb | \
 	omni-emb-hpm | \
 	omni-plug | \
+	olinuxino-rt5350f | \
+	olinuxino-rt5350f-evb | \
 	psr-680w | \
 	px4885 | \
 	rp-n53 | \
@@ -93,6 +97,7 @@ platform_check_image() {
 	w306r-v20 |\
 	w502u |\
 	whr-g300n |\
+	whr-300hp2 |\
 	whr-600d |\
 	whr-1166d |\
 	wsr-600 |\

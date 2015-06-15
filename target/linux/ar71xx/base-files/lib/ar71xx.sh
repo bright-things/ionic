@@ -151,6 +151,10 @@ tplink_board_detect() {
 		;;
 	"083000"*)
 		model="TP-Link TL-WA830RE"
+
+		if [ "$hwver" = 'v10' ]; then
+			hwver='v1'
+		fi
 		;;
 	"084100"*)
 		model="TP-Link TL-WR841N/ND"
@@ -470,6 +474,12 @@ ar71xx_board_detect() {
 		;;
 	*"MAC1200R")
 		name="mc-mac1200r"
+		;;
+	*MR12)
+		name="mr12"
+		;;
+	*MR16)
+		name="mr16"
 		;;
 	*MR600v2)
 		name="mr600v2"

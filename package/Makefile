@@ -111,6 +111,10 @@ $(curdir)/install: $(TMP_DIR)/.build
 		cd $(TARGET_DIR); \
 		for script in ./usr/lib/opkg/info/*.postinst; do \
 			IPKG_INSTROOT=$(TARGET_DIR) $$(which bash) $$script; \
+		done; \
+		for script in ./etc/init.d/*; do \
+			grep '#!/bin/sh /etc/rc.common' $$script >/dev/null || continue; \
+			IPKG_INSTROOT=$(TARGET_DIR) $$(which bash) ./etc/rc.common $$script enable; \
 		done || true \
 	)
 	@-find $(TARGET_DIR) -name CVS   | $(XARGS) rm -rf
@@ -132,14 +136,18 @@ endif
 
 PACKAGE_SUBDIRS=.
 ifneq ($(CONFIG_PER_FEED_REPO),)
-  PACKAGE_SUBDIRS=base $(FEEDS_ENABLED)
+  ifneq ($(CONFIG_PER_FEED_REPO_ADD_DISABLED),)
+    PACKAGE_SUBDIRS=base $(FEEDS_AVAILABLE)
+  else
+    PACKAGE_SUBDIRS=base $(FEEDS_ENABLED)
+  endif
 endif
 
 $(curdir)/index: FORCE
 	@echo Generating package index...
 	@for d in $(PACKAGE_SUBDIRS); do ( \
-		[ -d $(PACKAGE_DIR)/$$d ] && \
-			cd $(PACKAGE_DIR)/$$d || continue; \
+		mkdir -p $(PACKAGE_DIR)/$$d; \
+		cd $(PACKAGE_DIR)/$$d || continue; \
 		$(SCRIPT_DIR)/ipkg-make-index.sh . 2>&1 > Packages && \
 			gzip -9c Packages > Packages.gz; \
 	); done
