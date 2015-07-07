@@ -15,7 +15,8 @@ SUBTARGETS=generic xen_domu ep80579 geode kvm_guest rdc 64
 MAINTAINER:=Lars Boegild Thomsen <lth@bright-things.com>
 
 #KERNEL_PATCHVER:=3.10.17
-KERNEL_PATCHVER:=4.0
+#KERNEL_PATCHVER:=4.0
+KERNEL_PATCHVER:=4.1
 
 KERNELNAME:=bzImage
 
