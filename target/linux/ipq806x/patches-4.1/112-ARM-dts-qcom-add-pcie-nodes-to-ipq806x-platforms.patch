@@ -40,8 +40,8 @@ Signed-off-by: Mathieu Olivari <mathieu@codeaurora.org>
  			spi_pins: spi_pins {
  				mux {
  					pins = "gpio18", "gpio19", "gpio21";
-@@ -138,5 +156,19 @@
- 		usb30@1 {
+@@ -114,5 +132,19 @@
+ 		sata@29000000 {
  			status = "ok";
  		};
 +
@@ -125,16 +125,16 @@ Signed-off-by: Mathieu Olivari <mathieu@codeaurora.org>
  };
 --- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
 +++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
-@@ -3,6 +3,8 @@
- #include "skeleton.dtsi"
+@@ -4,6 +4,8 @@
  #include <dt-bindings/clock/qcom,gcc-ipq806x.h>
+ #include <dt-bindings/clock/qcom,lcc-ipq806x.h>
  #include <dt-bindings/soc/qcom,gsbi.h>
 +#include <dt-bindings/reset/qcom,gcc-ipq806x.h>
 +#include <dt-bindings/interrupt-controller/arm-gic.h>
  
  / {
  	model = "Qualcomm IPQ8064";
-@@ -306,6 +308,129 @@
+@@ -329,5 +331,127 @@
  			#reset-cells = <1>;
  		};
  
@@ -260,7 +260,5 @@ Signed-off-by: Mathieu Olivari <mathieu@codeaurora.org>
 +
 +			status = "disabled";
 +		};
-+
- 		hs_phy_1: phy@100f8800 {
- 			compatible = "qcom,dwc3-hs-usb-phy";
- 			reg = <0x100f8800 0x30>;
+ 	};
+ };
