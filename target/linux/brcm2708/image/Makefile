@@ -21,11 +21,13 @@ else
   endef
 endif
 
-### Image scripts ###
-define Build/build-dtb
-	$(call Image/BuildDTB,$(DTS_DIR)/$(DEVICE_DTS).dts,$@.dtb)
+define Image/Prepare
+	rm -rf $(KDIR)/overlays
+	mkdir -p $(KDIR)/overlays
+	$(CP) $(DTS_DIR)/overlays/*.dtb $(KDIR)/overlays/
 endef
 
+### Image scripts ###
 define Build/gen-cfg
 	cat config.txt > $@.config
 	echo -e "\ndevice_tree=$(DEVICE_DTS).dtb" >> $@.config
@@ -44,7 +46,8 @@ define Build/boot-img
 	mcopy -i $@.boot cmdline.txt ::
 	mcopy -i $@.boot $@.config ::config.txt
 	mcopy -i $@.boot $(word 1,$^) ::kernel.img
-	mcopy -i $@.boot $@.dtb ::$(DEVICE_DTS).dtb
+	mcopy -i $@.boot $(DTS_DIR)/$(DEVICE_DTS).dtb ::$(DEVICE_DTS).dtb
+	mcopy -s -i $@.boot $(KDIR)/overlays ::
 endef
 
 define Build/sdcard-img
@@ -59,7 +62,7 @@ define Device/Default
   PROFILES = Default $$(DEVICE_PROFILE)
   KERNEL := kernel-bin
   IMAGES := sdcard.bin
-  IMAGE/sdcard.bin := build-dtb | gen-cfg | boot-img | sdcard-img
+  IMAGE/sdcard.bin := gen-cfg | boot-img | sdcard-img
   DEVICE_PROFILE :=
   DEVICE_DTS :=
 endef
