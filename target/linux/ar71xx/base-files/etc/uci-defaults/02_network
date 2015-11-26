@@ -134,6 +134,7 @@ nbg460n_550n_550nh)
 	ucidef_add_switch_vlan "switch0" "0" "0 1 2 3 5"
 	;;
 
+nbg6616 |\
 nbg6716)
 	ucidef_set_interfaces_lan_wan "eth0.1" "eth1"
 	ucidef_add_switch "switch0" "1" "1"
@@ -242,6 +243,7 @@ tl-mr3420-v2 |\
 tl-wr841n-v8 |\
 tl-wr842n-v2 |\
 tl-wr941nd-v5 |\
+tl-wr941nd-v6 |\
 tl-wdr6500-v2 |\
 wnr2000-v3 |\
 wnr2000-v4 |\
@@ -328,6 +330,7 @@ esr900)
 	[ -n "$mac" ] && ucidef_set_interface_macaddr "wan" "$mac"
 	;;
 
+dlan-hotspot |\
 dlan-pro-500-wp)
 	ucidef_set_interface_lan "eth0 eth1"
 	;;
@@ -386,6 +389,7 @@ wp543)
 	ucidef_set_interface_lan "eth0"
 	;;
 
+arduino-yun | \
 dir-505-a1)
 	ucidef_set_interface_lan "eth1"
 	;;
@@ -393,6 +397,8 @@ dir-505-a1)
 alfa-ap96 |\
 alfa-nx |\
 ap83 |\
+gl-ar150 |\
+gl-domino |\
 gl-inet |\
 jwap003 |\
 pb42 |\
@@ -402,6 +408,12 @@ tl-wr710n |\
 tl-wr720n-v3|\
 wpe72)
 	ucidef_set_interfaces_lan_wan "eth1" "eth0"
+	;;
+
+gl-ar300)
+	ucidef_set_interfaces_lan_wan "eth1" "eth0"
+	ucidef_add_switch "switch0" "1" "1"
+	ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 4"
 	;;
 
 wpj344)
@@ -441,6 +453,7 @@ rb-750 |\
 rb-751 |\
 tew-632brp |\
 tew-712br |\
+tew-732br |\
 tl-mr3220 |\
 tl-mr3220-v2 |\
 tl-mr3420 |\

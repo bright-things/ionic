@@ -33,16 +33,17 @@ case "$board" in
 "goflexnet"|\
 "iconnect"|\
 "ib62x0"|\
+"nsa310s"|\
 "pogo_e02")
 	set_lan_dhcp "eth0"
 	;;
-"ea3500")
+"linksys-audi")
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	ucidef_add_switch "switch0" "1" "1"
 	ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 5"
 	ucidef_add_switch_vlan "switch0" "2" "4 6"
 	;;
-"ea4500")
+"linksys-viper")
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	ucidef_add_switch "switch0" "1" "1"
 	ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 5"

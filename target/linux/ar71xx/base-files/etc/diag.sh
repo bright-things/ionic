@@ -86,6 +86,9 @@ get_status_led() {
 	dir-835-a1)
 		status_led="d-link:amber:power"
 		;;
+	dlan-hotspot)
+		status_led="devolo:green:wifi"
+		;;
 	dlan-pro-500-wp)
 		status_led="devolo:green:wlan-2g"
 		;;
@@ -173,8 +176,11 @@ get_status_led() {
 	nbg460n_550n_550nh)
 		status_led="nbg460n:green:power"
 		;;
+	nbg6616)
+		status_led="nbg6616:green:power"
+		;;
 	nbg6716)
-		status_led="zyxel:white:power"
+		status_led="nbg6716:white:power"
 		;;
 	om2p | \
 	om2pv2 | \
@@ -292,7 +298,8 @@ get_status_led() {
 	tl-wdr4300 | \
 	tl-wr703n | \
 	tl-wr710n | \
-	tl-wr720n-v3)
+	tl-wr720n-v3 | \
+	tl-wr941nd-v6)
 		status_led="tp-link:blue:system"
 		;;
 	tl-wr841n-v9)

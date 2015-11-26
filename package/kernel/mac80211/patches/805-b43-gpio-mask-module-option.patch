@@ -10,7 +10,7 @@
  	struct b43_phy phy;
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -76,6 +76,11 @@ MODULE_FIRMWARE("b43/ucode16_mimo.fw");
+@@ -75,6 +75,11 @@ MODULE_FIRMWARE("b43/ucode16_mimo.fw");
  MODULE_FIRMWARE("b43/ucode5.fw");
  MODULE_FIRMWARE("b43/ucode9.fw");
  

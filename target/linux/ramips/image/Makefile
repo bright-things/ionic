@@ -708,7 +708,7 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/3G6200NL,$(1))
 	$(call Image/Build/Profile/3G150B,$(1))
 	$(call Image/Build/Profile/3G300M,$(1))
-	$(call Image/Build/Profile/A5-11,$(1))
+	$(call Image/Build/Profile/A5-V11,$(1))
 	$(call Image/Build/Profile/AIR3GII,$(1))
 	$(call Image/Build/Profile/ALL02393G,$(1))
 	$(call Image/Build/Profile/ALL0256N,$(1))
@@ -900,11 +900,13 @@ Image/Build/Profile/WRTNODE=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode,WR
 Image/Build/Profile/WT3020=$(call BuildFirmware/PorayDualSize/$(1),$(1),wt3020,WT3020)
 Image/Build/Profile/MIWIFI-MINI=$(call BuildFirmware/Default16M/$(1),$(1),miwifi-mini,MIWIFI-MINI)
 Image/Build/Profile/ZTE-Q7=$(call BuildFirmware/Default8M/$(1),$(1),zte-q7,ZTE-Q7)
+Image/Build/Profile/YOUKU-YK1=$(call BuildFirmware/Default16M/$(1),$(1),youku-yk1,YOUKU-YK1)
 Image/Build/Profile/ZBT-WA05=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wa05,ZBT-WA05)
 Image/Build/Profile/ZBT-WR8305RT=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wr8305rt,ZBT-WR8305RT)
 Image/Build/Profile/ArcherC20i=$(call BuildFirmware/Tplink/$(1),$(1),ArcherC20i,ArcherC20i)
 microwrt_mtd_size=16515072
 Image/Build/Profile/MicroWRT=$(call BuildFirmware/CustomFlash/$(1),$(1),microwrt,MicroWRT,$(microwrt_mtd_size))
+Image/Build/Profile/TINY-AC=$(call BuildFirmware/Default8M/$(1),$(1),tiny-ac,TINY-AC)
 
 
 ifeq ($(SUBTARGET),mt7620)
@@ -938,10 +940,12 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/WT3020,$(1))
 	$(call Image/Build/Profile/MIWIFI-MINI,$(1))
 	$(call Image/Build/Profile/ZTE-Q7,$(1))
+	$(call Image/Build/Profile/YOUKU-YK1,$(1))
 	$(call Image/Build/Profile/ZBT-WA05,$(1))
 	$(call Image/Build/Profile/ZBT-WR8305RT,$(1))
 	$(call Image/Build/Profile/ArcherC20i,$(1))
 	$(call Image/Build/Profile/MicroWRT,$(1))
+	$(call Image/Build/Profile/TINY-AC,$(1))
 endef
 endif
 
@@ -950,7 +954,7 @@ endif
 #
 
 ifeq ($(SUBTARGET),mt7621)
-  TARGET_DEVICES += mt7621 wsr-600 wsr-1166 dir-860l-b1 firewrt pbr-m1 re6500 sap-g3200u3
+  TARGET_DEVICES += mt7621 wsr-600 wsr-1166 dir-860l-b1 firewrt pbr-m1 re6500 sap-g3200u3 zbt-wg2626 wf-2881
 endif
 
 define Device/mt7621
@@ -998,6 +1002,20 @@ endef
 
 define Device/sap-g3200u3
   DTS := SAP-G3200U3
+endef
+
+define Device/zbt-wg2626
+  DTS := ZBT-WG2626
+  IMAGE_SIZE := $(ralink_default_fw_size_16M)
+endef
+
+define Device/wf-2881
+  DTS := WF-2881
+  BLOCKSIZE := 128KiB
+  PAGESIZE := 2048
+  KERNEL_SIZE := 2097152
+  FILESYSTEMS := squashfs
+  IMAGE/sysupgrade.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | check-size $$$$(IMAGE_SIZE)
 endef
 
 #
