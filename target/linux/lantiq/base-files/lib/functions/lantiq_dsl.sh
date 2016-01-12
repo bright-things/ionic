@@ -65,6 +65,70 @@ scale_latency() {
 }
 
 #
+# convert vendorid into human readable form
+#
+parse_vendorid() {
+	local val=$1
+	local name
+	local version
+
+	case "$val" in
+		B5,00,41,4C,43,42*)
+			name="Alcatel"
+			version=${val##*B5,00,41,4C,43,42,}
+			;;
+		B5,00,41,4E,44,56*)
+			name="Analog Devices"
+			version=${val##*B5,00,41,4E,44,56,}
+			;;
+		B5,00,42,44,43,4D*)
+			name="Broadcom"
+			version=${val##*B5,00,42,44,43,4D,}
+			;;
+		B5,00,43,45,4E,54*)
+			name="Centillium"
+			version=${val##*B5,00,43,45,4E,54,}
+			;;
+		B5,00,47,53,50,4E*)
+			name="Globespan"
+			version=${val##*B5,00,47,53,50,4E,}
+			;;
+		B5,00,49,4B,4E,53*)
+			name="Ikanos"
+			version=${val##*B5,00,49,4B,4E,53,}
+			;;
+		B5,00,49,46,54,4E*)
+			name="Infineon"
+			version=${val##*B5,00,49,46,54,4E,}
+			;;
+		B5,00,54,53,54,43*)
+			name="Texas Instruments"
+			version=${val##*B5,00,54,53,54,43,}
+			;;
+		B5,00,54,4D,4D,42*)
+			name="Thomson MultiMedia Broadband"
+			version=${val##*B5,00,54,4D,4D,42,}
+			;;
+		B5,00,54,43,54,4E*)
+			name="Trend Chip Technologies"
+			version=${val##*B5,00,54,43,54,4E,}
+			;;
+		B5,00,53,54,4D,49*)
+			name="ST Micro"
+			version=${val##*B5,00,53,54,4D,49,}
+			;;
+	esac
+
+	[ -n "$name" ] && {
+		val="$name"
+
+		[ "$version" != "00,00" ] && val="$(printf "%s %d.%d" "$val" 0x${version//,/ 0x})"
+	}
+
+	echo "$val"
+}
+
+#
 # Read the data rates for both directions
 #
 data_rates() {
@@ -133,6 +197,9 @@ vendor() {
 	vid=$(dsl_string "$lig" G994VendorID)
 	svid=$(dsl_string "$lig" SystemVendorID)
 
+	vid=$(parse_vendorid $vid)
+	svid=$(parse_vendorid $svid)
+
 	if [ "$action" = "lucistat" ]; then
 		echo "dsl.atuc_vendor_id=\"${vid}\""
 		echo "dsl.atuc_system_vendor_id=\"${svid}\""
@@ -160,6 +227,9 @@ xtse() {
 
 	local annex_s=""
 	local line_mode_s=""
+	local vector_s=""
+
+	local dsmsg=""
 	local cmd=""
 
 	xtusesg=$(dsl_cmd g997xtusesg)
@@ -256,7 +326,15 @@ xtse() {
 	fi
 
 	if [ $((xtse8 & 7)) != 0  ]; then
-		line_mode_s="$line_mode_s G.993.2 (VDSL2),"
+		dsmsg=$(dsl_cmd dsmsg)
+		vector_s=$(dsl_val "$dsmsg" eVectorStatus)
+
+		case "$vector_s" in
+			"0")	line_mode_s="$line_mode_s G.993.2 (VDSL2)," ;;
+			"1")	line_mode_s="$line_mode_s G.993.5 (VDSL2 with downstream vectoring)," ;;
+			"2")	line_mode_s="$line_mode_s G.993.5 (VDSL2 with down- and upstream vectoring)," ;;
+			*)	line_mode_s="$line_mode_s unknown," ;;
+		esac
 	fi
 
 	#!!! PROPRIETARY & INTERMEDIATE USE !!!
@@ -620,10 +698,40 @@ line_state() {
 	fi
 }
 
+#
+# Which profile is used?
+#
+profile() {
+	local bpstg=$(dsl_cmd bpstg)
+	local profile=$(dsl_val "$bpstg" nProfile);
+	local s;
+
+	case "$profile" in
+		"0")	s="8a" ;;
+		"1")	s="8b" ;;
+		"2")	s="8c" ;;
+		"3")	s="8d" ;;
+		"4")	s="12a" ;;
+		"5")	s="12b" ;;
+		"6")	s="17a" ;;
+		"7")	s="30a" ;;
+		"8")	s="17b" ;;
+		"")		s="";;
+		*)		s="unknown" ;;
+	esac
+
+	if [ "$action" = "lucistat" ]; then
+		echo "dsl.profile=${profile:-nil}"
+	else
+		echo "Profile:                                  $s"
+	fi
+}
+
 status() {
 	vendor
 	chipset
 	xtse
+	profile
 	line_state
 	errors
 	power_mode

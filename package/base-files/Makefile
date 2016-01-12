@@ -11,10 +11,10 @@ include $(INCLUDE_DIR)/kernel.mk
 include $(INCLUDE_DIR)/version.mk
 
 PKG_NAME:=base-files
-PKG_RELEASE:=163
+PKG_RELEASE:=165
 
 PKG_FILE_DEPENDS:=$(PLATFORM_DIR)/ $(GENERIC_PLATFORM_DIR)/base-files/
-PKG_BUILD_DEPENDS:=opkg/host usign/host
+PKG_BUILD_DEPENDS:=usign/host
 PKG_LICENSE:=GPL-2.0
 
 PKG_CONFIG_DEPENDS := CONFIG_SIGNED_PACKAGES
@@ -161,7 +161,7 @@ define Package/base-files/install
 	rm -f $(1)/var
 	$(LN) /tmp $(1)/var
 	mkdir -p $(1)/etc
-	$(LN) /tmp/resolv.conf /tmp/fstab /tmp/TZ $(1)/etc/
+	$(LN) /tmp/resolv.conf /tmp/fstab /tmp/TZ /tmp/localtime $(1)/etc/
 
 	chmod 0600 $(1)/etc/shadow
 	chmod 1777 $(1)/tmp

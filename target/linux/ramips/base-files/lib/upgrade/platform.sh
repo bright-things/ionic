@@ -113,6 +113,7 @@ platform_check_image() {
 	whr-300hp2|\
 	whr-600d|\
 	whr-g300n|\
+	witi|\
 	wizfi630a|\
 	wl-330n|\
 	wl-330n3g|\
@@ -124,6 +125,8 @@ platform_check_image() {
 	wr512-3gn|\
 	wr6202|\
 	wrtnode|\
+	wrtnode2r |\
+	wrtnode2p |\
 	wsr-600|\
 	wt1520|\
 	wt3020|\
@@ -181,10 +184,34 @@ platform_check_image() {
 		}
 		return 0
 		;;
+	ubnt-erx)
+		nand_do_platform_check "$board" "$1"
+		return $?;
+		;;
 	esac
 
 	echo "Sysupgrade is not yet supported on $board."
 	return 1
+}
+
+platform_nand_pre_upgrade() {
+	local board=$(ramips_board_name)
+
+	case "$board" in
+	ubnt-erx)
+		platform_upgrade_ubnt_erx "$ARGV"
+		;;
+	esac
+}
+
+platform_pre_upgrade() {
+	local board=$(ramips_board_name)
+
+	case "$board" in
+    	ubnt-erx)
+		nand_do_upgrade "$ARGV"
+		;;
+	esac
 }
 
 platform_do_upgrade() {

@@ -237,9 +237,11 @@
 
 		interrupt-parent = <&cpuintc>;
 		interrupts = <5>;
+
+		mediatek,switch = <&esw>;
 	};
 
-	esw@10110000 {
+	esw: esw@10110000 {
 		compatible = "ralink,rt3352-esw", "ralink,rt3050-esw";
 		reg = <0x10110000 8000>;
 
@@ -251,7 +253,7 @@
 	};
 
 	usbphy {
-		compatible = "ralink,rt3xxx-usbphy";
+		compatible = "ralink,rt3352-usbphy";
 
 		resets = <&rstctrl 22 &rstctrl 25>;
 		reset-names = "host", "device";
@@ -268,7 +270,7 @@
 	};
 
 	ehci@101c0000 {
-		compatible = "ralink,rt3xxx-ehci", "ehci-platform";
+		compatible = "generic-ehci";
 		reg = <0x101c0000 0x1000>;
 
 		interrupt-parent = <&intc>;
@@ -278,7 +280,7 @@
 	};
 
 	ohci@101c1000 {
-		compatible = "ralink,rt3xxx-ohci", "ohci-platform";
+		compatible = "generic-ohci";
 		reg = <0x101c1000 0x1000>;
 
 		interrupt-parent = <&intc>;

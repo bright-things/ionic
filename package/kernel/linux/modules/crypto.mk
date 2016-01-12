@@ -27,7 +27,7 @@ define KernelPackage/crypto-aead
 	CONFIG_CRYPTO_AEAD2
   FILES:=$(LINUX_DIR)/crypto/aead.ko
   AUTOLOAD:=$(call AutoLoad,09,aead,1)
-  $(call AddDepends/crypto)
+  $(call AddDepends/crypto, +LINUX_4_3:kmod-crypto-null +LINUX_4_4:kmod-crypto-null)
 endef
 
 $(eval $(call KernelPackage,crypto-aead))
@@ -100,26 +100,22 @@ $(eval $(call KernelPackage,crypto-wq))
 
 define KernelPackage/crypto-rng
   TITLE:=CryptoAPI random number generation
-  KCONFIG:=CONFIG_CRYPTO_RNG2
-  FILES:=$(LINUX_DIR)/crypto/rng.ko
-ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),lt,4.2.0)),1)
-  FILES+=$(LINUX_DIR)/crypto/krng.ko
-endif
-  AUTOLOAD:=$(call AutoLoad,09,rng krng)
+  DEPENDS:=+kmod-crypto-hash
+  KCONFIG:= \
+	CONFIG_CRYPTO_DRBG \
+	CONFIG_CRYPTO_JITTERENTROPY \
+	CONFIG_CRYPTO_RNG2
+  FILES:= \
+	$(LINUX_DIR)/crypto/drbg.ko@ge4.2 \
+	$(LINUX_DIR)/crypto/jitterentropy_rng.ko@ge4.2 \
+	$(LINUX_DIR)/crypto/krng.ko@lt4.2 \
+	$(LINUX_DIR)/crypto/rng.ko
+  AUTOLOAD:=$(call AutoLoad,09,drbg@ge4.2 jitterentropy_rng@ge4.2 krng@lt4.2 rng)
   $(call AddDepends/crypto)
 endef
 
 $(eval $(call KernelPackage,crypto-rng))
 
-define KernelPackage/crypto-rng-jitterentropy
-  TITLE:=Jitterentropy Non-Deterministic Random Number Generator
-  KCONFIG:=CONFIG_CRYPTO_JITTERENTROPY
-  FILES:= $(LINUX_DIR)/crypto/jitterentropy_rng.ko
-  AUTOLOAD:=$(call AutoLoad,10,jitterentropy-rng)
-  $(call AddDepends/crypto)
-endef
-
-$(eval $(call KernelPackage,crypto-rng-jitterentropy))
 
 define KernelPackage/crypto-iv
   TITLE:=CryptoAPI initialization vectors
@@ -258,7 +254,7 @@ $(eval $(call KernelPackage,crypto-hw-omap))
 
 define KernelPackage/crypto-authenc
   TITLE:=Combined mode wrapper for IPsec
-  DEPENDS:=+kmod-crypto-manager
+  DEPENDS:=+kmod-crypto-manager +LINUX_4_4:kmod-crypto-null
   KCONFIG:=CONFIG_CRYPTO_AUTHENC
   FILES:=$(LINUX_DIR)/crypto/authenc.ko
   AUTOLOAD:=$(call AutoLoad,09,authenc)
@@ -625,7 +621,7 @@ define KernelPackage/crypto-null
   KCONFIG:=CONFIG_CRYPTO_NULL
   FILES:=$(LINUX_DIR)/crypto/crypto_null.ko
   AUTOLOAD:=$(call AutoLoad,09,crypto_null)
-  $(call AddDepends/crypto,+kmod-crypto-manager)
+  $(call AddDepends/crypto, +kmod-crypto-hash)
 endef
 
 $(eval $(call KernelPackage,crypto-null))

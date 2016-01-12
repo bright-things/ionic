@@ -39,7 +39,7 @@ wndr3700_board_detect() {
 	"33373031")
 		model="$(ar71xx_get_mtd_offset_size_format art 41 32 %c)"
 		# Use awk to remove everything unprintable
-		model_stripped="$(echo -n "$model" | LC_CTYPE=C awk -v 'FS=[^[:print:]]' '{print $1; exit}')"
+		model_stripped="$(ar71xx_get_mtd_offset_size_format art 41 32 %c | LC_CTYPE=C awk -v 'FS=[^[:print:]]' '{print $1; exit}')"
 		case $model in
 		$'\xff'*)
 			if [ "${model:24:1}" = 'N' ]; then
@@ -113,6 +113,9 @@ tplink_board_detect() {
 		;;
 	"044403"*)
 		model="ANTMINER-S3"
+		;;
+	"44440101"*)
+		model="ANTROUTER-R1"
 		;;
 	"120000"*)
 		model="MERCURY MAC1200R"
@@ -411,6 +414,12 @@ ar71xx_board_detect() {
 	*AW-NR580)
 		name="aw-nr580"
 		;;
+	*CAP324)
+		name="cap324"
+		;;
+	*C-55)
+		name="c-55"
+		;;
 	*CAP4200AG)
 		name="cap4200ag"
 		;;
@@ -420,6 +429,12 @@ ar71xx_board_detect() {
 	*"CPE210/220/510/520")
 		name="cpe510"
 		tplink_pharos_board_detect
+		;;
+	*CR3000)
+		name="cr3000"
+		;;
+	*CR5000)
+		name="cr5000"
 		;;
 	*"DB120 reference board")
 		name="db120"
@@ -462,6 +477,9 @@ ar71xx_board_detect() {
 		;;
 	*"dLAN pro 1200+ WiFi ac")
 		name="dlan-pro-1200-ac"
+		;;
+	*DR344)
+		name="dr344"
 		;;
 	*"Dragino v2")
 		name="dragino2"
@@ -547,6 +565,9 @@ ar71xx_board_detect() {
 		;;
 	*MR16)
 		name="mr16"
+		;;
+	*MR18)
+		name="mr18"
 		;;
 	*MR600v2)
 		name="mr600v2"
@@ -739,6 +760,9 @@ ar71xx_board_detect() {
 		;;
 	*TEW-732BR)
 		name="tew-732br"
+		;;
+	*TEW-823DRU)
+		name="tew-823dru"
 		;;
 	*"TL-WR1041N v2")
 		name="tl-wr1041n-v2"

@@ -167,7 +167,10 @@ platform_check_image() {
 	case "$board" in
 	all0315n | \
 	all0258n | \
-	cap4200ag)
+	cap324 | \
+	cap4200ag | \
+	cr3000 |\
+	cr5000)
 		platform_check_image_allnet "$1" && return 0
 		return 1
 		;;
@@ -181,9 +184,11 @@ platform_check_image() {
 	ap136-020 | \
 	ap135-020 | \
 	ap147-010 | \
+	ap152 | \
 	ap96 | \
 	bxu2000n-2-a1 | \
 	db120 | \
+	dr344 | \
 	f9k1115v2 |\
 	hornet-ub | \
 	mr12 | \
@@ -200,6 +205,7 @@ platform_check_image() {
 	ap81 | \
 	ap83 | \
 	ap132 | \
+	c-55 | \
 	cf-e316n-v2 | \
 	dgl-5500-a1 |\
 	dhp-1565-a1 |\
@@ -230,6 +236,7 @@ platform_check_image() {
 	tew-632brp | \
 	tew-712br | \
 	tew-732br | \
+	tew-823dru | \
 	wrt400n | \
 	airgateway | \
 	airgatewaypro | \
@@ -317,6 +324,7 @@ platform_check_image() {
 
 	antminer-s1 | \
 	antminer-s3 | \
+	antrouter-r1 | \
 	archer-c5 | \
 	archer-c7 | \
 	el-m150 | \
@@ -433,6 +441,10 @@ platform_check_image() {
 		}
 		return 0
 		;;
+	mr18)
+		merakinand_do_platform_check $board $1
+		return $?;
+		;;
 	nbg6716 | \
 	r6100 | \
 	wndr3700v4 | \
@@ -469,13 +481,20 @@ platform_check_image() {
 		fi
 		return 0
 		;;
-    wnr2000-v4)
+	wnr2000-v4)
 		[ "$magic_long" != "32303034" ] && {
 			echo "Invalid image type."
 			return 1
 		}
 		return 0
 		;;
+	wnr2200)
+                [ "$magic_long" != "32323030" ] && {
+                        echo "Invalid image type."
+                        return 1
+                }
+                return 0
+                ;;
 
 	esac
 
@@ -492,6 +511,9 @@ platform_pre_upgrade() {
 	wndr3700v4 | \
 	wndr4300 )
 		nand_do_upgrade "$1"
+		;;
+	mr18)
+		merakinand_do_upgrade "$1"
 		;;
 	esac
 }

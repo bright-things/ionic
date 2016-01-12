@@ -1,7 +1,7 @@
-From efd60949b03b034da398f15fc9b74d3f3a06c48a Mon Sep 17 00:00:00 2001
+From 392071fc3afa61f49617e9f5386f128ebd47e18e Mon Sep 17 00:00:00 2001
 From: popcornmix <popcornmix@gmail.com>
 Date: Wed, 18 Dec 2013 22:16:19 +0000
-Subject: [PATCH 033/203] config: Enable CONFIG_MEMCG, but leave it disabled
+Subject: [PATCH 033/222] config: Enable CONFIG_MEMCG, but leave it disabled
  (due to memory cost). Enable with cgroup_enable=memory.
 
 ---
@@ -43,7 +43,7 @@ Subject: [PATCH 033/203] config: Enable CONFIG_MEMCG, but leave it disabled
  	printk("cgroup: using legacy files on the default hierarchy\n");
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -5388,6 +5388,7 @@ struct cgroup_subsys memory_cgrp_subsys
+@@ -5389,6 +5389,7 @@ struct cgroup_subsys memory_cgrp_subsys
  	.dfl_cftypes = memory_files,
  	.legacy_cftypes = mem_cgroup_legacy_files,
  	.early_init = 0,

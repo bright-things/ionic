@@ -83,6 +83,7 @@ get_status_led() {
 		;;
 	dap-1350|\
 	na930|\
+	pbr-m1|\
 	rt-n13u|\
 	rt-n14u|\
 	rt-n15|\
@@ -135,11 +136,6 @@ get_status_led() {
 	sl-r7205)
 		status_led="$board:green:wifi"
 		;;
-	pbr-m1|\
-	w306r-v20|\
-	zbt-wr8305rt)
-		status_led="$board:green:sys"
-		;;
 	psr-680w)
 		status_led="$board:red:wan"
 		;;
@@ -165,6 +161,11 @@ get_status_led() {
 	v22rw-2x2)
 		status_led="$board:green:security"
 		;;
+	w306r-v20|\
+	witi|\
+	zbt-wr8305rt)
+		status_led="$board:green:sys"
+		;;
 	wcr-150gn|\
 	wl-351)
 		status_led="$board:amber:power"
@@ -179,6 +180,11 @@ get_status_led() {
 	wsr-1166|\
 	wsr-600)
 		status_led="$board:orange:diag"
+		;;
+	wrtnode2r | \
+	wrtnode2p | \
+	wrtnode)
+		status_led="wrtnode:blue:indicator"
 		;;
 	esac
 }
