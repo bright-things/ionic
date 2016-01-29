@@ -104,6 +104,7 @@ define KernelPackage/crypto-rng
   KCONFIG:= \
 	CONFIG_CRYPTO_DRBG \
 	CONFIG_CRYPTO_DRBG_HMAC=y \
+	CONFIG_CRYPTO_DRBG_HASH=n \
 	CONFIG_CRYPTO_DRBG_MENU \
 	CONFIG_CRYPTO_JITTERENTROPY \
 	CONFIG_CRYPTO_RNG2
@@ -149,7 +150,9 @@ define KernelPackage/crypto-hw-talitos
   DEPENDS:=+kmod-crypto-manager +kmod-crypto-hash +kmod-random-core +kmod-crypto-authenc
   KCONFIG:= \
 	CONFIG_CRYPTO_HW=y \
-	CONFIG_CRYPTO_DEV_TALITOS
+	CONFIG_CRYPTO_DEV_TALITOS \
+	CONFIG_CRYPTO_DEV_TALITOS1=y \
+	CONFIG_CRYPTO_DEV_TALITOS2=y
   FILES:= \
 	$(LINUX_DIR)/drivers/crypto/talitos.ko
   AUTOLOAD:=$(call AutoLoad,09,talitos)
