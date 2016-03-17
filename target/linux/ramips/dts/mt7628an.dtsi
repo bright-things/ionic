@@ -340,8 +340,9 @@
 		#reset-cells = <1>;
 	};
 
-	usbphy: usbphy {
+	usbphy: usbphy@10120000 {
 		compatible = "ralink,mt7628an-usbphy", "mediatek,mt7620-usbphy";
+		reg = <0x10120000 4000>;
 		#phy-cells = <1>;
 
 		resets = <&rstctrl 22 &rstctrl 25>;
@@ -439,5 +440,18 @@
 
 			device_type = "pci";
 		};
+	};
+
+	wmac: wmac@10300000 {
+		compatible = "mediatek,mt7628-wmac";
+		reg = <0x10300000 100000>;
+
+		interrupt-parent = <&cpuintc>;
+		interrupts = <6>;
+
+		status = "disabled";
+
+		mediatek,mtd-eeprom = <&factory 0x0000>;
+		mediatek,5ghz = <0>;
 	};
 };

@@ -519,6 +519,20 @@ Image/Build/Profile/CARAMBOLA=$(call BuildFirmware/Default8M/$(1),$(1),carambola
 
 Image/Build/Profile/D105=$(call BuildFirmware/Default4M/$(1),$(1),d105,D105)
 
+define BuildFirmware/JCG/squashfs
+	$(call BuildFirmware/Default4M/$(1),$(1),$(2),$(3))
+	-jcgimage -o $(call imgname,$(1),$(2))-factory.bin \
+		-u $(call sysupname,$(1),$(2)) -v $(4)
+endef
+Image/Build/Profile/JHR-N805R=$(call BuildFirmware/JCG/$(1),$(1),jhr-n805r,JHR-N805R,29.24)
+Image/Build/Profile/JHR-N825R=$(call BuildFirmware/JCG/$(1),$(1),jhr-n825r,JHR-N825R,23.24)
+Image/Build/Profile/JHR-N926R=$(call BuildFirmware/JCG/$(1),$(1),jhr-n926r,JHR-N926R,25.24)
+define Image/Build/Profile/JCG
+	$(call Image/Build/Profile/JHR-N805R,$(1))
+	$(call Image/Build/Profile/JHR-N825R,$(1))
+	$(call Image/Build/Profile/JHR-N926R,$(1))
+endef
+
 define BuildFirmware/DIR300B1/squashfs
 	$(call BuildFirmware/Default4M/$(1),$(1),$(2),$(3))
 	-mkwrgimg -s $(4) -d /dev/mtdblock/2 \
@@ -616,6 +630,8 @@ Image/Build/Profile/DIR-320-B1=$(call BuildFirmware/Default8M/$(1),$(1),dir-320-
 Image/Build/Profile/NBG-419N=$(call BuildFirmware/Default4M/$(1),$(1),nbg-419n,NBG-419N)
 
 Image/Build/Profile/MZKW300NH2=$(call BuildFirmware/Edimax/$(1),$(1),mzk-w300nh2,MZK-W300NH2,$(mzkw300nh2_mtd_size),CSYS,RN52,0x50000,0xc0000)
+
+Image/Build/Profile/MZKWDPR=$(call BuildFirmware/Default8M/$(1),$(1),mzk-wdpr,MZK-WDPR)
 
 Image/Build/Profile/NCS601W=$(call BuildFirmware/Default8M/$(1),$(1),ncs601W,NCS601W)
 
@@ -792,6 +808,9 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/HT-TM02,$(1))
 	$(call Image/Build/Profile/HW550-3G,$(1))
 	$(call Image/Build/Profile/IP2202,$(1))
+	$(call Image/Build/Profile/JHR-N805R,$(1))
+	$(call Image/Build/Profile/JHR-N825R,$(1))
+	$(call Image/Build/Profile/JHR-N926R,$(1))
 	$(call Image/Build/Profile/M2M,$(1))
 	$(call Image/Build/Profile/M3,$(1))
 	$(call Image/Build/Profile/M4,$(1))
@@ -800,6 +819,7 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/MPRA1,$(1))
 	$(call Image/Build/Profile/MPRA2,$(1))
 	$(call Image/Build/Profile/MZKW300NH2,$(1))
+	$(call Image/Build/Profile/MZKWDPR,$(1))
 	$(call Image/Build/Profile/NBG-419N,$(1))
 	$(call Image/Build/Profile/NCS601W,$(1))
 	$(call Image/Build/Profile/NW718,$(1))
@@ -912,8 +932,34 @@ endif
 # MT7620A Profiles
 #
 
+# $(1): (ignored)
+# $(2): lowercase board name
+# $(3): uppercase board name (must match DTS filename w/o extension)
+# $(4): erase block size
+# $(5): hardware id for mkdniimg
+# $(6): maximum image size
+define BuildFirmware/Netgear/squashfs
+	$(call PatchKernelLzmaDtb,$(2),$(3))
+	# Pad kernel to eraseblock boundary, minus 2 uImage headers (=128 bytes):
+	# bs = (eraseblock * (1 + (128 + kernelsize)/eraseblock)) - 128
+	dd if=$(KDIR)/vmlinux-$(2).bin.lzma \
+		of=$(KDIR)/vmlinux-$(2).bin.lzma.tmp \
+		bs=`expr \( $(4) \* \( 1 + \( 128 + \`wc -c < $(KDIR)/vmlinux-$(2).bin.lzma\` \) / $(4) \) \) - 128` \
+		count=1 conv=sync
+
+	$(call MkImage,lzma,$(KDIR)/vmlinux-$(2).bin.lzma.tmp,$(KDIR)/vmlinux-$(2).uImage)
+	cat ex2700-fakeroot.uImage >> $(KDIR)/vmlinux-$(2).uImage
+	$(call MkImageSysupgrade/squashfs,squashfs,$(2),$(6))
+
+	$(STAGING_DIR_HOST)/bin/mkdniimg \
+		-B $(3) -H $(5) -v OpenWrt \
+		-i $(call imgname,squashfs,$(2))-sysupgrade.bin \
+		-o $(call imgname,squashfs,$(2))-factory.bin
+endef
+
 Image/Build/Profile/E1700=$(call BuildFirmware/UMedia/$(1),$(1),e1700,E1700,0x013326)
-Image/Build/Profile/EX2700=$(call BuildFirmware/Default4M/$(1),$(1),ex2700,EX2700)
+ex2700_mtd_size=3866624
+Image/Build/Profile/EX2700=$(call BuildFirmware/Netgear/$(1),$(1),ex2700,EX2700,65536,29764623+4+0+32+2x2+0,$(ex2700_mtd_size))
 Image/Build/Profile/MT7620a=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a,MT7620a)
 Image/Build/Profile/MT7620a_MT7610e=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7610e,MT7620a_MT7610e)
 Image/Build/Profile/MT7620a_MT7530=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7530,MT7620a_MT7530)
@@ -937,6 +983,7 @@ Image/Build/Profile/HC5661=$(call BuildFirmware/Default16M/$(1),$(1),hc5661,HC56
 Image/Build/Profile/HC5761=$(call BuildFirmware/Default16M/$(1),$(1),hc5761,HC5761)
 Image/Build/Profile/HC5861=$(call BuildFirmware/Default16M/$(1),$(1),hc5861,HC5861)
 Image/Build/Profile/OY-0001=$(call BuildFirmware/Default16M/$(1),$(1),oy-0001,OY-0001)
+Image/Build/Profile/PSG1208=$(call BuildFirmware/Default8M/$(1),$(1),psg1208,PSG1208)
 Image/Build/Profile/Y1=$(call BuildFirmware/Default16M/$(1),$(1),y1,Y1)
 Image/Build/Profile/Y1S=$(call BuildFirmware/Default16M/$(1),$(1),y1s,Y1S)
 Image/Build/Profile/MLW221=$(call BuildFirmware/Default16M/$(1),$(1),mlw221,MLW221)
@@ -946,9 +993,13 @@ Image/Build/Profile/RT-N14U=$(call BuildFirmware/Default8M/$(1),$(1),rt-n14u,RT-
 Image/Build/Profile/WRTNODE=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode,WRTNODE)
 Image/Build/Profile/WT3020=$(call BuildFirmware/PorayDualSize/$(1),$(1),wt3020,WT3020)
 Image/Build/Profile/MIWIFI-MINI=$(call BuildFirmware/Default16M/$(1),$(1),miwifi-mini,MIWIFI-MINI)
+Image/Build/Profile/GL-MT300A=$(call BuildFirmware/Default16M/$(1),$(1),gl-mt300a,GL-MT300A)
+Image/Build/Profile/GL-MT300N=$(call BuildFirmware/Default16M/$(1),$(1),gl-mt300n,GL-MT300N)
+Image/Build/Profile/GL-MT750=$(call BuildFirmware/Default16M/$(1),$(1),gl-mt750,GL-MT750)
 Image/Build/Profile/ZTE-Q7=$(call BuildFirmware/Default8M/$(1),$(1),zte-q7,ZTE-Q7)
 Image/Build/Profile/YOUKU-YK1=$(call BuildFirmware/Default16M/$(1),$(1),youku-yk1,YOUKU-YK1)
 Image/Build/Profile/ZBT-WA05=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wa05,ZBT-WA05)
+Image/Build/Profile/ZBT-WE826=$(call BuildFirmware/Default16M/$(1),$(1),zbt-we826,ZBT-WE826)
 Image/Build/Profile/ZBT-WR8305RT=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wr8305rt,ZBT-WR8305RT)
 Image/Build/Profile/ArcherC20i=$(call BuildFirmware/Tplink/$(1),$(1),ArcherC20i,ArcherC20i)
 microwrt_mtd_size=16515072
@@ -978,6 +1029,7 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/HC5761,$(1))
 	$(call Image/Build/Profile/HC5861,$(1))
 	$(call Image/Build/Profile/OY-0001,$(1))
+	$(call Image/Build/Profile/PSG1208,$(1))
 	$(call Image/Build/Profile/Y1,$(1))
 	$(call Image/Build/Profile/Y1S,$(1))
 	$(call Image/Build/Profile/MLW221,$(1))
@@ -987,9 +1039,13 @@ define Image/Build/Profile/Default
 	$(call Image/Build/Profile/WRTNODE,$(1))
 	$(call Image/Build/Profile/WT3020,$(1))
 	$(call Image/Build/Profile/MIWIFI-MINI,$(1))
+	$(call Image/Build/Profile/GL-MT300A,$(1))
+	$(call Image/Build/Profile/GL-MT300N,$(1))
+	$(call Image/Build/Profile/GL-MT750,$(1))
 	$(call Image/Build/Profile/ZTE-Q7,$(1))
 	$(call Image/Build/Profile/YOUKU-YK1,$(1))
 	$(call Image/Build/Profile/ZBT-WA05,$(1))
+	$(call Image/Build/Profile/ZBT-WE826,$(1))
 	$(call Image/Build/Profile/ZBT-WR8305RT,$(1))
 	$(call Image/Build/Profile/ArcherC20i,$(1))
 	$(call Image/Build/Profile/MicroWRT,$(1))
@@ -1068,9 +1124,10 @@ define Device/wf-2881
   DTS := WF-2881
   BLOCKSIZE := 128KiB
   PAGESIZE := 2048
-  KERNEL_SIZE := 2097152
   FILESYSTEMS := squashfs
-  IMAGE/sysupgrade.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE_SIZE := 132382720
+  KERNEL := $(KERNEL_DTB) | pad-offset 131072 64 | uImage lzma
+  IMAGE/sysupgrade.bin := append-kernel | append-ubi | check-size $$$$(IMAGE_SIZE)
 endef
 
 define Device/ubnt-erx
@@ -1091,6 +1148,7 @@ endef
 # MT7628 Profiles
 #
 
+Image/Build/Profile/MIWIFI-NANO=$(call BuildFirmware/Default16M/$(1),$(1),miwifi-nano,MIWIFI-NANO)
 Image/Build/Profile/MT7628=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
 Image/Build/Profile/WRTNODE2P=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode2p,WRTNODE2P)
 
@@ -1098,6 +1156,9 @@ ifeq ($(SUBTARGET),mt7628)
 define Image/Build/Profile/Default
 	$(call Image/Build/Profile/MT7628,$(1))
 	$(call Image/Build/Profile/WRTNODE2P,$(1))
+endef
+define Image/Build/Profile/MiwifiNano
+	$(call Image/Build/Profile/MIWIFI-NANO,$(1))
 endef
 endif
 

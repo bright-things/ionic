@@ -333,9 +333,11 @@ platform_check_image() {
 	gl-inet | \
 	mc-mac1200r | \
 	minibox-v1 |\
+	omy-x1 |\
 	onion-omega | \
 	oolite | \
 	smart-300 | \
+	tellstick-znet-lite | \
 	tl-mr10u | \
 	tl-mr11u | \
 	tl-mr12u | \

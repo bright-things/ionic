@@ -137,6 +137,11 @@ fonera20n)
 	set_usb_led "$board:orange:usb"
 	set_wifi_led "$board:orange:wifi"
 	;;
+gl-mt300a|\
+gl-mt300n|\
+gl-mt750)
+	set_wifi_led "$board:wlan"
+	;;
 hc5661)
 	ucidef_set_led_default "system" "system" "$board:blue:system" "1"
 	ucidef_set_led_netdev "internet" "internet" "$board:blue:internet" "eth0.2"
@@ -208,6 +213,9 @@ pbr-m1)
 	ucidef_set_led_default "power" "power" "$board:blue:power" "1"
 	ucidef_set_led_default "sys" "sys" "$board:blue:sys" "1"
 	;;
+psg1208)
+	set_wifi_led "$board:white:wlan2g"
+	;;
 px-4885)
 	set_wifi_led "$board:orange:wifi"
 	set_usb_led "$board:blue:storage"
@@ -264,6 +272,11 @@ zbt-wa05)
 	ucidef_set_led_default "power" "power" "$board:blue:power" "1"
 	set_wifi_led "$board:blue:air"
 	set_usb_led "$board:blue:usb"
+	;;
+zbt-we826)
+	ucidef_set_led_default "power" "power" "$board:green:power" "1"
+	set_wifi_led "$board:green:wifi"
+	set_usb_led "$board:green:usb"
 	;;
 zbt-wr8305rt)
 	ucidef_set_led_default "power" "power" "$board:green:sys" "1"

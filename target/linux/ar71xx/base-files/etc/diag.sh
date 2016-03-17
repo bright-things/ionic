@@ -214,6 +214,9 @@ get_status_led() {
 	om5p-an)
 		status_led="om5p:blue:power"
 		;;
+	omy-x1)
+		status_led="omy:green:power"
+		;;
 	onion-omega)
 		status_led="onion:amber:system"
 		;;
@@ -262,6 +265,9 @@ get_status_led() {
 		;;
 	qihoo-c301)
 		status_led="qihoo:green:status"
+		;;
+	tellstick-znet-lite)
+		status_led="tellstick:white:system"
 		;;
 	tew-632brp)
 		status_led="tew-632brp:green:status"
@@ -369,6 +375,7 @@ get_status_led() {
 	wndr3700v4 | \
 	wndr4300 | \
 	wnr2000 | \
+	wnr2000-v3 |\
 	wnr2200 |\
 	wnr612-v2 |\
 	wnr1000-v2 |\

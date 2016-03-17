@@ -1,7 +1,7 @@
-From aa474d100ec0ad7647935ffaf5bd2272d4a57249 Mon Sep 17 00:00:00 2001
+From 1a4fac1ea6bb33a963b06406f6f44b527daa3a90 Mon Sep 17 00:00:00 2001
 From: Ondrej Wisniewski <ondrej.wisniewski@gmail.com>
 Date: Fri, 6 Nov 2015 15:01:28 +0100
-Subject: [PATCH 109/127] dts: Added overlay for Adafruit PiTFT 2.8" capacitive
+Subject: [PATCH 109/170] dts: Added overlay for Adafruit PiTFT 2.8" capacitive
  touch screen
 
 ---

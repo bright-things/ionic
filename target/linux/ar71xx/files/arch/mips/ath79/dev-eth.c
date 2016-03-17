@@ -271,6 +271,7 @@ void __init ath79_register_mdio(unsigned int id, u32 phy_mask)
 	case ATH79_SOC_QCA956X:
 		if (id == 1)
 			mdio_data->builtin_switch = 1;
+		mdio_data->is_ar934x = 1;
 		break;
 
 	default:
@@ -829,18 +830,38 @@ void __init ath79_setup_ar934x_eth_rx_delay(unsigned int rxd,
 	iounmap(base);
 }
 
-void __init ath79_setup_qca955x_eth_cfg(u32 mask)
+void __init ath79_setup_qca955x_eth_cfg(u32 mask,
+					unsigned int rxd, unsigned int rxdv,
+					unsigned int txd, unsigned int txe)
 {
 	void __iomem *base;
-	u32 t;
+	u32 t, m;
+
+	m = QCA955X_ETH_CFG_RGMII_EN |
+	    QCA955X_ETH_CFG_MII_GE0 |
+	    QCA955X_ETH_CFG_GMII_GE0 |
+	    QCA955X_ETH_CFG_MII_GE0_MASTER |
+	    QCA955X_ETH_CFG_MII_GE0_SLAVE |
+	    QCA955X_ETH_CFG_GE0_ERR_EN |
+	    QCA955X_ETH_CFG_GE0_SGMII |
+	    QCA955X_ETH_CFG_RMII_GE0 |
+	    QCA955X_ETH_CFG_MII_CNTL_SPEED |
+	    QCA955X_ETH_CFG_RMII_GE0_MASTER;
+	m |= QCA955X_ETH_CFG_RXD_DELAY_MASK << QCA955X_ETH_CFG_RXD_DELAY_SHIFT;
+	m |= QCA955X_ETH_CFG_RDV_DELAY_MASK << QCA955X_ETH_CFG_RDV_DELAY_SHIFT;
+	m |= QCA955X_ETH_CFG_TXD_DELAY_MASK << QCA955X_ETH_CFG_TXD_DELAY_SHIFT;
+	m |= QCA955X_ETH_CFG_TXE_DELAY_MASK << QCA955X_ETH_CFG_TXE_DELAY_SHIFT;
 
 	base = ioremap(QCA955X_GMAC_BASE, QCA955X_GMAC_SIZE);
 
 	t = __raw_readl(base + QCA955X_GMAC_REG_ETH_CFG);
 
-	t &= ~(QCA955X_ETH_CFG_RGMII_EN | QCA955X_ETH_CFG_GE0_SGMII);
-
+	t &= ~m;
 	t |= mask;
+	t |= rxd << QCA955X_ETH_CFG_RXD_DELAY_SHIFT;
+	t |= rxdv << QCA955X_ETH_CFG_RDV_DELAY_SHIFT;
+	t |= txd << QCA955X_ETH_CFG_TXD_DELAY_SHIFT;
+	t |= txe << QCA955X_ETH_CFG_TXE_DELAY_SHIFT;
 
 	__raw_writel(t, base + QCA955X_GMAC_REG_ETH_CFG);
 
@@ -1123,16 +1144,25 @@ void __init ath79_register_eth(unsigned int id)
 		if (id == 0) {
 			pdata->reset_bit = QCA955X_RESET_GE0_MAC |
 					   QCA955X_RESET_GE0_MDIO;
+
 			if (pdata->phy_if_mode == PHY_INTERFACE_MODE_SGMII)
 				pdata->set_speed = qca956x_set_speed_sgmii;
 			else
-				/* FIXME */
-				pdata->set_speed = ath79_set_speed_dummy;
+				pdata->set_speed = ath79_set_speed_ge0;
 		} else {
 			pdata->reset_bit = QCA955X_RESET_GE1_MAC |
 					   QCA955X_RESET_GE1_MDIO;
-			/* FIXME */
+
 			pdata->set_speed = ath79_set_speed_dummy;
+
+			pdata->switch_data = &ath79_switch_data;
+
+			pdata->speed = SPEED_1000;
+			pdata->duplex = DUPLEX_FULL;
+
+			/* reset the built-in switch */
+			ath79_device_reset_set(AR934X_RESET_ETH_SWITCH);
+			ath79_device_reset_clear(AR934X_RESET_ETH_SWITCH);
 		}
 
 		pdata->ddr_flush = ath79_ddr_no_flush;
@@ -1194,6 +1224,11 @@ void __init ath79_register_eth(unsigned int id)
 		case ATH79_SOC_QCA9556:
 		case ATH79_SOC_QCA9558:
 			/* don't assign any MDIO device by default */
+			break;
+
+		case ATH79_SOC_QCA956X:
+			if (pdata->phy_if_mode != PHY_INTERFACE_MODE_SGMII)
+				pdata->mii_bus_dev = &ath79_mdio1_device.dev;
 			break;
 
 		default:

@@ -27,7 +27,7 @@ define KernelPackage/crypto-aead
 	CONFIG_CRYPTO_AEAD2
   FILES:=$(LINUX_DIR)/crypto/aead.ko
   AUTOLOAD:=$(call AutoLoad,09,aead,1)
-  $(call AddDepends/crypto, +LINUX_4_3:kmod-crypto-null +LINUX_4_4:kmod-crypto-null)
+  $(call AddDepends/crypto, +LINUX_4_4:kmod-crypto-null)
 endef
 
 $(eval $(call KernelPackage,crypto-aead))
@@ -123,11 +123,12 @@ $(eval $(call KernelPackage,crypto-rng))
 define KernelPackage/crypto-iv
   TITLE:=CryptoAPI initialization vectors
   DEPENDS:=+kmod-crypto-manager +kmod-crypto-rng +kmod-crypto-wq
-  KCONFIG:= CONFIG_CRYPTO_BLKCIPHER2
+  KCONFIG:= CONFIG_CRYPTO_BLKCIPHER2 CONFIG_CRYPTO_ECHAINIV
   FILES:= \
 	$(LINUX_DIR)/crypto/eseqiv.ko \
-	$(LINUX_DIR)/crypto/chainiv.ko
-  AUTOLOAD:=$(call AutoLoad,10,eseqiv chainiv)
+	$(LINUX_DIR)/crypto/chainiv.ko \
+	$(LINUX_DIR)/crypto/echainiv.ko@ge4.3
+  AUTOLOAD:=$(call AutoLoad,10,eseqiv chainiv echainiv@ge4.3)
   $(call AddDepends/crypto)
 endef
 
@@ -136,6 +137,7 @@ $(eval $(call KernelPackage,crypto-iv))
 
 define KernelPackage/crypto-echainiv
   TITLE:=Encrypted Chain IV Generator
+  DEPENDS:=+kmod-crypto-aead
   KCONFIG:=CONFIG_CRYPTO_ECHAINIV
   FILES:=$(LINUX_DIR)/crypto/echainiv.ko
   AUTOLOAD:=$(call AutoLoad,09,echainiv)
@@ -155,6 +157,32 @@ define KernelPackage/crypto-seqiv
 endef
 
 $(eval $(call KernelPackage,crypto-seqiv))
+
+
+define KernelPackage/crypto-hw-caam
+  TITLE:=Freescale CAAM driver (SEC4)
+  DEPENDS:=@TARGET_imx6||TARGET_mpc85xx +kmod-crypto-aead +kmod-crypto-authenc +kmod-crypto-hash +kmod-random-core
+  KCONFIG:= \
+	CONFIG_CRYPTO_HW=y \
+	CONFIG_CRYPTO_DEV_FSL_CAAM \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_JR \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_CRYPTO_API \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_AHASH_API \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_API \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_RINGSIZE=9 \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_INTC=n \
+	CONFIG_CRYPTO_DEV_FSL_CAAM_DEBUG=n
+  FILES:= \
+	$(LINUX_DIR)/drivers/crypto/caam/caam.ko \
+	$(LINUX_DIR)/drivers/crypto/caam/caamalg.ko \
+	$(LINUX_DIR)/drivers/crypto/caam/caamhash.ko \
+	$(LINUX_DIR)/drivers/crypto/caam/caam_jr.ko \
+	$(LINUX_DIR)/drivers/crypto/caam/caamrng.ko
+  AUTOLOAD:=$(call AutoLoad,09,caam caamalg caamhash caam_jr caamrng)
+  $(call AddDepends/crypto)
+endef
+
+$(eval $(call KernelPackage,crypto-hw-caam))
 
 
 define KernelPackage/crypto-hw-talitos

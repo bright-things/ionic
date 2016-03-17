@@ -1,7 +1,7 @@
-From e6877f42823f6acd80d27b86816a0d87f35ea004 Mon Sep 17 00:00:00 2001
+From f16a654f57b024d44fe58d62b660e01de6a7811a Mon Sep 17 00:00:00 2001
 From: Florian Meier <florian.meier@koalo.de>
 Date: Fri, 22 Nov 2013 19:21:34 +0100
-Subject: [PATCH 065/127] ASoC: Add support for Rpi-DAC
+Subject: [PATCH 065/170] ASoC: Add support for Rpi-DAC
 
 ---
  sound/soc/bcm/Kconfig       |   7 +++

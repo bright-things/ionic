@@ -56,6 +56,9 @@ platform_check_image() {
 	firewrt|\
 	fonera20n|\
 	freestation5|\
+	gl-mt300a|\
+	gl-mt300n|\
+	gl-mt750|\
 	hc5*61|\
 	hg255d|\
 	hlk-rm04|\
@@ -63,6 +66,9 @@ platform_check_image() {
 	ht-tm02|\
 	hw550-3g|\
 	ip2202|\
+	jhr-n805r|\
+	jhr-n825r|\
+	jhr-n926r|\
 	linkits7688|\
 	linkits7688d|\
 	m2m|\
@@ -72,18 +78,22 @@ platform_check_image() {
 	miniembplug|\
 	miniembwifi|\
 	miwifi-mini|\
+	miwifi-nano|\
 	mlw221|\
 	mlwg2|\
 	mofi3500-3gn|\
 	mpr-a1|\
 	mpr-a2|\
 	mr-102n|\
+	mt7628|\
 	mzk-dp150n|\
 	mzk-w300nh2|\
+	mzk-wdpr|\
 	nbg-419n|\
 	nw718|\
 	oy-0001|\
 	pbr-m1|\
+	psg1208|\
 	psr-680w|\
 	px-4885|\
 	re6500|\
@@ -137,6 +147,7 @@ platform_check_image() {
 	y1|\
 	y1s|\
 	zbt-wa05|\
+	zbt-we826|\
 	zbt-wg2626|\
 	zbt-wr8305rt|\
 	zte-q7|\

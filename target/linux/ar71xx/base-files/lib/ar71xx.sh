@@ -120,6 +120,12 @@ tplink_board_detect() {
 	"120000"*)
 		model="MERCURY MAC1200R"
 		;;
+	"007260"*)
+		model="TellStick ZNet Lite"
+		;;
+	"066602"*)
+		model="OMYlink OMY-X1"
+		;;
 	"3C0001"*)
 		model="OOLITE"
 		;;
@@ -369,7 +375,7 @@ ar71xx_board_detect() {
 	*AP113)
 		name="ap113"
 		;;
-	*AP121)
+	*"AP121 reference board")
 		name="ap121"
 		;;
 	*AP121-MINI)
@@ -629,6 +635,9 @@ ar71xx_board_detect() {
 	*"OM5P AN")
 		name="om5p-an"
 		;;
+	*"OMY-X1")
+		name="omy-x1"
+		;;
 	*"Onion Omega")
 		name="onion-omega"
 		;;
@@ -748,6 +757,9 @@ ar71xx_board_detect() {
 		;;
 	"Smart Electronics Black Swift board"*)
 		name="bsb"
+		;;
+	*"Telldus TellStick ZNet Lite")
+		name="tellstick-znet-lite"
 		;;
 	*TEW-632BRP)
 		name="tew-632brp"
