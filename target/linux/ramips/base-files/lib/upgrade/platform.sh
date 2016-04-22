@@ -136,6 +136,7 @@ platform_check_image() {
 	wnce2001|\
 	wr512-3gn|\
 	wr6202|\
+	wrh-300cr|\
 	wrtnode|\
 	wrtnode2r |\
 	wrtnode2p |\
@@ -150,6 +151,7 @@ platform_check_image() {
 	zbt-wa05|\
 	zbt-we826|\
 	zbt-wg2626|\
+	zbt-wg3526|\
 	zbt-wr8305rt|\
 	zte-q7|\
 	youku-yk1)

@@ -66,7 +66,8 @@ get_status_led() {
 	v11st-fe|\
 	vocore|\
 	wmr-300|\
-	zbt-wg2626)
+	zbt-wg2626|\
+	zbt-wg3526)
 		status_led="$board:green:status"
 		;;
 	atp-52b|\
@@ -74,7 +75,8 @@ get_status_led() {
 		status_led="$board:green:run"
 		;;
 	awapn2403|\
-	dir-645)
+	dir-645|\
+	wrh-300cr)
 		status_led="$board:green:wps"
 		;;
 	cf-wr800n|\

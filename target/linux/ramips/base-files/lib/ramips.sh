@@ -460,6 +460,9 @@ ramips_board_detect() {
 	*"WR6202")
 		name="wr6202"
 		;;
+	*"WRH-300CR")
+		name="wrh-300cr"
+		;;
 	*"WRTNODE")
 		name="wrtnode"
 		;;
@@ -504,6 +507,9 @@ ramips_board_detect() {
 		;;
 	*"ZBT-WG2626")
 		name="zbt-wg2626"
+		;;
+	*"ZBT-WG3526")
+		name="zbt-wg3526"
 		;;
 	*"ZBT-WR8305RT")
 		name="zbt-wr8305rt"
