@@ -563,13 +563,20 @@ define Device/minibox-v1
 endef
 TARGET_DEVICES += minibox-v1
 
+define Device/omy-g1
+    $(Device/tplink-16mlzma)
+    BOARDNAME := OMY-G1
+    DEVICE_PROFILE := OMYG1
+    TPLINK_HWID := 0x06660101
+endef
+
 define Device/omy-x1
     $(Device/tplink-8mlzma)
     BOARDNAME := OMY-X1
     DEVICE_PROFILE := OMYX1
     TPLINK_HWID := 0x06660201
 endef
-TARGET_DEVICES += omy-x1
+TARGET_DEVICES += omy-g1 omy-x1
 
 define Device/onion-omega
     $(Device/tplink-16mlzma)
@@ -755,6 +762,13 @@ define Device/tl-wr740n-v5
     CONSOLE := ttyATH0,115200
 endef
 
+define Device/tl-wr740n-v6
+    $(Device/tplink-4mlzma)
+    BOARDNAME := TL-WR841N-v9
+    DEVICE_PROFILE := TLWR740
+    TPLINK_HWID := 0x07400006
+endef
+
 define Device/tl-wr741nd-v1
     $(Device/tplink-4m)
     BOARDNAME := TL-WR741ND
@@ -799,7 +813,7 @@ define Device/tl-wr743nd-v2
     TPLINK_HWID := 0x07430002
     CONSOLE := ttyATH0,115200
 endef
-TARGET_DEVICES += tl-wr740n-v1 tl-wr740n-v3 tl-wr740n-v4 tl-wr740n-v5 tl-wr741nd-v1 tl-wr741nd-v2 tl-wr741nd-v4 tl-wr741nd-v5 tl-wr743nd-v1 tl-wr743nd-v2
+TARGET_DEVICES += tl-wr740n-v1 tl-wr740n-v3 tl-wr740n-v4 tl-wr740n-v5 tl-wr740n-v6 tl-wr741nd-v1 tl-wr741nd-v2 tl-wr741nd-v4 tl-wr741nd-v5 tl-wr743nd-v1 tl-wr743nd-v2
 
 define Device/tl-wr841-v1.5
     $(Device/tplink-4m)

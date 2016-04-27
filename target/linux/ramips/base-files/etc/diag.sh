@@ -27,12 +27,14 @@ get_status_led() {
 	nbg-419n|\
 	pwh2004|\
 	wnce2001|\
+	wndr3700v5|\
 	x5|\
 	x8|\
 	xdxrn502j)
 		status_led="$board:green:power"
 		;;
 	a5-v11|\
+	cs-qr10|\
 	d105|\
 	dcs-930l-b1|\
 	ex2700|\
@@ -154,6 +156,7 @@ get_status_led() {
 	whr-600d)
 		status_led="$board:orange:wifi"
 		;;
+	mzk-ex300np|\
 	rt-n10-plus|\
 	tew-691gr|\
 	tew-692gr|\
